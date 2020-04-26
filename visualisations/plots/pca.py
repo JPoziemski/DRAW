@@ -24,7 +24,6 @@ class PCAPlot(Visualisation):
         self.pc1 = 1
         self.pc2 = 2
         self.source = ColumnDataSource(self.prepare_data())
-        self.plot = self.get_plot()
         self.layout = None
 
     def prepare_data(self):
@@ -93,10 +92,9 @@ class PCAPlot(Visualisation):
             title="Principal Component Analysis",
             plot_height=600,
             plot_width=600,
-
+            x_axis_label =  f'Principal Component {self.pc1}',
+            y_axis_label = f'Principal Component {self.pc2}',
         )
-        p.xaxis.axis_label = f'Principal Component {self.pc1}'
-        p.yaxis.axis_label = f'Principal Component {self.pc2}'
 
         p.scatter(
             x=f'principal component {self.pc1}',
@@ -116,7 +114,7 @@ class PCAPlot(Visualisation):
         self.layout.children[0].children[0] = self.get_plot()
 
     def get_tabs(self):
-        self.layout = layout([[self.plot, [widget for widget in self.get_widgets()]]])
+        self.layout = layout([[self.get_plot(), [widget for widget in self.get_widgets()]]])
         return Panel(
             child=self.layout,
             title="PCA")
