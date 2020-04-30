@@ -1,116 +1,114 @@
-import numpy as np
 import pandas as pd
 import sklearn.decomposition as sk
 
-from bokeh.layouts import row, column, layout
+from bokeh.layouts import layout
 from bokeh.models import Select, Panel, Button, ColumnDataSource
-from bokeh.palettes import Category20b_20
 from bokeh.plotting import figure
-from bokeh.transform import factor_cmap
 
 from visualisation import Visualisation
 
 
 class PCAPlot(Visualisation):
+    """
+    Perform and plot principal component analysis (PCA).
+    Two widgets (pc1_to_plot, pc2_to_plot) enable selecting which principal components should be on which axis.
+    """
 
     def __init__(
             self,
             data: pd.DataFrame,
     ):
         self.data = data
-
-        self.max_pc = len(self.data.transpose())
-        self.n_pcs = len(self.data.transpose())
+        self.pca_data = None
+        self.MAX_PC = len(self.data.transpose())
         self.pc1 = 1
         self.pc2 = 2
-        self.source = ColumnDataSource(self.prepare_data())
+        self.source = ColumnDataSource(self.select_pca())
         self.layout = None
 
-    def prepare_data(self):
-        pca = sk.PCA(n_components=self.n_pcs)
+
+    def calculate_pca(self):
+        """ Perform PCA. """
+        pca = sk.PCA(n_components=self.MAX_PC)
         principal_components = pca.fit_transform(self.data.transpose())
         all_pc = pd.DataFrame(
             data=principal_components,
-            columns=[f'principal component {i}' for i in range(1, self.n_pcs + 1)]
+            columns=[f'principal component {i}' for i in range(1, self.MAX_PC + 1)]
         )
-        selected_pc = all_pc.iloc[:, [self.pc1 - 1, self.pc2 - 1]]
+        return all_pc
+
+    def select_pca(self):
+        """ Choose selected principal components and  assign colors to the experimental variables. """
+        if self.pca_data is None:
+            self.pca_data = self.calculate_pca()
+        selected_pc = self.pca_data.iloc[:, [self.pc1 - 1, self.pc2 - 1]]
         # TODO - modify this line to properly substract data about experiment
         target = ['untreated' if 'untreated' in entry else 'treated' for entry in list(self.data.transpose().index)]
-        color = ['black' if 'untreated' in entry else 'red' for entry in list(self.data.transpose().index)]
+        color = ['black' if 'untreated' in entry else 'red' for entry in target]
 
-        pca_df = pd.concat(
-            [selected_pc,
-             pd.DataFrame(target, columns=['target']),
-             pd.DataFrame(color, columns=['color'])],
-            axis=1)
-        return pca_df
+        selected_pc['target'] = target
+        selected_pc['color'] = color
+        return selected_pc
 
     def get_widgets(self):
-
-        pc_to_calculate = Select(
-            title="Number of PC to calculate: ",
-            value=str(self.max_pc),
-            options=[str(i) for i in range(2, self.max_pc+1)]
-        )
+        """ Create widgets and its callbacks for selecting PCs to plot. """
         pc1_to_plot = Select(
             title="Select PC to plot on x axis",
             value="1",
-            options=[str(i) for i in range(1, int(pc_to_calculate.value) + 1)]
+            options=[str(i) for i in range(1, int(self.MAX_PC) + 1)]
         )
         pc2_to_plot = Select(
             title="Select PC to plot on y axis",
             value="2",
-            options=[str(i) for i in range(1, int(pc_to_calculate.value) + 1)]
+            options=[str(i) for i in range(1, int(self.MAX_PC) + 1)]
         )
 
-        def pc_to_calculate_update(attr, old, new):
-            self.n_pcs = int(new)
-            pc1_to_plot.value = "1"
-            pc2_to_plot.value = "2"
-            pc1_to_plot.options = [str(i) for i in range(1, int(pc_to_calculate.value)+1) if i != int(pc2_to_plot.value) ]
-            pc2_to_plot.options = [str(i) for i in range(1, int(pc_to_calculate.value)+1) if i != int(pc1_to_plot.value) ]
-
         def pc1_to_plot_update(attr, old, new):
+            """ Update PC1 value.
+            Block selecting the same value on x and y axis. """
             self.pc1 = int(new)
-            pc2_to_plot.options = [str(i) for i in range(1, int(pc_to_calculate.value) + 1) if i != int(pc1_to_plot.value) ]
+            pc2_to_plot.options = [str(i) for i in range(1, self.MAX_PC + 1) if i != int(pc1_to_plot.value)]
 
         def pc2_to_plot_update(attr, old, new):
+            """ Update PC2 value.
+            Block selecting the same value on x and y axis. """
             self.pc2 = int(new)
-            pc1_to_plot.options = [str(i) for i in range(1, int(pc_to_calculate.value) + 1) if i != int(pc2_to_plot.value) ]
+            pc1_to_plot.options = [str(i) for i in range(1, self.MAX_PC+ 1) if i != int(pc2_to_plot.value)]
 
-        pc_to_calculate.on_change("value", pc_to_calculate_update)
         pc1_to_plot.on_change("value", pc1_to_plot_update)
         pc2_to_plot.on_change("value", pc2_to_plot_update)
 
         run_button = Button(label="Run", button_type="success")
         run_button.on_click(self.callback)
 
-        return [pc_to_calculate, pc1_to_plot, pc2_to_plot, run_button]
+        return [pc1_to_plot, pc2_to_plot, run_button]
 
     def get_plot(self):
-        p = figure(
+        """ Plot PCA. """
+        pca_plot = figure(
             title="Principal Component Analysis",
             plot_height=600,
             plot_width=600,
-            x_axis_label =  f'Principal Component {self.pc1}',
-            y_axis_label = f'Principal Component {self.pc2}',
+            x_axis_label=f'Principal Component {self.pc1}',
+            y_axis_label=f'Principal Component {self.pc2}',
         )
 
-        p.scatter(
+        pca_plot.scatter(
             x=f'principal component {self.pc1}',
             y=f'principal component {self.pc2}',
             radius=0.2,
-            color = 'color',
+            color='color',
             legend_field="target",
             source=self.source,
         )
 
-        p.legend.location = "top_left"
+        pca_plot.legend.location = "top_left"
 
-        return p
+        return pca_plot
 
     def callback(self, new):
-        self.source.data = self.prepare_data()
+        """ Update data selecting new PCs. """
+        self.source.data = self.select_pca()
         self.layout.children[0].children[0] = self.get_plot()
 
     def get_tabs(self):
