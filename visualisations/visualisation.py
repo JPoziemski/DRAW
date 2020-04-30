@@ -1,16 +1,24 @@
+import abc
+
+
 class Visualisation:
 
+    @abc.abstractmethod
     def prepare_data(self):
-        raise NotImplementedError
+        return
 
+    @abc.abstractmethod
     def get_widgets(self):
-        raise NotImplementedError
+        return
 
+    @abc.abstractmethod
     def get_plot(self):
-        raise NotImplementedError
+        return
 
+    @abc.abstractmethod
     def callback(self):
-        raise NotImplementedError
+        return
 
+    @abc.abstractmethod
     def get_tabs(self):
-        raise NotImplementedError
+        return
