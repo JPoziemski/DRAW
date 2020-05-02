@@ -11,6 +11,7 @@ from bokeh.server.server import Server
 from tornado.ioloop import IOLoop
 
 from plots.pca import PCAPlot
+from plots.smear import SmearPlot
 
 app = Flask(__name__)
 port = 5000
@@ -18,12 +19,16 @@ port = 5000
 def get_plot(doc):
     #TODO Need data loader
     vsd = pd.read_csv('/home/paulina/Pulpit/ADP/visualisation/vsd.csv', index_col=0)
-    pca_plot = PCAPlot(vsd)
+    res = pd.read_csv('/home/paulina/Pulpit/ADP/visualisation/res.csv', index_col=0)
+    pca_plot = SmearPlot(res)
     tab1 = pca_plot.get_tabs()
 
+    pca_plot = PCAPlot(vsd)
+    tab2 = pca_plot.get_tabs()
+
     doc.theme = Theme('theme.yaml')
-    doc.add_root(Tabs(tabs=[tab1]))
-    doc.title = "Flask App Plot"
+    doc.add_root(Tabs(tabs=[tab1, tab2]))
+    doc.title = "DRAW report"
 
 
 bokeh_app = Application(FunctionHandler(get_plot))
