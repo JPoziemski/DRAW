@@ -20,8 +20,8 @@ def get_plot(doc):
     #TODO Need data loader
     vsd = pd.read_csv('/home/paulina/Pulpit/ADP/visualisation/vsd.csv', index_col=0)
     res = pd.read_csv('/home/paulina/Pulpit/ADP/visualisation/res.csv', index_col=0)
-    pca_plot = SmearPlot(res)
-    tab1 = pca_plot.get_tabs()
+    smear_plot = SmearPlot(res)
+    tab1 = smear_plot.get_tabs()
 
     pca_plot = PCAPlot(vsd)
     tab2 = pca_plot.get_tabs()
