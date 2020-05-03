@@ -18,8 +18,8 @@ port = 5000
 
 def get_plot(doc):
     #TODO Need data loader
-    vsd = pd.read_csv('/home/paulina/Pulpit/ADP/visualisation/vsd.csv', index_col=0)
-    res = pd.read_csv('/home/paulina/Pulpit/ADP/visualisation/res.csv', index_col=0)
+    vsd = pd.read_csv('data/vsd.csv', index_col=0)
+    res = pd.read_csv('data/res.csv', index_col=0)
     smear_plot = SmearPlot(res)
     tab1 = smear_plot.get_tabs()
 
