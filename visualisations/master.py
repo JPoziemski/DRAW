@@ -18,6 +18,8 @@ app = Flask(__name__)
 port = 5000
 
 def get_plot(doc):
+    """Get the plots and set up the layout."""
+
     #TODO Need data loader
     vsd = pd.read_csv('data/vsd.csv', index_col=0)
     res = pd.read_csv('data/res.csv', index_col=0)
@@ -39,10 +41,12 @@ bokeh_app = Application(FunctionHandler(get_plot))
 
 @app.route('/', methods = ['GET'])
 def index():
+    """Generate a script to load the session and use the script in the rendered page."""
     script = server_document('http://localhost:5001/bkapp')
     return render_template("index.html", script = script)
 
 def bk_worker():
+    """Run Bokeh server."""
     server = Server(
         {'/bkapp': bokeh_app},
         io_loop = IOLoop(),
