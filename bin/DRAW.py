@@ -5,6 +5,7 @@ import sys
 
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'src'))
 import config_parser
+from config_exec import ConfigExec
 import logging
 
 if __name__ == "__main__":
@@ -45,3 +46,6 @@ if __name__ == "__main__":
         message = "Invalid 'run_type' value in config file "
         logger.error(message)
         raise ValueError(message)
+
+    config_exec = ConfigExec(Config)
+    config_exec.run()

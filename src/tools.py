@@ -20,6 +20,7 @@ class Tool(metaclass=abc.ABCMeta):
         self.DISABLED_ARGS = []
         self.input_arg = ""
         self.output_arg = ""
+        self.created_files = []
 
     @abc.abstractmethod
     def prepare_to_run(self):
@@ -38,6 +39,9 @@ class Tool(metaclass=abc.ABCMeta):
         if process.returncode != 0:
             raise ToolError(process.communicate()[1].decode("utf-8"))
         pass
+
+    def get_created_files(self):
+        return self.created_files
 
     def check_params(self):
 
@@ -130,15 +134,22 @@ class Trimmomatic(Tool):
     def add_output(self, output_dir):
         if self.seq_type == "paired_end":
             self.prepare_output_file_names_for_paired_end()
-            self.output_file_names = [os.path.join(output_dir, output_file) for output_file in self.output_file_names]
-            self.output_arg = " ".join(self.output_file_names)
+            print(output_dir, self.output_file_names[0])
+            self.created_files = [os.path.join(output_dir, output_file) for output_file in self.output_file_names]
+            self.output_arg = " ".join(self.created_files)
         else:
             input_basename = os.path.basename(self.input)
             if input_basename.endswith(".fq"):
                 output_file_name = input_basename.replace(".fq", "trimmed.fastq")
             else:
                 output_file_name = input_basename.replace(".fastq", "trimmed.fastq")
+            created_files_path = os.path.join(output_dir, output_file_name)
+            self.created_files.append(created_files_path)
             self.output_arg = os.path.join(output_dir, output_file_name)
+
+    def get_created_files(self):
+        valid_created_files = [file_path for file_path in self.created_files if "unpaired" not in file_path]
+        return valid_created_files
 
     def prepare_output_file_names_for_paired_end(self):
         if not self.input:
@@ -147,8 +158,8 @@ class Trimmomatic(Tool):
         self.output_file_names = []
         splited_input = self.input.split()
 
-        for file_name in splited_input:
-
+        for file_path in splited_input:
+            file_name = os.path.basename(file_path)
             if file_name.endswith("1.fastq"):
 
                 for out_file_name in global_variables.AFTER_TRIMMING_FILE_NAMES_ENDINGS["1"]:
@@ -171,21 +182,21 @@ class Hisat(Tool):
     BUILD_PATH = os.path.join(global_variables.hisat2_path, "hisat2-build")
     EXEC_PATH = os.path.join(global_variables.hisat2_path, "hisat2")
 
-    def __init__(self, input, output, params, sequence, index_prefix):
+    def __init__(self, input, output, params, sequence):
         super().__init__(input, output, params)
         self.sequence = sequence
-        self.index_prefix = index_prefix
         self.DISABLED_ARGS = ["--sra-acc", "--qseq", "-f", "-c", "-r", "--qc-filter"]
+        self.index_prefix = os.path.join(output, "mapping_index")
         self.prepare_to_run()
 
+
     def add_input(self, input):
-        if isinstance(input, list):
-            self.input_arg = "-U {}".format(",".join(input))
-        elif isinstance(input, dict):
-            if 1 in input.keys() and 2 in input.keys():
-                files_1 = input[1]
-                files_2 = input[2]
-                self.input_arg = "-1 {} -2 {}".format(",".join(files_1), ",".join(files_2))
+        if isinstance(input, str):
+            self.input_arg = "-U {}".format(input)
+        elif isinstance(input, tuple):
+            files_1 = input[0]
+            files_2 = input[1]
+            self.input_arg = "-1 {} -2 {}".format(files_1, files_2)
         else:
             raise TypeError("Input data should be: list or dict")
 
@@ -194,14 +205,17 @@ class Hisat(Tool):
             input_file_name = os.path.basename(self.input[0])
             output_file_name = input_file_name.replace(".fastq", ".sam")
         else:
-            input_file_name = self.input[1]
+            input_file_name = self.input[0]
             output_file_name = input_file_name.replace("_1.fastq", ".sam")
 
-        self.output_arg = "-S {}".format(os.path.join(output_dir, output_file_name))
+        created_file_path = os.path.join(output_dir, output_file_name)
+        print(created_file_path)
+        self.created_files.append(created_file_path)
+        self.output_arg = "-S {}".format(created_file_path)
 
     def build(self):
 
-        command = "{} {} {}".format(Hisat.BUILD_PATH, self.sequence, self.index_prefix)
+        command = "{} {} {]".format(Hisat.BUILD_PATH, self.sequence, self.index_prefix)
 
         process = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
@@ -214,17 +228,27 @@ class Hisat(Tool):
     def prepare_to_run(self):
         self.add_input(self.input)
         self.add_output(self.output_dir)
-        self.build()
         self.command = ["{} {} {} -x {} {}".format(Hisat.EXEC_PATH, self.input_arg,
                                                    self.output_arg, self.index_prefix, self.params)]
+
+    def run(self):
+        print(self.command)
+        self.build()
+        process = subprocess.Popen(self.command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        process.wait()
+
+        # print(process.communicate()[1])
+        if process.returncode != 0:
+            raise ToolError(process.communicate()[1].decode("utf-8"))
+        pass
 
 
 class Bowtie(Hisat):
     BUILD_PATH = os.path.join(global_variables.bowtie_path, "bowtie2-build")
     EXEC_PATH = os.path.join(global_variables.bowtie_path, "bowtie2")
 
-    def __init__(self, input, output, params, sequence, index_prefix):
-        super().__init__(input, output, params, sequence, index_prefix)
+    def __init__(self, input, output, params, sequence):
+        super().__init__(input, output, params, sequence)
         self.DISABLED_ARGS = ["--sra-acc", "-b", "-f", "--qseq", "-F", "-c"]
         self.prepare_to_run()
 
@@ -241,8 +265,7 @@ class Bowtie(Hisat):
     def prepare_to_run(self):
         self.add_input(self.input)
         self.add_output(self.output_dir)
-        self.build()
-        self.command = "{} {} {} -x {} {} --no-unal".format(Bowtie.EXEC_PATH, self.input, self.output,
+        self.command = "{} {} {} -x {} {} --no-unal".format(Bowtie.EXEC_PATH, self.input_arg, self.output_arg,
                                                             self.index_prefix, self.params)
 
 
@@ -252,37 +275,36 @@ class Stringtie(Tool):
     def __init__(self, input, output, user_params):
         super().__init__(input, output, user_params)
         self.DISABLED_ARGS = ["--merge"]
+        self.prepare_to_run()
 
     def add_input(self, input_path):
         self.input_arg = input_path
 
     def add_output(self, output):
         input_file = os.path.basename(self.input)
-        self.output_filename = input_file.replace(".sam", "count.gft")
-        self.output_arg = "-o {}".format(output)
+        self.output_filename = input_file.replace(".bam", "count.gft")
+        self.output_arg = "-o {}".format(os.path.join(output, self.output_filename))
 
     def prepare_to_run(self):
         self.add_input(self.input)
         self.add_output(self.output_dir)
         self.command = ["{} {} {} {}".format(Stringtie.EXEC_path, self.input, self.params, self.output_arg)]
-        self.prepare_to_run()
+
 
 
 class samtools:
-    @staticmethod
-    def sam_to_bam(input_file, output_file):
-        params = "view - S - b {} > {}".format(input_file, output_file)
-        samtools.run(params)
+    def __init__(self):
+        self.command = ""
 
-    @staticmethod
-    def sort_bam(input, output):
-        params = "sort {} -o {}".format(input, output)
-        samtools.run(params)
+    def sam_to_bam(self, input_file, output_file):
+        self.command = "view - S - b {} > {}".format(input_file, output_file)
 
-    @staticmethod
-    def run(params):
-        command = "{} {}".format(global_variables.samtools_path, params)
-        process = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    def sort_bam(self, input_file, output):
+        self.command = "sort {} -o {}".format(input_file, output)
+
+    def run(self):
+        self.command = "{} {}".format(global_variables.samtools_path, self.command)
+        process = subprocess.Popen(self.command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
         # print(process.communicate()[1])
@@ -291,10 +313,10 @@ class samtools:
         pass
 
 
-s = Trimmomatic(
+'''s = Trimmomatic(
     "/home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq /home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq",
     "/home/kuba/ADP_project/",
-    "PE LEADING:1 TRAILING:1 SLIDINGWINDOW:4:15 MINLEN:20")
+    "PE LEADING:1 TRAILING:1 SLIDINGWINDOW:4:15 MINLEN:20")'''
 # s= Bowtie("-p 4 --rg-id test_rep --rg SM:test --dta --rna-strandness RF ",
 '''s = Hisat({1:["/home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq"],
              2:["/home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq"]},
@@ -310,6 +332,6 @@ s.prepare_to_run()'''
 # s = Stringtie("-p 4 -G /home/kuba/Homo_sapiens.GRCh38.100.chromosome.22.gff3")
 # s.add_input("/home/kuba/ADP_project/UHR_Rep1.sorted.bam")
 # s.add_output("/home/kuba/ADP_project/stringtie_result.gft")
-s.run()
+# s.run()
 # SE -phred33  /home/kuba/output.fq
 # print(FastQC.check_params("sadass"))

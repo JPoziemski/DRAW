@@ -7,7 +7,8 @@ stage_tool_mapping_dict = {
     "MAPPING": ["Bowtie2", "Hisat2"],
     "COUNTING": ["HTSEQ", "Stringtie"]
 }
-
+INPUT_DIRECTORY = os.path.abspath("../input")
+OUTPUT_DIRECTORY = os.path.abspath("../output")
 Sequence_Prefiltering_processing_order = ["INITIAL_QUALITY_CONTROL",
                                           "TRIMMING",
                                           "AFTER_TRIMMING_CONTROL"]
