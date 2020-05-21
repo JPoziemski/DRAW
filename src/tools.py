@@ -64,8 +64,9 @@ class Tool(metaclass=abc.ABCMeta):
 
 
 class FastQC(Tool):
-    TOOL_PATH = global_variables.fastqc_path
-    EXEC_PATH = os.path.join(TOOL_PATH, "fastqc")
+    EXEC_PATH = "fastqc"
+    '''TOOL_PATH = global_variables.fastqc_path
+    EXEC_PATH = os.path.join(TOOL_PATH, "fastqc")'''
     ALLOWED_ARGS = ["-o", "--outdir",
                     "-t", "--threads",
                     "--nogroup",
@@ -179,9 +180,13 @@ class Trimmomatic(Tool):
 
 
 class Hisat(Tool):
+    BUILD_PATH = "hisat2-build"
+    EXEC_PATH = "hisat2"
+
+    '''
     BUILD_PATH = os.path.join(global_variables.hisat2_path, "hisat2-build")
     EXEC_PATH = os.path.join(global_variables.hisat2_path, "hisat2")
-
+    '''
     def __init__(self, input, output, params, sequence):
         super().__init__(input, output, params)
         self.sequence = sequence
@@ -215,7 +220,7 @@ class Hisat(Tool):
 
     def build(self):
 
-        command = "{} {} {]".format(Hisat.BUILD_PATH, self.sequence, self.index_prefix)
+        command = "{} {} {}".format(Hisat.BUILD_PATH, self.sequence, self.index_prefix)
 
         process = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
@@ -244,9 +249,13 @@ class Hisat(Tool):
 
 
 class Bowtie(Hisat):
+    BUILD_PATH = "bowtie2-build"
+    EXEC_PATH = "bowtie2"
+
+    '''
     BUILD_PATH = os.path.join(global_variables.bowtie_path, "bowtie2-build")
     EXEC_PATH = os.path.join(global_variables.bowtie_path, "bowtie2")
-
+    '''
     def __init__(self, input, output, params, sequence):
         super().__init__(input, output, params, sequence)
         self.DISABLED_ARGS = ["--sra-acc", "-b", "-f", "--qseq", "-F", "-c"]
@@ -270,7 +279,9 @@ class Bowtie(Hisat):
 
 
 class Stringtie(Tool):
-    EXEC_path = os.path.join(global_variables.stringtie_path, "stringtie")
+    EXEC_path = "stringtie"
+
+    # EXEC_path = os.path.join(global_variables.stringtie_path, "stringtie")
 
     def __init__(self, input, output, user_params):
         super().__init__(input, output, user_params)
