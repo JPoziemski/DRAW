@@ -13,6 +13,7 @@ from tornado.ioloop import IOLoop
 from plots.pca import PCAPlot
 from plots.smear import SmearPlot
 from plots.volcano import VolcanoPlot
+from plots.heatmap import HeatmapPlot
 
 app = Flask(__name__)
 port = 5000
@@ -32,8 +33,15 @@ def get_plot(doc):
     volcano_plot = VolcanoPlot(res)
     tab3 = volcano_plot.get_tabs()
 
+    heatmap_plot = HeatmapPlot(
+        count_matrix=vsd,
+        deseq_results=res,
+
+    )
+    tab4 = heatmap_plot.get_tabs()
+
     doc.theme = Theme('theme.yaml')
-    doc.add_root(Tabs(tabs=[tab1, tab2, tab3]))
+    doc.add_root(Tabs(tabs=[tab1, tab2, tab3, tab4]))
     doc.title = "DRAW report"
 
 
