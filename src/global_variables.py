@@ -9,6 +9,8 @@ stage_tool_mapping_dict = {
 }
 INPUT_DIRECTORY = os.path.abspath("../input")
 OUTPUT_DIRECTORY = os.path.abspath("../output")
+CONFIG_DIRECTORY = os.path.abspath("../config_files")
+
 Sequence_Prefiltering_processing_order = ["INITIAL_QUALITY_CONTROL",
                                           "TRIMMING",
                                           "AFTER_TRIMMING_CONTROL"]

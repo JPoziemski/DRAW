@@ -1,12 +1,26 @@
-import argparse
 import json
 import os
+import subprocess
 import sys
 
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'src'))
 import config_parser
+import global_variables
 from config_exec import ConfigExec
 import logging
+
+
+def get_last_modified_created_config_file():
+    if not os.listdir(global_variables.CONFIG_DIRECTORY):
+        raise ValueError
+
+    file_paths = [os.path.join(global_variables.CONFIG_DIRECTORY, file) for file in
+                  os.listdir(global_variables.CONFIG_DIRECTORY)]
+
+    if len(file_paths) == 1:
+        return file_paths[0]
+    else:
+        return file_paths[0]
 
 if __name__ == "__main__":
     logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s -%(levelname)s-%(message)s',
@@ -15,17 +29,18 @@ if __name__ == "__main__":
     # logger.setLevel(logging.INFO)
 
     logger.info("Running DRAW.py")
-
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument("config_file_path", help="Path to configuration file")
-    args = parser.parse_args()
+    process = subprocess.Popen(["python gui.py"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    process.wait()
+    # parser = argparse.ArgumentParser(description='')
+    # parser.add_argument("config_file_path", help="Path to configuration file")
+    # args = parser.parse_args()
 
     logger.info("Arguments parsed correctly")
 
-    config_file = open(args.config_file_path, "r")
+    config_file = open(get_last_modified_created_config_file(), "r")
     config_file_json = json.load(config_file)
 
-    logger.info("Successfully  load file: {}".format(args.config_file_path))
+    logger.info("Successfully  load file: {}".format(get_last_modified_created_config_file()))
 
     if "run_type" in config_file_json:
         config_file_type = config_file_json["run_type"]
