@@ -33,6 +33,9 @@ if __name__ == "__main__":
     process = subprocess.Popen(["python ../src/visualisations/master.py"], stderr=subprocess.PIPE,
                                stdout=subprocess.PIPE, shell=True)
     process.wait()
+    if process.returncode != 0:
+        raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
+    pass
     # parser = argparse.ArgumentParser(description='')
     # parser.add_argument("config_file_path", help="Path to configuration file")
     # args = parser.parse_args()
