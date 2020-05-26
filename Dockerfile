@@ -16,17 +16,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-8-jre \
     python3 \
     python3-virtualenv \
-    r-base=3.6.*
+    r-base=3.6.3-2
 
 # Install packages
 RUN python3 -m virtualenv --python=/usr/bin/python3 /opt/venv
 COPY requirements.txt .
 RUN . /opt/venv/bin/activate && pip install -r requirements.txt
-RUN R -e "install.packages('DESeq',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+COPY install_packages.R .
+RUN Rscript install_packages.R
 
 # Install tools
 RUN apt-get update && apt-get install -y \
-    bowtie=1.2.3+dfsg-4build1 \
+    bowtie2=2.3.5.1-6build1 \
     fastqc=0.11.9+dfsg-2 \ 
     hisat2=2.1.0-4 \    
     igv=2.4.17+dfsg-1 \
@@ -35,13 +36,16 @@ RUN apt-get update && apt-get install -y \
     wget=1.20.3-1ubuntu1
 
 COPY . /app
-RUN cd app/tools/ && wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-Src-0.38.zip \
-    && unzip Trimmomatic-Src-0.38.zip && rm Trimmomatic-Src-0.38.zip
+RUN cd app/tools/ && wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip && \
+    unzip Trimmomatic-0.39.zip && rm Trimmomatic-0.39.zip
 
-EXPOSE 2000 5000
+WORKDIR /app/bin
+CMD . /opt/venv/bin/activate && exec python ./DRAW.py 
 
-WORKDIR /app
-CMD ["/bin/bash", "./start.sh"] 
+# EXPOSE 2000 5000
 
-# CMD . /opt/venv/bin/activate && exec python ./gui_app.py &
+# CMD ["/bin/bash", "start.sh"]
+
+# CMD . /opt/venv/bin/activate && exec python ./DRAW.py 
+# CMD . /opt/venv/bin/activate && exec python ./gui_app.py 
 # CMD . /opt/venv/bin/activate && exec python ./master.py 
