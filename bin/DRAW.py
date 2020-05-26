@@ -1,9 +1,8 @@
 import json
 import os
-import subprocess
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'src'))
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]), '../src'))
 import config_parser
 import global_variables
 from config_exec import ConfigExec
@@ -29,8 +28,8 @@ if __name__ == "__main__":
     # logger.setLevel(logging.INFO)
 
     logger.info("Running DRAW.py")
-    process = subprocess.Popen(["python gui.py"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
-    process.wait()
+    # process = subprocess.Popen(["python gui.py"], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    # process.wait()
     # parser = argparse.ArgumentParser(description='')
     # parser.add_argument("config_file_path", help="Path to configuration file")
     # args = parser.parse_args()

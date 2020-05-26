@@ -31,7 +31,7 @@ class Tool(metaclass=abc.ABCMeta):
 
     def run(self):
 
-        print(self.command)
+        # print(self.command)
         process = subprocess.Popen(self.command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
