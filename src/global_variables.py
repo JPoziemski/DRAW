@@ -44,7 +44,7 @@ class ToolError(Exception):
 
 
 fastqc_path = os.path.abspath("../tools/FastQC")
-trimmomatic_path = os.path.abspath("../tools/trimmomatic")
+trimmomatic_path = os.path.abspath("../tools/Trimmomatic-0.39")
 hisat2_path = os.path.abspath("../../Pobrane/hisat2-2.2.0")
 bowtie_path = os.path.abspath("../../bowtie2-2.3.5.1-linux-x86_64")
 stringtie_path = os.path.abspath("../../stringtie-2.1.2")

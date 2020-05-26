@@ -150,5 +150,5 @@ class ConfigExec:
 
     def run(self):
         for processed_tool in self.run_order:
-            print(processed_tool.command)
-            # processed_tool.run()
+            # print(processed_tool.command)
+            processed_tool.run()
