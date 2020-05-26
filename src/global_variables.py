@@ -49,4 +49,4 @@ hisat2_path = os.path.abspath("../../Pobrane/hisat2-2.2.0")
 bowtie_path = os.path.abspath("../../bowtie2-2.3.5.1-linux-x86_64")
 stringtie_path = os.path.abspath("../../stringtie-2.1.2")
 # samtools_path = os.path.abspath("../bin/samtools")
-samtools_path = os.path.abspath("samtools")
+samtools_path = "samtools"
