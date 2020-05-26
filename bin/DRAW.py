@@ -5,6 +5,8 @@ import sys
 
 # sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'src'))
 sys.path.append(os.path.abspath('../src'))
+sys.path.append(os.path.abspath('../src/visualisations'))
+
 import config_parser
 import global_variables
 from config_exec import ConfigExec
