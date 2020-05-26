@@ -315,7 +315,7 @@ class samtools:
 
     def run(self):
         self.command = "{} {}".format(global_variables.samtools_path, self.command)
-        process = subprocess.Popen(self.command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        process = subprocess.Popen([self.command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
         # print(process.communicate()[1])
