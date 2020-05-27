@@ -10,14 +10,14 @@ $ docker build . -t draw
 To run the container and bind folders, where you store the input data and want to save config files and output data, type the command below. \
 Make sure folders, you are pathing, are exclusively dedicated for anaysed data, otherwise you will add every file form given directory to docker container.
 ```
-$ docker run -v ${PWD}:/app/input_data \
+$ docker run -v ${PWD}:/app/input \
 -v ${PWD}:/app/config_files \
--v ${PWD}:/app/results \
+-v ${PWD}:/app/output \
 -p 2000:2000 -p 5000:5000 \
 -it draw
 ```
 
-To stop the docker from running use Ctrl + C
+To stop the docker from running use Ctrl + c
 
 
 Options glossary: \
