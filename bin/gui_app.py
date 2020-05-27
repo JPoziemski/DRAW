@@ -44,7 +44,10 @@ def overview():
         for j in parsed_tools[i]:
             params = []
             for key, value in parsed_tools[i][j].items():
-                params.append(str(key) + ' ' + str(value))
+                if j == "TRIMMOMATIC":
+                    params.append(str(key) + ':' + str(value))
+                else:
+                    params.append(str(key) + ' ' + str(value))
             appendage[i].update({j: ' '.join(params)})
     request_args.update({'tools': appendage})
 
