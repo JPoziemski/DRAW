@@ -1,0 +1,347 @@
+
+<html>
+<head>
+<style>
+body {
+    background-image: url('/static/images/bg.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+.content {
+border-radius: 25px;
+padding: 10px;
+position: absolute;
+top:  50%;
+left: 50%;
+transform: translate(-50%,-50%);
+background: AliceBlue;
+}
+
+input[type=submit]{
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+input[type=reset] {
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+input, label, select {
+    float:left;
+    margin:5px;
+}
+td {
+  text-align: center;
+  vertical-align: middle;
+  align: center;
+}
+.tooltip {
+position: relative;
+display: inline-block;
+border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+visibility: hidden;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 5px 0;
+/* Position the tooltip */
+position: absolute;
+display: block;
+z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+visibility: visible;
+}
+</style>
+</head>
+
+<body>
+<div class="content">
+<center>
+<h1>Sequence prefiltering</h1>
+<form action="/overview">
+       <table>
+       <tr>
+       <th>
+       <label>Pre-trimming quality control</label>
+       <th>
+       </tr>
+       <tr>
+       <td>
+              <select name="tool_INITIAL_QUALITY_CONTROL" class="dropdown">
+              <option value="">Choose</option>
+              <option value="fastqc_0">FastQC</option>
+              </select>
+       </td>
+       <td>
+              <label class="optional fastqc_0" style="display:none;"> <div class="tooltip">min_length <span class="tooltiptext"> Set lower limit on the length of the sequence to be shown in the report </span></div></label>
+       <input type="number" class="optional fastqc_0" name="fastqc_0_param!--min_length" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional fastqc_0" style="display:none;"><div class="tooltip">kmer <span class="tooltiptext"> Specify the length of Kmer to look for </span></div></label>
+       <input type="number" class="optional fastqc_0" name="fastqc_0_param!--kmers" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional fastqc_0" style="display:none;"><div class="tooltip">nogroup <span class="tooltiptext"> Disable grouping of bases for reads >50bp </span></div></label>
+       <input type="checkbox" class="optional fastqc_0" name="fastqc_0_param!--nogroup" style="display:none;" class="hidden-checkbox">
+       </td>
+       </tr>
+       <tr>
+              <th>
+              <label>Trimming</label>
+              </th>
+       </tr>
+       <tr>
+              <td>
+              <select name="tool_TRIMMING" class="dropdown">
+              <option value="">Choose</option>
+              <option value="trimmomatic" >Trimmomatic</option>
+              </select>
+              </td>
+              <td>
+              <label class="optional trimmomatic" style="display:none;"> <div class="tooltip">ILLUMINACLIP <span class="tooltiptext">fastaWithAdaptersEtc:seed_mismatches:palindrome_clip_threshold:simple_clip_threshold:minAdapterLength:keepBothReads<br><br> Where:<br><br>fastaWithAdaptersEtc: specifies the path to a fasta file containing all the adapters, PCR sequences etc. The naming of the various sequences within this file determines how they are used. See the section below or use one of the provided adapter files<br><br>seedMismatches: specifies the maximum mismatch count which will still allow a full match to be performed<br><br>palindromeClipThreshold: specifies how accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment<br><br>simpleClipThreshold: specifies how accurate the match between any adapter etc. sequence must be against a read.<br><br>minAdapterLength: In addition to the alignment score, palindrome mode can verify that a minimum length of adapter has been detected. If unspecified, this defaults to 8 bases, for historical reasons. However, since palindrome mode has a very low false positive rate, this can be safely reduced, even down to 1, to allow shorter adapter fragments to be removed.<br><br>keepBothReads: After read-though has been detected by palindrome mode, and the adapter sequence removed, the reverse read contains the same sequence information as the forward read, albeit in reverse complement. For this reason, the default behaviour is to entirely drop the reverse read. By specifying „true‟ for this parameter, the reverse read will also be retained, which may be useful e.g. if the downstream tools cannot handle a combination of paired and unpaired reads.</span></div></label>
+              <input class="optional trimmomatic" name="trimmomatic_param!ILLUMINACLIP" value="" style="display:none;" class="hidden-txt">
+              </td>
+              <td>
+                     <label class="optional trimmomatic" style="display:none;"> <div class="tooltip">SLIDINGWINDOW <span class="tooltiptext">windowSize:requiredQuality <br><br> Where: <br><br> windowSize: specifies the number of bases to average across required<br><br>Quality: specifies the average quality required.</span></div></label>
+              <input class="optional trimmomatic" name="trimmomatic_param!SLIDINGWINDOW" value="" style="display:none;" class="hidden-txt">
+              </td>
+              <td>
+              <label class="optional trimmomatic" style="display:none;"><div class="tooltip">MAXINFO <span class="tooltiptext">targetLength:strictness<br><br> Where: <br><br>targetLength: This specifies the read length which is likely to allow the location of the read within the target sequence to be determined.<br><br> strictness: This value, which should be set between 0 and 1, specifies the balance between preserving as much read length as possible vs. removal of incorrect bases. A low value of this parameter (<0.2) favours longer reads, while a high value (>0.8) favours read correctness. </span></div></label>
+              <input class="optional trimmomatic" name="trimmomatic_param!MAXINFO" value="" style="display:none;" class="hidden-txt">
+              </td>
+              <td>
+              <label class="optional trimmomatic" style="display:none;"><div class="tooltip">LEADING <span class="tooltiptext">Remove low quality bases from the beginning. As long as a base has a value below this threshold the base is removed and the next base will be investigated.</span></div></label>
+              <input type="number" class="optional trimmomatic" name="trimmomatic_param!LEADING" value="" style="display:none;" class="hidden-txt">
+              </td>
+       </tr>
+       <tr>
+              <td>
+              <label class="optional trimmomatic" style="display:none;"><div class="tooltip">TRAILING <span class="tooltiptext">qRemove low quality bases from the end. As long as a base has a value below this threshold the base is removed and the next base (which as trimmomatic is starting from the 3‟ prime end would be base preceding the just removed base) will be investigated.</span></div></label>
+              <input type="number" class="optional trimmomatic" name="trimmomatic_param!TRAILING" value="" style="display:none;" class="hidden-txt">
+              </td>
+              <td>
+              <label class="optional trimmomatic" style="display:none;"><div class="tooltip">CROP <span class="tooltiptext">Removes bases regardless of quality from the end of the read, so that the read has maximally the specified length after this step has been performed. Steps performed after CROP might of course further shorten the read.</span></div></label>
+              <input type="number" class="optional trimmomatic" name="trimmomatic_param!CROP" value="" style="display:none;" class="hidden-txt">
+              </td>
+              <td>
+              <label class="optional trimmomatic" style="display:none;"><div class="tooltip">HEADCROP <span class="tooltiptext">Removes the specified number of bases, regardless of quality, from the beginning of the read.</span></div></label>
+              <input type="number" class="optional trimmomatic" name="trimmomatic_param!HEADCROP" value="" style="display:none;" class="hidden-txt">
+              </td>
+              <td>
+              <label class="optional trimmomatic" style="display:none;"><div class="tooltip">MINLEN <span class="tooltiptext">This module removes reads that fall below the specified minimal length. If required, it should normally be after all other processing steps. Reads removed by this step will be counted and included in the „dropped reads‟ count presented in the trimmomatic summary.</span></div></label>
+              <input type="number" class="optional trimmomatic" name="trimmomatic_param!MINLEN" value="" style="display:none;" class="hidden-txt">
+              </td>
+              <td>
+                     <label class="optional trimmomatic" style="display:none;"><div class="tooltip">AVGQUAL <span class="tooltiptext"> Drop the read if the average quality is below the specified level</span></div></label>
+              <input type="number" class="optional trimmomatic" name="trimmomatic_param!AVGQUAL" value="" style="display:none;" class="hidden-txt">
+              </td>
+       </tr>
+       <tr>
+       <th>
+       <label>Post-trimming quality control</label>
+       <th>
+       </tr>
+       <tr>
+       <td>
+              <select name="tool_AFTER_TRIMMING_CONTROL" class="dropdown">
+              <option value="">Choose</option>
+              <option value="fastqc_1">FastQC</option>
+              </select>
+       </td>
+       <td>
+       <label class="optional fastqc_1" style="display:none;"><div class="tooltip">min_length <span class="tooltiptext"> Set lower limit on the length of the sequence to be shown in the report </span></div></label>
+       <input type="number" class="optional fastqc_1" name="fastqc_1_param!--min_length" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional fastqc_1" style="display:none;"><div class="tooltip">kmer <span class="tooltiptext"> Specify the length of Kmer to look for </span></div></label>
+       <input type="number" class="optional fastqc_1" name="fastqc_1_param!--kmers" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional fastqc_1" style="display:none;"><div class="tooltip">nogroup <span class="tooltiptext"> Disable grouping of bases for reads >50bp </span></div></label>
+       <input type="checkbox" class="optional fastqc_1" name="fastqc_1_param!--nogroup" style="display:none;" class="hidden-checkbox">
+       </td>
+       </tr>
+       <tr>
+       <th>
+       <label>Mapping</label>
+       <th>
+       </tr>
+       <tr>
+       <td>
+              <select name="tool_MAPPING" class="dropdown">
+              <option value="">Choose</option>
+              <option value="Hisat2">Hisat2</option>
+              <option value="Bowtie2">Bowtie2</option>
+              </select>
+       </td>
+       <td>
+       <label class="optional Hisat2" style="display:none;"><div class="tooltip">mp <span class="tooltiptext">MX,MN <br><br> Where:<br><br>  Sets the maximum (MX) and minimum (MN) mismatch penalties, both integers. A number less than or equal to MX and greater than or equal to MN is subtracted from the alignment score for each position where a read character aligns to a reference character, the characters do not match, and neither is an N. </span></div></label>
+       <input class="optional Hisat2" name="hisat_param!--mp" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Hisat2" style="display:none;"><div class="tooltip">sp <span class="tooltiptext"> MX,MN <br><br> Where:<br><br> Sets the maximum (MX) and minimum (MN) penalties for soft-clipping per base, both integers. A number less than or equal to MX and greater than or equal to MN is subtracted from the alignment score for each position. </span></div></label>
+       <input class="optional Hisat2" name="Hisat2_param!--sp" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Hisat2" style="display:none;"><div class="tooltip">no-softclip <span class="tooltiptext"> Disallow soft-clipping. </span></div></label>
+       <input type="checkbox" class="optional Hisat2" name="Hisat2_param!--no-softclip" style="display:none;" class="hidden-checkbox">
+       </td>
+       <td>
+       <label class="optional Hisat2" style="display:none;"><div class="tooltip">np <span class="tooltiptext"> Sets penalty for positions where the read, reference, or both, contain an ambiguous character such as N. Default: 1. </span></div></label>
+       <input type="number" class="optional Hisat2" name="Hisat2_param!--np" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Hisat2" style="display:none;"><div class="tooltip">rdg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br>Sets the read gap open (int1) and extend (int2) penalties. A read gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span></div></label>
+       <input class="optional Hisat2" name="Hisat2_param!--rdg" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Hisat2" style="display:none;"><div class="tooltip">rfg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br> Sets the reference gap open (int1) and extend (int2) penalties. A reference gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span></div></label>
+       <input class="optional Hisat2" name="Hisat2_param!--rfg" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Hisat2" style="display:none;"><div class="tooltip">seed <span class="tooltiptext"> Use int as the seed for pseudo-random number generator. Default: 0. </span></div></label>
+       <input type="number" class="optional Hisat2" name="Hisat2_param!--seed" style="display:none;" class="hidden-txt">
+       </td>
+
+       <td>
+       <label class="optional Bowtie2" style="display:none;"><div class="tooltip">N <span class="tooltiptext"> Sets the number of mismatches to allowed in a seed alignment during multiseed alignment. Can be set to 0 or 1. Setting this higher makes alignment slower (often much slower) but increases sensitivity. Default: 0. </span></div></label>
+       <input type="number" class="optional Bowtie2" name="Bowtie2_param!--N" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Bowtie2" style="display:none;"><div class="tooltip">L <span class="tooltiptext"> Sets the length of the seed substrings to align during multiseed alignment. Smaller values make alignment slower but more sensitive. </span></div></label>
+       <input type="number" class="optional Bowtie2" name="Bowtie2_param!--L" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Bowtie2" style="display:none;"><div class="tooltip">dpad <span class="tooltiptext"> “Pads” dynamic programming problems by int columns on either side to allow gaps. Default: 15. </span></div></label>
+       <input type="number" class="optional Bowtie2" name="Bowtie2_param!--dpad" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Bowtie2" style="display:none;"><div class="tooltip">gbar <span class="tooltiptext"> Disallow gaps within int positions of the beginning or end of the read. Default: 4. </span></div></label>
+       <input type="number" class="optional Bowtie2" name="Bowtie2_param!--gbar" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Bowtie2" style="display:none;"><div class="tooltip">mp <span class="tooltiptext">MX,MN <br><br> Where:<br><br> Sets the maximum (MX) and minimum (MN) mismatch penalties, both integers. A number less than or equal to MX and greater than or equal to MN is subtracted from the alignment score for each position where a read character aligns to a reference character, the characters do not match, and neither is an N. </span></div></label>
+       <input class="optional Bowtie2" name="Bowtie2_param!--mp" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Bowtie2" style="display:none;"><div class="tooltip">np <span class="tooltiptext"> Sets penalty for positions where the read, reference, or both, contain an ambiguous character such as N. Default: 1. </span></div></label>
+       <input type="number" class="optional Bowtie2" name="Bowtie2_param!--np" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Bowtie2" style="display:none;"><div class="tooltip">rdg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br> Sets the read gap open (int1) and extend (int2) penalties. A read gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span></div></label>
+       <input class="optional Bowtie2" name="Bowtie2_param!--rdg" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Bowtie2" style="display:none;"><div class="tooltip">rfg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br> Sets the reference gap open (int1) and extend (int2) penalties. A reference gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span></div></label>
+       <input class="optional Bowtie2" name="Bowtie2_param!--rfg" style="display:none;" class="hidden-txt">
+       </td>
+       </tr>
+       <tr>
+       <th>
+       <label>Counting</label>
+       <th>
+       </tr>
+       <tr>
+       <td>
+              <select name="tool_COUNTING" class="dropdown">
+              <option value="">Choose</option>
+              <option value="stringtie">Stringtie</option>
+              </select>
+       </td>
+       <td>
+       <label class="optional Stringtie" style="display:none;"><div class="tooltip">l <span class="tooltiptext"> Sets label as the prefix for the name of the output transcripts. Default: STRG </span></div></label>
+       <input class="optional Stringtie" name="Stringtie_param!--l" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Stringtie" style="display:none;"><div class="tooltip">f <span class="tooltiptext"> Sets the minimum isoform abundance of the predicted transcripts as a fraction of the most abundant transcript assembled at a given locus. Lower abundance transcripts are often artifacts of incompletely spliced precursors of processed transcripts. Default: 0.01 </span></div></label>
+       <input type="number" class="optional Stringtie" name="Stringtie_param!--f" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Stringtie" style="display:none;"><div class="tooltip">m <span class="tooltiptext"> Sets the minimum length allowed for the predicted transcripts. Default: 200 </span></div></label>
+       <input type="number" class="optional Stringtie" name="Stringtie_param!--m" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Stringtie" style="display:none;"><div class="tooltip">a <span class="tooltiptext"> Junctions that don't have spliced reads that align across them with at least this amount of bases on both sides are filtered out. Default: 10 </span></div></label>
+       <input type="number" class="optional Stringtie" name="Stringtie_param!--a" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Stringtie" style="display:none;"><div class="tooltip">c <span class="tooltiptext"> Sets the minimum read coverage allowed for the predicted transcripts. A transcript with a lower coverage than this value is not shown in the output. Default: 1 </span></div></label>
+       <input type="number" class="optional Stringtie" name="Stringtie_param!--c" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Stringtie" style="display:none;"><div class="tooltip">s <span class="tooltiptext"> Sets the minimum read coverage allowed for single-exon transcripts. Default: 4.75 </span></div></label>
+       <input type="number" class="optional Stringtie" name="Stringtie_param!--s" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Stringtie" style="display:none;"><div class="tooltip">g <span class="tooltiptext"> Sets the minimum read coverage allowed for single-exon transcripts. Default: 4.75 </span></div></label>
+       <input type="number" class="optional Stringtie" name="Stringtie_param!--g" style="display:none;" class="hidden-txt">
+       </td>
+       <td>
+       <label class="optional Stringtie" style="display:none;"><div class="tooltip">M <span class="tooltiptext"> Sets the maximum fraction of muliple-location-mapped reads that are allowed to be present at a given locus. Default: 0.95. </span></div></label>
+       <input type="number" class="optional Stringtie" name="Stringtie_param!--M" style="display:none;" class="hidden-txt">
+       </td>
+       </tr>
+       <tr>
+       <td><button class="submit">Submit</button></td>
+       </tr>
+       </table>
+    </form>
+</center>
+</div>
+    <script type=text/javascript src="{{
+  url_for('static', filename='jquery-1.8.3.min.js') }}"></script>
+    <script>
+        $("select").change(function () {
+            $('.optional').css('display','none');
+
+            $("select option:selected").each(function () {
+                if($(this).val() == "fastqc_0") {
+                    $('.fastqc_0').css('display','block');
+                }
+            });
+            $("select option:selected").each(function () {
+                if($(this).val() == "trimmomatic") {
+                    $('.trimmomatic').css('display','block');
+                } else if($(this).val() == "cutadapt") {
+                $('.cutadapt').css('display','block');
+                }
+            });
+            $("select option:selected").each(function () {
+                if($(this).val() == "fastqc_1") {
+                    $('.fastqc_1').css('display','block');
+                }
+            });
+            $("select option:selected").each(function () {
+                if($(this).val() == "Hisat2") {
+                    $('.Hisat2').css('display','block');
+                } else if($(this).val() == "Bowtie2") {
+                $('.Bowtie2').css('display','block');
+                }
+            });
+            $("select option:selected").each(function () {
+                if($(this).val() == "stringtie") {
+                    $('.stringtie').css('display','block');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
