@@ -40,12 +40,6 @@ RUN cd app/tools/ && wget http://www.usadellab.org/cms/uploads/supplementary/Tri
     unzip Trimmomatic-0.39.zip && rm Trimmomatic-0.39.zip
 
 WORKDIR /app/bin
-CMD . /opt/venv/bin/activate && exec python ./DRAW.py 
+CMD . /opt/venv/bin/activate && exec python ./gui_app.py 
 
 # EXPOSE 2000 5000
-
-# CMD ["/bin/bash", "start.sh"]
-
-# CMD . /opt/venv/bin/activate && exec python ./DRAW.py 
-# CMD . /opt/venv/bin/activate && exec python ./gui_app.py 
-# CMD . /opt/venv/bin/activate && exec python ./master.py 

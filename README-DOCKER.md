@@ -17,7 +17,7 @@ $ docker run -v ${PWD}:/app/input_data \
 -it draw
 ```
 
-To stop the docker from running use Ctrl + D
+To stop the docker from running use Ctrl + C
 
 
 Options glossary: \
