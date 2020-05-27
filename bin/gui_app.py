@@ -15,7 +15,7 @@ def main_page():
 
 @app.route("/generate")
 @app.route("/generate/<run_id>")
-def generate(run_id = str(time.time())[-6:], date = datetime.now().strftime("%m_%d_%y_")):
+def generate(run_id = str(time.time())[-5:], date = datetime.now().strftime("%m_%d_%y_")):
     return flask.render_template('generate.html', run_id=date+run_id)
 
 
@@ -39,9 +39,16 @@ def overview():
                     elif j.startswith(tools[i] + '_param') and tools[j] != '':
                         parsed_tools['_'.join(i.split('_')[1:])][''.join(tools[i].split('_')[0])].update(
                             {''.join(j.split('!')[-1]): tools[j]})
-    request_args.update({'tools': parsed_tools})
+    appendage = {i:{} for i in parsed_tools}
+    for i in parsed_tools:
+        for j in parsed_tools[i]:
+            params = []
+            for key, value in parsed_tools[i][j].items():
+                params.append(str(key) + ' ' + str(value))
+            appendage[i].update({j: ' '.join(params)})
+    request_args.update({'tools': appendage})
 
-    with open('../config_files/'+request_args['run_id']+'.json', 'w') as f:
+    with open('../../config_files/'+request_args['run_id']+'.json', 'w') as f:
         f.write(flask.json.dumps(request_args, separators=(',\n', ':')))
     return flask.render_template('overview.html', run_id = request_args['run_id']+'.json')
 
@@ -61,7 +68,7 @@ def tools():
 
 @app.route("/progress")
 def progress():
-    bashCommand = 'DRAW.py '+request_args['run_id']+'.json'
+    bashCommand = 'python DRAW.py '+request_args['run_id']+'.json'
     subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 
 def open_browser():
