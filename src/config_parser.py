@@ -133,7 +133,7 @@ class Config_Parser(metaclass=abc.ABCMeta):
 
 class Complete_Analysis_Config(Config_Parser):
     COMPLETE_ANALYSIS_CONFIG_VARIABLES = ["run_downstream_analysis",
-                                          "annotation_file_path",
+                                          "annotation_file_name",
                                           "control_file_prefix", ]
 
     def __init__(self, json_file):
@@ -164,7 +164,7 @@ class Complete_Analysis_Config(Config_Parser):
                 raise TypeError(message)
 
         def check_annotation_file_path():
-            annotation_file_name = self.config_data["annotation_file_path"]
+            annotation_file_name = self.config_data["annotation_file_name"]
             annotation_file_path = os.path.join(global_variables.INPUT_DIRECTORY, annotation_file_name)
             if not os.path.isfile(annotation_file_path):
                 message = "file {} not found".format(annotation_file_path)

@@ -64,7 +64,7 @@ class ConfigExec:
             elif stage == "MAPPING":
                 tool_for_stage, tool_params = self.Config.get_tool_for_stage(stage)
                 reference_path = os.path.join(global_variables.INPUT_DIRECTORY,
-                                              self.Config.get_config_variable("reference"))
+                                              self.Config.get_config_variable("reference_file_name"))
 
                 for obj in input_file_paths:
                     input_arg = obj
