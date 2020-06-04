@@ -51,7 +51,7 @@ def overview():
             appendage[i].update({j: ' '.join(params)})
     request_args.update({'tools': appendage})
 
-    with open('../../config_files/'+request_args['run_id']+'.json', 'w') as f:
+    with open('../config_files/'+request_args['run_id']+'.json', 'w') as f:
         f.write(flask.json.dumps(request_args, separators=(',\n', ':')))
     return flask.render_template('overview.html', run_id = request_args['run_id']+'.json')
 
