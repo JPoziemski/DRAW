@@ -1,10 +1,11 @@
 import json
 import os
+import subprocess
 import sys
 
 # sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'src'))
 sys.path.append(os.path.abspath('../src'))
-sys.path.append(os.path.abspath('../src/visualisations'))
+# sys.path.append(os.path.abspath('../src/visualisations'))
 
 import config_parser
 import global_variables
@@ -31,9 +32,9 @@ if __name__ == "__main__":
     # logger.setLevel(logging.INFO)
 
     logger.info("Running DRAW.py")
-    # process = subprocess.Popen(["python ../src/visualisations/master.py"], stderr=subprocess.PIPE,
-    #                           stdout=subprocess.PIPE, shell=True)
-    # process.wait()
+    process = subprocess.Popen(["python ./vis.py"], stderr=subprocess.PIPE,
+                               stdout=subprocess.PIPE, shell=True)
+    process.wait()
     # if process.returncode != 0:
     #    raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
     # pass
