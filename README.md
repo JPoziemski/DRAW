@@ -2,6 +2,7 @@
 
 ADP project: tool for RNA-seq analysis
 
+
 ## Isolated environment in Docker containers
 
 **Before starting the analysis make sure you have installed Docker on your Linux machine, recommended version 19.03.8. It is the only installation needed, the rest does Docker itself.**
@@ -29,6 +30,7 @@ Options glossary: \
 --publish , -p	Publish a container’s port(s) to the host \
 --volume , -v	Bind mount a volume \
 --interactive, -it Run container in interactive mode
+
 
 ##  Differential expression analysis
    
