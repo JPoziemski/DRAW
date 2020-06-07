@@ -13,32 +13,40 @@ from tornado.ioloop import IOLoop
 import sys
 sys.path.insert(1, '../src/visualisations/')
 
+import argparse
 from plots.pca import PCAPlot
 from plots.smear import SmearPlot
 from plots.volcano import VolcanoPlot
 from plots.heatmap import HeatmapPlot
 
-
 app = Flask(__name__)
 port = 5000
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('-id', help='ID of the run')
+    parser.add_argument('-dt', choices=['vsd', 'rld', 'norm'],
+                        help='Main type of data to use in the visualisation')
+    args = parser.parse_args()
+    return args.id, args.dt
+
 def get_plot(doc):
     """Get the plots and set up the layout."""
+    id_run, data_type = parse_arguments()
 
-    #TODO Need data loader
-    vsd = pd.read_csv('../src/visualisations/data/vsd.csv', index_col=0)
-    res = pd.read_csv('../src/visualisations/data/res.csv', index_col=0)
+    data = pd.read_csv(f'../src/visualisations/data/{data_type}.csv', index_col=0)
+    res = pd.read_csv(f'../src/visualisations/data/res.csv', index_col=0)
     smear_plot = SmearPlot(res)
     tab1 = smear_plot.get_tabs()
 
-    pca_plot = PCAPlot(vsd)
+    pca_plot = PCAPlot(data)
     tab2 = pca_plot.get_tabs()
 
     volcano_plot = VolcanoPlot(res)
     tab3 = volcano_plot.get_tabs()
 
     heatmap_plot = HeatmapPlot(
-        count_matrix=vsd,
+        count_matrix=data,
         deseq_results=res,
 
     )
