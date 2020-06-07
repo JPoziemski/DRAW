@@ -23,15 +23,19 @@ app = Flask(__name__)
 port = 5000
 
 def parse_arguments():
+    """Get id and data type for visualisation. """
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('-id', help='ID of the run')
-    parser.add_argument('-dt', choices=['vsd', 'rld', 'norm'],
+    parser.add_argument('-dt', choices=['vsd', 'rld', 'norm'], default='vsd',
                         help='Main type of data to use in the visualisation')
     args = parser.parse_args()
     return args.id, args.dt
 
 def get_plot(doc):
-    """Get the plots and set up the layout."""
+    """Get the plots and set up the layout.
+    :param doc: document we will output.
+    :type doc: Document
+    """
     id_run, data_type = parse_arguments()
 
     data = pd.read_csv(f'../src/visualisations/data/{data_type}.csv', index_col=0)
@@ -61,12 +65,12 @@ bokeh_app = Application(FunctionHandler(get_plot))
 
 @app.route('/', methods = ['GET'])
 def index():
-    """Generate a script to load the session and use the script in the rendered page."""
+    """ Generate a script to load the session and use the script in the rendered page. """
     script = server_document('http://localhost:5001/bkapp')
     return render_template("index.html", script = script)
 
 def bk_worker():
-    """Run Bokeh server."""
+    """ Run Bokeh server. """
     server = Server(
         {'/bkapp': bokeh_app},
         io_loop = IOLoop(),

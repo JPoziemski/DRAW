@@ -15,8 +15,12 @@ class HeatmapPlot(Visualisation):
     """
     Heatmap of differentially expressed genes.
     Two widgets:
-    :Text box enables selecting any FDR cut-off for selecting the diferentially expressed genes
-    :Slider allows for selecting number of genes meeting the FDR criterium to be placed on the heatmap.
+    Text box enables selecting any FDR cut-off for selecting the diferentially expressed genes
+    Slider allows for selecting number of genes meeting the FDR criterium to be placed on the heatmap.
+    :param count_matrix: DataFrame with count matrix
+    :type count_matrix: pd.DataFrame
+    :param deseq_results: DataFrame with Differential Expression Analysis
+    :type: pd.DataFrame
 
     """
 
@@ -34,8 +38,7 @@ class HeatmapPlot(Visualisation):
         self.n_genes_relevant = None
 
     def prepare_data(self):
-        """ Select relevant data from the original DESeq2 results.
-         Calculate the dendogram.
+        """ Select relevant data from the original DESeq2 results. Calculate the dendogram.
          Preprare data for heatmap plotting. """
 
         self.deseq_results = self.deseq_results.sort_values('padj')
@@ -112,7 +115,14 @@ class HeatmapPlot(Visualisation):
         )
 
         def genes_to_plot_update(attr, old, new):
-            """ Update the number of genes which are to supposed to be plotted."""
+            """ Update the number of genes which are to supposed to be plotted.
+            :param attr: value to change
+            :type attr: str
+            :param old: old value
+            :type old: float
+            :param new: new value
+            :type new: float
+            """
             self.n_genes_to_show = int(new)
 
         genes_to_plot.on_change("value", genes_to_plot_update)
@@ -199,10 +209,12 @@ class HeatmapPlot(Visualisation):
 
         return hm
 
-    def callback(self, new):
+    def callback(self):
+        """ Main callback for updating the plot. """
         self.layout.children[0].children[0] = self.get_plot()
 
     def get_tabs(self):
+        """ Get components of the plot and add them to the layout. """
         self.layout = layout([[self.get_plot(), [widget for widget in self.get_widgets()]]])
         return Panel(
             child=self.layout,
