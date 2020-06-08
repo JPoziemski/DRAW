@@ -5,30 +5,25 @@ ADP project: tool for RNA-seq analysis
 
 ## Isolated environment in Docker containers
 
-**Before starting the analysis make sure you have installed Docker on your Linux machine, recommended version 19.03.8. It is the only installation needed, the rest does Docker itself.**
+**Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and a popular web browser (recommended Google Chrome:81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
 
-To get the image of DRAW, execute the following command:
+To get the image of DRAW, make sure you have Internet access and execute the following script:
 ```console
-$ docker build . -t draw
+$ ./build.sh
 ```
 
-To run the container and bind folders, where you store the input data and want to save config files and output data, type the command below. \
-Make sure folders, you are pathing, are exclusively dedicated for anaysed data, otherwise you will add every file form given directory to docker container.
-```
-$ docker run -v ${PWD}:/app/input \
--v ${PWD}:/app/config_files \
--v ${PWD}:/app/output \
--p 2000:2000 -p 5000:5000 \
--it draw
+Before running the container place input data in the input directory. To run the container execute the run_docker.sh script as below. Directories input, config_files and output persist data generated and used by Docker. Ports 2000 i 5000 are published to the host machine. Container is running in interactive mode to see running processes.
+```console
+$ ./run_docker.sh
 ```
 
-To stop the docker from running use Ctrl + c
+To stop the docker from running use Ctrl + d
 
 
-Options glossary: \
+Docker uses following options: \
 --tag, -t Tag docker container. \
 --publish , -p	Publish a container’s port(s) to the host \
---volume , -v	Bind mount a volume \
+--volume , -v	Bind a volume \
 --interactive, -it Run container in interactive mode
 
 
