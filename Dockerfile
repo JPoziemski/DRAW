@@ -13,15 +13,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install platforms
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openjdk-8-jre \
-    python3 \
-    python3-virtualenv \
+    openjdk-8-jre=8u252-b09-1ubuntu1 \
+    python3=3.8.2-0ubuntu2 \
+    python3-pip=20.0.2-5ubuntu1 \
     r-base=3.6.3-2
 
-# Install packages
-RUN python3 -m virtualenv --python=/usr/bin/python3 /opt/venv
+# Install dependencies
 COPY requirements.txt .
-RUN . /opt/venv/bin/activate && pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 COPY install_packages.R .
 RUN Rscript install_packages.R
 
@@ -39,7 +38,11 @@ COPY . /app
 RUN cd app/tools/ && wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip && \
     unzip Trimmomatic-0.39.zip && rm Trimmomatic-0.39.zip
 
-WORKDIR /app/bin
-CMD . /opt/venv/bin/activate && exec python ./gui_app.py 
 
-# EXPOSE 2000 5000
+# Set working directory and start draw
+WORKDIR /app/bin
+RUN python3 ./gui_app.py 
+
+# Test installations
+# WORKDIR /app/tests
+# RUN ./test_installations_in_docker.sh
