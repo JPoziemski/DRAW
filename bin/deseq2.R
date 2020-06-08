@@ -1,8 +1,8 @@
 library("DESeq2")
 
-
 args = commandArgs(trailingOnly=TRUE)
 count_matrix = args[1]
+run_id = args[2]
 
 # Read counts data and annotation
 cts <- as.matrix(read.csv(count_matrix ,sep=",",row.names="gene_id"))
@@ -30,8 +30,8 @@ vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
 rld <- rlog(dds, blind = FALSE)
 
 # Save outputs
-write.csv(res, '../output/VISUALISATION/res.csv')
-write.csv(assay(vsd),'../output/VISUALISATION/vsd.csv')
-write.csv(assay(rld),'../output/VISUALISATION/rld.csv')
-write.csv(normal,'../output/VISUALISATION/norm.csv')
-write.csv(coldata,'../output/VISUALISATION/anno.csv')
+write.csv(res, paste('../output/', run_id, '/VISUALISATION/res.csv', sep=""))
+write.csv(assay(vsd), paste('../output/', run_id, '/VISUALISATION/vsd.csv', sep=""))
+write.csv(assay(rld),paste('../output/', run_id, '/VISUALISATION/rld.csv', sep=""))
+write.csv(normal, paste('../output/', run_id, '/VISUALISATION/norm.csv', sep=""))
+write.csv(coldata, paste('../output/', run_id, '/VISUALISATION/anno.csv', sep=""))
