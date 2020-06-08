@@ -28,10 +28,29 @@ Docker uses following options: \
 
 
 ##  Differential expression analysis
-   
+
+The differential expression analysis is performed in DESeq2. 
+The output of the differential expression analysis are 4 files:
+- Normalized counts
+- rLog - regularized logarithm
+- VST - variance stabilizing transformations
+- DESeq2 result file
+
+
 ##  Visualisation 
 
-The visualisation dashboard offers four type of plots, which can be accesed by selection appriopriate tab: 
+The visualisation dashboard offers four type of plots, which can be accesed by selection appriopriate tab. Most often the visualisation dashboard will be opened as soon as the analysis is finished. When needed, the visualisation for a given run can be accessed like that: 
+
+```console
+$  python vis.py -id [run_id] -dt [data]
+```
+
+where ```run_id``` is the id of the run we want to visualise, and ```data``` is one of the followind data types:
+- ```norm``` - normalized counts
+- ```rlog``` - regularized logarithm
+- ```vst``` - variance stabilizing transformation
+
+The plots offered:
 
 **Smear plot**
   
