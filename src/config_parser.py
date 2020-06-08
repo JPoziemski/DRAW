@@ -7,6 +7,7 @@ from config_parser_tools import get_cpu_number
 
 
 class Config_Parser(metaclass=abc.ABCMeta):
+    """adsassaassasasaasadssa"""
     GLOBAL_CONFIG_VARIABLES = ["run_type",
                                "seq_type",
                                "input_file_prefix",
@@ -20,7 +21,10 @@ class Config_Parser(metaclass=abc.ABCMeta):
         self.STAGES = ()
 
     def check_global_config_variables(self):
-        """Checks if prvided global config parameters (that are avaliable for all config file) are correct"""
+        """Checks if prvided global config parameters (that are avaliable for all config file) are correct
+
+        :raises ValueError: sdiohdioihosai
+        :raises TypeError: khsagjhsad"""
 
         def check_global_config_variables_presence():
             for var in Config_Parser.GLOBAL_CONFIG_VARIABLES:
@@ -42,6 +46,9 @@ class Config_Parser(metaclass=abc.ABCMeta):
 
 
         def check_input_file_prefix():
+            """Checks if exists files startswith provided prefix
+
+            :raise ValueError"""
             input_file_prefix = self.config_data["input_file_prefix"]
             input_file_dir = global_variables.INPUT_DIRECTORY
 
@@ -106,9 +113,11 @@ class Config_Parser(metaclass=abc.ABCMeta):
 
     def get_tool_for_stage(self, stage):
         """Returns tool with parameters for stage
-        :param stage(string): stage name eg 'MAPPING'
-        :return tool(string): tool name
-        :return tool_param(string): parameters for tools assigned to 'stage'"""
+
+        :param stage: stage name eg 'MAPPING'
+        :type stage: str
+        :return: tool, tool name -
+        :rtype: tuple"""
         if stage not in self.STAGES:
             message = "{} is not available for this config file".format(stage)
             self.logger.error(message)
@@ -120,8 +129,10 @@ class Config_Parser(metaclass=abc.ABCMeta):
 
     def get_config_variable(self, variable):
         """return value of variable in config data
-        :param variable(string): variable name eg seq_type
-        :return var_value(string): value assigned to 'variable' """
+
+        :param variable: variable name eg seq_type
+        :type variable: str
+        :return: var_value - value assigned to 'variable'"""
         if variable not in self.config_data:
             message = "{} is not in input config file".format(variable)
             self.logger.error(message)
@@ -150,6 +161,7 @@ class Complete_Analysis_Config(Config_Parser):
 
         def check_specific_global_config_variables_presence():
             for var in Complete_Analysis_Config.COMPLETE_ANALYSIS_CONFIG_VARIABLES:
+                # print(self.config_data)
                 if var not in self.config_data:
                     message = "{} not exists in input json file".format(var)
                     self.logger.error(message)

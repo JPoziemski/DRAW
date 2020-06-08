@@ -32,9 +32,9 @@ if __name__ == "__main__":
     # logger.setLevel(logging.INFO)
 
     logger.info("Running DRAW.py")
-    process = subprocess.Popen(["python ./vis.py"], stderr=subprocess.PIPE,
-                               stdout=subprocess.PIPE, shell=True)
-    process.wait()
+    # process = subprocess.Popen(["python ./vis.py"], stderr=subprocess.PIPE,
+    #                           stdout=subprocess.PIPE, shell=True)
+    # process.wait()
     # if process.returncode != 0:
     #    raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
     # pass
@@ -71,3 +71,19 @@ if __name__ == "__main__":
 
     config_exec = ConfigExec(Config)
     config_exec.run()
+
+    run_type = Config.get_config_variable("run_type")
+    if run_type == "complete_analysis" or run_type == "analysis":
+        run_analysis = Config.get_config_variable("run_downstream_analysis")
+        if run_analysis:
+            process = subprocess.Popen(["RScript ./deseq2.R ../output/count_matrix.csv run1"], stderr=subprocess.PIPE,
+                                       stdout=subprocess.PIPE, shell=True)
+            process.wait()
+            if process.returncode != 0:
+                raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
+
+            process = subprocess.Popen(["python ./vis.py"], stderr=subprocess.PIPE,
+                                       stdout=subprocess.PIPE, shell=True)
+            process.wait()
+            if process.returncode != 0:
+                raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))

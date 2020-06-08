@@ -80,10 +80,13 @@ class ConfigExec:
                 os.mkdir(bam_files_path)
                 new_input_paths = self.prepare_files_to_counting(input_file_paths, bam_files_path)
                 tool_for_stage, tool_params = self.Config.get_tool_for_stage(stage)
+                annotation_file_name = self.Config.get_config_variable("annotation_file_name")
+                annotation_file_path = os.path.join(global_variables.INPUT_DIRECTORY, annotation_file_name)
+
 
                 for file_path in new_input_paths:
                     input_arg = file_path
-                    tool_input = [input_arg, curr_output_dir, tool_params]
+                    tool_input = [input_arg, curr_output_dir, tool_params, annotation_file_path]
                     curr_tool = self.prepare_stage_tool(tool_for_stage, tool_input)
 
     def prepare_stage_tool(self, tool_for_stage, tool_input):
