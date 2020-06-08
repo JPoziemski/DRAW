@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Below functions test installation of correct platforms, programms and requirements and their versions
+# To test installations uncomment two lines in Dockerfile (setting the workdir to tests and running this script)
+# and comment two lines running analysis (setting workdir to bin and running gui_app.py)
+# Test performs during build and returns nothing if installation was right
+# Otherwise it returns messeges and informs what is wrong
+
+# Test platforms and tools
 assertDependency() {
     if ! dpkg -l | grep -q $1; then
         echo "Test failed. Dependency $1 is not installed" 
@@ -11,6 +18,7 @@ assertDependency() {
     fi
 }
 
+# Test python modules
 assertPythonModule() {
     if ! pip3 freeze | grep -q $1; then
         echo "Test failed. Python module $1 is not installed"
@@ -22,6 +30,7 @@ assertPythonModule() {
     fi
 }
 
+# Test R packages
 assertRPackage() {
     R_OUTPUT=`echo "installed.packages()" | Rscript -`
 
