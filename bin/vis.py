@@ -13,36 +13,62 @@ from tornado.ioloop import IOLoop
 import sys
 sys.path.insert(1, '../src/visualisations/')
 
+import argparse
 from plots.pca import PCAPlot
 from plots.smear import SmearPlot
 from plots.volcano import VolcanoPlot
 from plots.heatmap import HeatmapPlot
-
+from plots.error import ErrorPlot
 
 app = Flask(__name__)
 port = 5000
 
+def parse_arguments():
+    """Get id and data type for visualisation. """
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('-id', help='ID of the run')
+    parser.add_argument('-dt', choices=['vsd', 'rld', 'norm'], default='vsd',
+                        help='Main type of data to use in the visualisation')
+    args = parser.parse_args()
+    return args.id, args.dt
+
 def get_plot(doc):
-    """Get the plots and set up the layout."""
+    """Get the plots and set up the layout.
+    :param doc: document we will output.
+    :type doc: Document
+    """
+    id_run, data_type = parse_arguments()
 
-    #TODO Need data loader
-    vsd = pd.read_csv('../src/visualisations/data/vsd.csv', index_col=0)
-    res = pd.read_csv('../src/visualisations/data/res.csv', index_col=0)
-    smear_plot = SmearPlot(res)
-    tab1 = smear_plot.get_tabs()
+    data = pd.read_csv(f'../output/{id_run}/VISUALISATION/{data_type}.csv', index_col=0)
+    res = pd.read_csv(f'../output/{id_run}/VISUALISATION/res.csv', index_col=0)
 
-    pca_plot = PCAPlot(vsd)
-    tab2 = pca_plot.get_tabs()
+    try:
+        smear_plot = SmearPlot(res)
+        tab1 = smear_plot.get_tabs()
+    except:
+        tab1 = ErrorPlot().get_tabs()
 
-    volcano_plot = VolcanoPlot(res)
-    tab3 = volcano_plot.get_tabs()
+    try:
+        pca_plot = PCAPlot(data)
+        tab2 = pca_plot.get_tabs()
+    except:
+        tab2 = ErrorPlot().get_tabs()
 
-    heatmap_plot = HeatmapPlot(
-        count_matrix=vsd,
-        deseq_results=res,
+    try:
+        volcano_plot = VolcanoPlot(res)
+        tab3 = volcano_plot.get_tabs()
+    except:
+        tab3 = ErrorPlot().get_tabs()
 
-    )
-    tab4 = heatmap_plot.get_tabs()
+    try:
+        heatmap_plot = HeatmapPlot(
+            count_matrix=data,
+            deseq_results=res,
+
+        )
+        tab4 = heatmap_plot.get_tabs()
+    except:
+        tab4 = ErrorPlot().get_tabs()
 
     doc.theme = Theme('../src/visualisations/theme.yaml')
     doc.add_root(Tabs(tabs=[tab1, tab2, tab3, tab4]))
@@ -53,12 +79,12 @@ bokeh_app = Application(FunctionHandler(get_plot))
 
 @app.route('/', methods = ['GET'])
 def index():
-    """Generate a script to load the session and use the script in the rendered page."""
+    """ Generate a script to load the session and use the script in the rendered page. """
     script = server_document('http://localhost:5001/bkapp')
     return render_template("index.html", script = script)
 
 def bk_worker():
-    """Run Bokeh server."""
+    """ Run Bokeh server. """
     server = Server(
         {'/bkapp': bokeh_app},
         io_loop = IOLoop(),

@@ -12,6 +12,8 @@ class PCAPlot(Visualisation):
     """
     Perform and plot principal component analysis (PCA).
     Two widgets (pc1_to_plot, pc2_to_plot) enable selecting which principal components should be on which axis.
+    :param data: data used for plotting
+    :type data: pd.DataFrame
     """
 
     def __init__(
@@ -42,9 +44,8 @@ class PCAPlot(Visualisation):
         if self.pca_data is None:
             self.pca_data = self.calculate_pca()
         selected_pc = self.pca_data.iloc[:, [self.pc1 - 1, self.pc2 - 1]]
-        # TODO - modify this line to properly substract data about experiment
-        target = ['untreated' if 'untreated' in entry else 'treated' for entry in list(self.data.transpose().index)]
-        color = ['black' if 'untreated' in entry else 'red' for entry in target]
+        target = ['control' if 'control' in entry else 'treated' for entry in list(self.data.transpose().index)]
+        color = ['black' if 'control' in entry else 'red' for entry in target]
 
         selected_pc['target'] = target
         selected_pc['color'] = color
@@ -65,13 +66,27 @@ class PCAPlot(Visualisation):
 
         def pc1_to_plot_update(attr, old, new):
             """ Update PC1 value.
-            Block selecting the same value on x and y axis. """
+            Block selecting the same value on x and y axis.
+            :param attr: value to change
+            :type attr: str
+            :param old: old value
+            :type old: float
+            :param new: new value
+            :type new: float
+             """
             self.pc1 = int(new)
             pc2_to_plot.options = [str(i) for i in range(1, self.MAX_PC + 1) if i != int(pc1_to_plot.value)]
 
         def pc2_to_plot_update(attr, old, new):
             """ Update PC2 value.
-            Block selecting the same value on x and y axis. """
+            Block selecting the same value on x and y axis.
+            :param attr: value to change
+            :type attr: str
+            :param old: old value
+            :type old: float
+            :param new: new value
+            :type new: float
+             """
             self.pc2 = int(new)
             pc1_to_plot.options = [str(i) for i in range(1, self.MAX_PC+ 1) if i != int(pc2_to_plot.value)]
 
@@ -106,12 +121,13 @@ class PCAPlot(Visualisation):
 
         return pca_plot
 
-    def callback(self, new):
+    def callback(self):
         """ Update data selecting new PCs. """
         self.source.data = self.select_pca()
         self.layout.children[0].children[0] = self.get_plot()
 
     def get_tabs(self):
+        """ Main callback. Get components of the plot and add them to the layout. """
         self.layout = layout([[self.get_plot(), [widget for widget in self.get_widgets()]]])
         return Panel(
             child=self.layout,
