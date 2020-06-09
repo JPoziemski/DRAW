@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # logger.setLevel(logging.INFO)
 
     logger.info("Running DRAW.py")
-    process = subprocess.Popen(["python ./vis.py"], stderr=subprocess.PIPE,
+    process = subprocess.Popen(["python3 ./vis.py"], stderr=subprocess.PIPE,
                                stdout=subprocess.PIPE, shell=True)
     process.wait()
     # if process.returncode != 0:
