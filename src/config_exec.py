@@ -166,8 +166,8 @@ class ConfigExec:
         gene_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING", "gene_count_matrix.csv")
         transcript_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING",
                                                     "transcript_count_matrix.csv")
-        command = "python prepareDE.py -i {} -g {} -t {}".format(gft_list_file_path, gene_count_matrix_path,
-                                                                 transcript_count_matrix_path)
+        command = "python3 prepareDE.py -i {} -g {} -t {}".format(gft_list_file_path, gene_count_matrix_path,
+                                                                  transcript_count_matrix_path)
         process = subprocess.Popen([command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
