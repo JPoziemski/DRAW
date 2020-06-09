@@ -118,7 +118,7 @@ visibility: visible;
        <label class="optional Hisat2" style="display:none;"><div class="tooltip">seed <span class="tooltiptext"> Use int as the seed for pseudo-random number generator. Default: 0. </span></div></label>
        <input type="number" class="optional Hisat2" name="Hisat2_param!--seed" style="display:none;" class="hidden-txt">
        </td>
-
+       <tr>
        <td>
        <label class="optional Bowtie2" style="display:none;"><div class="tooltip">N <span class="tooltiptext"> Sets the number of mismatches to allowed in a seed alignment during multiseed alignment. Can be set to 0 or 1. Setting this higher makes alignment slower (often much slower) but increases sensitivity. Default: 0. </span></div></label>
        <input type="number" class="optional Bowtie2" name="Bowtie2_param!--N" style="display:none;" class="hidden-txt">
@@ -151,6 +151,7 @@ visibility: visible;
        <label class="optional Bowtie2" style="display:none;"><div class="tooltip">rfg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br> Sets the reference gap open (int1) and extend (int2) penalties. A reference gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span></div></label>
        <input class="optional Bowtie2" name="Bowtie2_param!--rfg" style="display:none;" class="hidden-txt">
        </td>
+       </tr>
        </tr>
        <tr>
        <th>
