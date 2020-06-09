@@ -149,8 +149,8 @@ class Complete_Analysis_Config(Config_Parser):
                                           "annotation_file_name",
                                           "control_file_prefix", ]
 
-    def __init__(self, json_file):
-        super().__init__(json_file)
+    def __init__(self, json_file, run_id):
+        super().__init__(json_file, run_id)
         self.STAGES = ("INITIAL_QUALITY_CONTROL", "TRIMMING", "AFTER_TRIMMING_CONTROL", "MAPPING", "COUNTING")
         self.check_global_config_variables()
         self.logger.info("SUCCESS - global config variables checked")
@@ -212,8 +212,8 @@ class Sequence_Prefiltering_Config(Config_Parser):
     """Type of run that performed only QC and trimming"""
     SEQUENCE_PREFILTERING_CONFIG_VARIABLES = []
 
-    def __init__(self, json_file):
-        super().__init__(json_file)
+    def __init__(self, json_file, run_id):
+        super().__init__(json_file, run_id)
         self.STAGES = ("INITIAL_QUALITY_CONTROL", "TRIMMING", "AFTER_TRIMMING_CONTROL")
 
         self.check_global_config_variables()
@@ -228,6 +228,7 @@ class Sequence_Prefiltering_Config(Config_Parser):
 
 class Analysis_Config(Complete_Analysis_Config):
     """Type of run that performed 'MAPPING' and 'COUNTING' stages without QC and trimming"""
-    def __init__(self, json_file):
-        super().__init__(json_file)
+
+    def __init__(self, json_file, run_id):
+        super().__init__(json_file, run_id)
         self.STAGES = ("MAPPING", "COUNTING")
