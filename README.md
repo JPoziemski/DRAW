@@ -57,7 +57,7 @@ When needed, the visualisation for a given run can be accessed in a seperate man
 
 Then, to run the visualisation:
 ```console
-$  bin/python vis.py -id [run_id] -dt [data]
+$  python bin/vis.py -id [run_id] -dt [data]
 ```
 
 where ```run_id``` is the id of the run we want to visualise, and ```data``` is one of the followind data types:
