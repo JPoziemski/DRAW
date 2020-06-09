@@ -7,6 +7,7 @@ from config_parser_tools import get_cpu_number
 
 
 class Config_Parser(metaclass=abc.ABCMeta):
+    """ Object resposnible for checking and collecting data form config file """
     GLOBAL_CONFIG_VARIABLES = ["run_type",
                                "seq_type",
                                "input_file_prefix",
@@ -14,13 +15,17 @@ class Config_Parser(metaclass=abc.ABCMeta):
 
     STAGES = ()
 
-    def __init__(self, json_file):
+    def __init__(self, json_file, run_id):
+        self.run_id = run_id
         self.logger = logging.getLogger(__name__)
         self.config_data = json_file
         self.STAGES = ()
 
     def check_global_config_variables(self):
-        """Checks if prvided global config parameters (that are avaliable for all config file) are correct"""
+        """Checks if provided global config parameters (that are avaliable for all config file) exist are are correct
+
+        :raises ValueError: No input files
+        :raises KeyError: There are missing config parameters in config file"""
 
         def check_global_config_variables_presence():
             for var in Config_Parser.GLOBAL_CONFIG_VARIABLES:
@@ -60,7 +65,7 @@ class Config_Parser(metaclass=abc.ABCMeta):
         def check_thread_number_correctness():
             thread_number = self.config_data["threads_number"]
             max_threads = get_cpu_number()
-            if not isinstance(1, int):
+            if not isinstance(thread_number, int):
                 self.logger.error("threads number must be integer")
                 raise TypeError()
 
@@ -80,35 +85,41 @@ class Config_Parser(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def check_config_specific_variables(self):
-        """Checks variables specific for particular config file type"""
+        """Checks variables specific for particular config file type eg. correct type"""
         pass
 
-    def check_tool_for_stages(self):
-        """Checks if provided tool is available for required stage"""
+    def check_all_stages_presence(self):
+        """Checks if there are any missing stages
 
-        def check_all_stages_presence():
-            for step in self.STAGES:
-                if step not in self.config_data["tools"]:
-                    raise KeyError("{} is missing in config file ".format(step))
+        :raises KeyError: there are missing steps in contig files """
 
-        def check_if_proper_tool_for_stage():
-            stages = self.config_data["tools"]
-            for stage in stages:
-                stage_tool = list(stages[stage].keys())[0]
-                available_stages = global_variables.stage_tool_mapping_dict[stage]
-                if stage_tool not in available_stages:
-                    message = "{} is not avalible in stage {}, Try use: {}".format(stage_tool, stage, available_stages)
-                    self.logger.error(message)
-                    raise KeyError(message)
+        for step in self.STAGES:
+            if step not in self.config_data["tools"]:
+                raise KeyError("{} is missing in config file ".format(step))
 
-        check_all_stages_presence()
-        check_if_proper_tool_for_stage()
+    def check_if_proper_tool_for_stage(self):
+        """Checks if there are any if tools are asigned to stage properly
+
+        :raises KeyError: provided assigned to stage is tool is not available"""
+
+        stages = self.config_data["tools"]
+        for stage in stages:
+            stage_tool = list(stages[stage].keys())[0]
+            available_stages = global_variables.stage_tool_mapping_dict[stage]
+            if stage_tool not in available_stages:
+                message = "{} is not avalible in stage {}, Try use: {}".format(stage_tool, stage, available_stages)
+                self.logger.error(message)
+                raise KeyError(message)
+
 
     def get_tool_for_stage(self, stage):
         """Returns tool with parameters for stage
-        :param stage(string): stage name eg 'MAPPING'
-        :return tool(string): tool name
-        :return tool_param(string): parameters for tools assigned to 'stage'"""
+
+        :param stage: stage name eg 'MAPPING'
+        :type stage: str
+        :return: tool, tool_param - that is name of tool used for provided stage and parameters
+        :rtype: tuple"""
+
         if stage not in self.STAGES:
             message = "{} is not available for this config file".format(stage)
             self.logger.error(message)
@@ -120,8 +131,10 @@ class Config_Parser(metaclass=abc.ABCMeta):
 
     def get_config_variable(self, variable):
         """return value of variable in config data
-        :param variable(string): variable name eg seq_type
-        :return var_value(string): value assigned to 'variable' """
+
+        :param variable: variable name eg seq_type
+        :type variable: str
+        :return: var_value - value assigned to 'variable'"""
         if variable not in self.config_data:
             message = "{} is not in input config file".format(variable)
             self.logger.error(message)
@@ -143,18 +156,20 @@ class Complete_Analysis_Config(Config_Parser):
         self.logger.info("SUCCESS - global config variables checked")
         self.check_config_specific_variables()
         self.logger.info("SUCCESS - config file specific variables checked")
-        self.check_tool_for_stages()
+        self.check_all_stages_presence()
+        self.check_if_proper_tool_for_stage()
         self.logger.info("SUCCESS - tools to stages assignment checked")
 
     def check_config_specific_variables(self):
 
-        def check_specific_global_config_variables_presence():
+        def check_specific_config_variables_presence():
             for var in Complete_Analysis_Config.COMPLETE_ANALYSIS_CONFIG_VARIABLES:
+                # print(self.config_data)
                 if var not in self.config_data:
                     message = "{} not exists in input json file".format(var)
                     self.logger.error(message)
                     raise KeyError(message)
-            return True
+
 
         def check_run_downstream_analysis():
             run_downstream_analysis = self.config_data["run_downstream_analysis"]
@@ -187,13 +202,14 @@ class Complete_Analysis_Config(Config_Parser):
                     self.logger.warning(message)
                     # raise ValueError(message)
 
-        check_specific_global_config_variables_presence()
+        check_specific_config_variables_presence()
         check_run_downstream_analysis()
         check_annotation_file_path()
         check_control_file_prefix()
 
 
 class Sequence_Prefiltering_Config(Config_Parser):
+    """Type of run that performed only QC and trimming"""
     SEQUENCE_PREFILTERING_CONFIG_VARIABLES = []
 
     def __init__(self, json_file):
@@ -202,7 +218,8 @@ class Sequence_Prefiltering_Config(Config_Parser):
 
         self.check_global_config_variables()
         self.logger.info("SUCCESS - global config variables checked")
-        self.check_tool_for_stages()
+        self.check_all_stages_presence()
+        self.check_if_proper_tool_for_stage()
         self.logger.info("SUCCESS - tools to stages assignment checked")
 
     def check_config_specific_variables(self):
@@ -210,7 +227,7 @@ class Sequence_Prefiltering_Config(Config_Parser):
 
 
 class Analysis_Config(Complete_Analysis_Config):
-
+    """Type of run that performed 'MAPPING' and 'COUNTING' stages without QC and trimming"""
     def __init__(self, json_file):
         super().__init__(json_file)
         self.STAGES = ("MAPPING", "COUNTING")

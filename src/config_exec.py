@@ -1,5 +1,6 @@
 import logging
 import os
+import subprocess
 
 import global_variables
 
@@ -9,6 +10,8 @@ import tools
 class ConfigExec:
     def __init__(self, Config):
         self.logger = logging.getLogger(__name__)
+        self.master_output_directory = os.path.join(global_variables.OUTPUT_DIRECTORY, Config.run_id)
+        os.mkdir(self.master_output_directory)
         self.Config = Config
         self.run_order = []
         self.input_files_paths = []
@@ -26,7 +29,7 @@ class ConfigExec:
     def create_stage_tool_dict(self):
         input_dir = global_variables.INPUT_DIRECTORY
         input_files_prefix = self.Config.get_config_variable("input_file_prefix")
-        output_dir = global_variables.OUTPUT_DIRECTORY
+        output_dir = self.master_output_directory
         input_file_paths = self.get_inital_files(input_dir)
 
         for stage in self.stages_order:
@@ -80,10 +83,13 @@ class ConfigExec:
                 os.mkdir(bam_files_path)
                 new_input_paths = self.prepare_files_to_counting(input_file_paths, bam_files_path)
                 tool_for_stage, tool_params = self.Config.get_tool_for_stage(stage)
+                annotation_file_name = self.Config.get_config_variable("annotation_file_name")
+                annotation_file_path = os.path.join(global_variables.INPUT_DIRECTORY, annotation_file_name)
+
 
                 for file_path in new_input_paths:
                     input_arg = file_path
-                    tool_input = [input_arg, curr_output_dir, tool_params]
+                    tool_input = [input_arg, curr_output_dir, tool_params, annotation_file_path]
                     curr_tool = self.prepare_stage_tool(tool_for_stage, tool_input)
 
     def prepare_stage_tool(self, tool_for_stage, tool_input):
@@ -152,3 +158,41 @@ class ConfigExec:
         for processed_tool in self.run_order:
             # print(processed_tool.command)
             processed_tool.run()
+
+    def prepare_data_for_visualalisation(self):
+
+        bam_files_path = os.path.join(self.master_output_directory, "COUNTING", "bam_files")
+        gft_list_file_path = self.create_gft_list(bam_files_path)
+        gene_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING", "gene_count_matrix.csv")
+        transcript_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING",
+                                                    "transcript_count_matrix.csv")
+        command = "python prepareDE.py -i {} -g {} -t {}".format(gft_list_file_path, gene_count_matrix_path,
+                                                                 transcript_count_matrix_path)
+        process = subprocess.Popen([command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        process.wait()
+
+        # print(process.communicate()[1])
+        if process.returncode != 0:
+            raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
+        pass
+
+    def create_gft_list(self, bam_files_path):
+        bam_files_list = os.listdir(bam_files_path)
+        control_file_prefix = self.Config.get_config_variable("control_file_prefix")
+        gft_list_data = []
+        treated_num = 1
+
+        for file in bam_files_list:
+            file_path = os.path.join(bam_files_path, file)
+            if file.startswith(control_file_prefix):
+                gft_list_data.append(" ".join(["control", file_path]))
+            else:
+                gft_list_data.append(" ".join(["treated{}".format(treated_num), file_path]))
+                treated_num += 1
+
+        gft_file_path = os.path.join(self.master_output_directory, "COUNTING", "gft_list")
+        gft_list_file = open(gft_file_path, "w")
+        gft_list_file.write("\n".join(gft_list_data))
+        gft_list_file.close()
+
+        return gft_file_path

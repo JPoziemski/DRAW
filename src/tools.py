@@ -10,8 +10,15 @@ ERROR_EXCEPTIONS_STARTS = ["<exception str() failed>", ]
 
 
 class Tool(metaclass=abc.ABCMeta):
+    """ssssssssssssssssssssss"""
 
     def __init__(self, input, output_dir, user_params):
+        """class constructor
+
+        :param input: input params
+        :type input: list
+        :param output_dir: directory where files will be saved
+        :type output_dir: str"""
         self.logger = logging.getLogger(__name__)
         self.params = user_params
         self.input = input
@@ -41,6 +48,7 @@ class Tool(metaclass=abc.ABCMeta):
         pass
 
     def get_created_files(self):
+        "adsdasddasadssa"
         return self.created_files
 
     def check_params(self):
@@ -65,8 +73,8 @@ class Tool(metaclass=abc.ABCMeta):
 
 class FastQC(Tool):
     EXEC_PATH = "fastqc"
-    '''TOOL_PATH = global_variables.fastqc_path
-    EXEC_PATH = os.path.join(TOOL_PATH, "fastqc")'''
+    # TOOL_PATH = global_variables.fastqc_path
+    # EXEC_PATH = os.path.join(TOOL_PATH, "fastqc")
     ALLOWED_ARGS = ["-o", "--outdir",
                     "-t", "--threads",
                     "--nogroup",
@@ -183,10 +191,9 @@ class Hisat(Tool):
     BUILD_PATH = "hisat2-build"
     EXEC_PATH = "hisat2"
 
-    '''
-    BUILD_PATH = os.path.join(global_variables.hisat2_path, "hisat2-build")
-    EXEC_PATH = os.path.join(global_variables.hisat2_path, "hisat2")
-    '''
+    # BUILD_PATH = os.path.join(global_variables.hisat2_path, "hisat2-build")
+    #EXEC_PATH = os.path.join(global_variables.hisat2_path, "hisat2")
+
     def __init__(self, input, output, params, sequence):
         super().__init__(input, output, params)
         self.sequence = sequence
@@ -210,7 +217,7 @@ class Hisat(Tool):
             input_file_name = os.path.basename(self.input[0])
             output_file_name = input_file_name.replace(".fastq", ".sam")
         else:
-            input_file_name = self.input[0]
+            input_file_name = os.path.basename(self.input[0])
             output_file_name = input_file_name.replace("_1.fastq", ".sam")
 
         created_file_path = os.path.join(output_dir, output_file_name)
@@ -252,10 +259,9 @@ class Bowtie(Hisat):
     BUILD_PATH = "bowtie2-build"
     EXEC_PATH = "bowtie2"
 
-    '''
-    BUILD_PATH = os.path.join(global_variables.bowtie_path, "bowtie2-build")
-    EXEC_PATH = os.path.join(global_variables.bowtie_path, "bowtie2")
-    '''
+    # BUILD_PATH = os.path.join(global_variables.bowtie_path, "bowtie2-build")
+    #EXEC_PATH = os.path.join(global_variables.bowtie_path, "bowtie2")
+
     def __init__(self, input, output, params, sequence):
         super().__init__(input, output, params, sequence)
         self.DISABLED_ARGS = ["--sra-acc", "-b", "-f", "--qseq", "-F", "-c"]
@@ -279,13 +285,14 @@ class Bowtie(Hisat):
 
 
 class Stringtie(Tool):
-    EXEC_path = "stringtie"
+    # EXEC_path = "stringtie"
 
-    # EXEC_path = os.path.join(global_variables.stringtie_path, "stringtie")
+    EXEC_path = os.path.join(global_variables.stringtie_path, "stringtie")
 
-    def __init__(self, input, output, user_params):
+    def __init__(self, input, output, user_params, annotation):
         super().__init__(input, output, user_params)
         self.DISABLED_ARGS = ["--merge"]
+        self.annotoation = annotation
         self.prepare_to_run()
 
     def add_input(self, input_path):
@@ -294,21 +301,31 @@ class Stringtie(Tool):
     def add_output(self, output):
         input_file = os.path.basename(self.input)
         self.output_filename = input_file.replace(".bam", "count.gft")
-        self.output_arg = "-o {}".format(os.path.join(output, self.output_filename))
+
+        self.output_arg = "-e -o {} -A {}".format(os.path.join(output, self.output_filename),
+                                                  os.path.join(output, input_file.replace(".bam", "gene_abundances.tsv")))
 
     def prepare_to_run(self):
         self.add_input(self.input)
         self.add_output(self.output_dir)
-        self.command = ["{} {} {} {}".format(Stringtie.EXEC_path, self.input, self.params, self.output_arg)]
+        self.command = [
+            "{} {} {} -G {} {}".format(Stringtie.EXEC_path, self.input, self.params, self.annotoation, self.output_arg)]
 
 
 
 class samtools:
+    "adassadas"
     def __init__(self):
         self.command = ""
 
     def sam_to_bam(self, input_file, output_file):
-        self.command = "view - S - b {} > {}".format(input_file, output_file)
+        """converts sam to bam
+
+        :param input_file: intput file
+        :type input_file: str
+        :param output_file: output file
+        :type output_file: str"""
+        self.command = "view -S -b {} > {}".format(input_file, output_file)
 
     def sort_bam(self, input_file, output):
         self.command = "sort {} -o {}".format(input_file, output)
