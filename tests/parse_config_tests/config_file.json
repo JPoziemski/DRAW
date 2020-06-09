@@ -1,0 +1,28 @@
+{
+  "annotation_file_name": "Homo_sapiens.GRCh38.100.chromosome.22.gff3",
+  "control_file_prefix": "seq_control",
+  "input_file_prefix": "HBR",
+  "reference_file_name": "Homo_sapiens.GRCh38.dna.chromosome.22.fa",
+  "run_downstream_analysis": "on",
+  "run_id": "06_07_20_06725",
+  "run_type": "complete_analysis",
+  "seq_type": "single_end",
+  "threads_number": "4",
+  "tools": {
+    "AFTER_TRIMMING_CONTROL": {
+      "FastQC": "--min_length 10"
+    },
+    "COUNTING": {
+      "Stringtie": ""
+    },
+    "INITIAL_QUALITY_CONTROL": {
+      "FastQC": "--min_length 10"
+    },
+    "MAPPING": {
+      "Hisat2": ""
+    },
+    "TRIMMING": {
+      "TRIMMOMATIC": "LEADING:1 MINLEN:10"
+    }
+  }
+}
