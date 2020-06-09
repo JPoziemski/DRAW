@@ -171,12 +171,6 @@ class Complete_Analysis_Config(Config_Parser):
                     raise KeyError(message)
 
 
-        def check_run_downstream_analysis():
-            run_downstream_analysis = self.config_data["run_downstream_analysis"]
-            if not isinstance(run_downstream_analysis, bool):
-                message = "run_downstream_analysis in not bool type"
-                self.logger.error(message)
-                raise TypeError(message)
 
         def check_annotation_file_path():
             annotation_file_name = self.config_data["annotation_file_name"]
@@ -203,7 +197,6 @@ class Complete_Analysis_Config(Config_Parser):
                     # raise ValueError(message)
 
         check_specific_config_variables_presence()
-        check_run_downstream_analysis()
         check_annotation_file_path()
         check_control_file_prefix()
 

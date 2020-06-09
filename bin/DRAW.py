@@ -73,7 +73,10 @@ if __name__ == "__main__":
     run_type = Config.get_config_variable("run_type")
 
     if run_type == "complete_analysis" or run_type == "analysis":
-        run_analysis = Config.get_config_variable("run_downstream_analysis")
+        try:
+            run_analysis = Config.get_config_variable("run_downstream_analysis")
+        except:
+            run_analysis = False
         config_exec.prepare_data_for_visualalisation()
         if run_analysis:
             gene_count_matrix_path = os.path.join(config_exec.master_output_directory, "COUNTING",
