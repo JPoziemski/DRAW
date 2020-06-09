@@ -52,7 +52,7 @@ The visualisation dashboard offers four type of plots, which can be accesed by s
 When needed, the visualisation for a given run can be accessed in a seperate manner. All of the requirements for running the analysis apart from the Docker and the rest od the DRAW module, can be installed:
 
 ```console
- ./vis_requirements.sh
+$ ./vis_requirements.sh
 ```
 
 Then, to run the visualisation:
