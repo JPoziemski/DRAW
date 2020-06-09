@@ -79,6 +79,8 @@ if __name__ == "__main__":
             run_analysis = False
         config_exec.prepare_data_for_visualalisation()
         if run_analysis:
+            vis_path = os.path.join(config_exec.master_output_directory, "VISUALISATION")
+            os.mkdir(vis_path)
             gene_count_matrix_path = os.path.join(config_exec.master_output_directory, "COUNTING",
                                                   "gene_count_matrix.csv")
             deseq2_command = "RScript ./deseq2.R  {} {}".format(gene_count_matrix_path, run_id)
