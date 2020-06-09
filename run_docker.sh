@@ -4,12 +4,12 @@ SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 input_path="$SCRIPTPATH/input"
 
 
-if [ -z "$(ls -A $input_path)" ]; then
-   echo "Input directory is empty. Place input files in directory: $input_path"
-   exit 1
-else
-   :
-fi
+# if [ -z "$(ls -A $input_path)" ]; then
+#    echo "Input directory is empty. Place input files in directory: $input_path"
+#    exit 1
+# else
+#    :
+# fi
 
 x-www-browser http://0.0.0.0:2000/index 
 sleep 1
