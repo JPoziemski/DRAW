@@ -72,9 +72,9 @@ class Tool(metaclass=abc.ABCMeta):
 
 
 class FastQC(Tool):
-    EXEC_PATH = "fastqc"
-    # TOOL_PATH = global_variables.fastqc_path
-    # EXEC_PATH = os.path.join(TOOL_PATH, "fastqc")
+    # EXEC_PATH = "fastqc"
+    TOOL_PATH = global_variables.fastqc_path
+    EXEC_PATH = os.path.join(TOOL_PATH, "fastqc")
     ALLOWED_ARGS = ["-o", "--outdir",
                     "-t", "--threads",
                     "--nogroup",
@@ -188,11 +188,11 @@ class Trimmomatic(Tool):
 
 
 class Hisat2(Tool):
-    BUILD_PATH = "hisat2-build"
-    EXEC_PATH = "hisat2"
+    # BUILD_PATH = "hisat2-build"
+    # EXEC_PATH = "hisat2"
 
-    # BUILD_PATH = os.path.join(global_variables.hisat2_path, "hisat2-build")
-    #EXEC_PATH = os.path.join(global_variables.hisat2_path, "hisat2")
+    BUILD_PATH = os.path.join(global_variables.hisat2_path, "hisat2-build")
+    EXEC_PATH = os.path.join(global_variables.hisat2_path, "hisat2")
 
     def __init__(self, input, output, params, sequence):
         super().__init__(input, output, params)
@@ -256,11 +256,11 @@ class Hisat2(Tool):
 
 
 class Bowtie(Hisat2):
-    BUILD_PATH = "bowtie2-build"
-    EXEC_PATH = "bowtie2"
+    # BUILD_PATH = "bowtie2-build"
+    # EXEC_PATH = "bowtie2"
 
-    # BUILD_PATH = os.path.join(global_variables.bowtie_path, "bowtie2-build")
-    #EXEC_PATH = os.path.join(global_variables.bowtie_path, "bowtie2")
+    BUILD_PATH = os.path.join(global_variables.bowtie_path, "bowtie2-build")
+    EXEC_PATH = os.path.join(global_variables.bowtie_path, "bowtie2")
 
     def __init__(self, input, output, params, sequence):
         super().__init__(input, output, params, sequence)

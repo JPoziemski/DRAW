@@ -40,7 +40,7 @@ if __name__ == "__main__":
     logger.info("Arguments parsed correctly")
 
     config_file_path = os.path.join(global_variables.CONFIG_DIRECTORY, args.config_file_name)
-    run_id = os.path.splitext(args.config_file_name)[0]
+    run_id = os.path.splitext(os.path.basename(args.config_file_name))[0]
 
     config_file = open(config_file_path, "r")
     config_file_json = json.load(config_file)
