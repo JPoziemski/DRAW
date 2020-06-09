@@ -41,7 +41,7 @@ RUN cd app/tools/ && wget http://www.usadellab.org/cms/uploads/supplementary/Tri
 
 # Set working directory and start draw
 WORKDIR /app/bin
-CMD [ "python3" "./gui_app.py" ] 
+CMD [ "python3", "./gui_app.py" ] 
 
 # Test installations
 # WORKDIR /app/tests
