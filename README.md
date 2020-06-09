@@ -17,7 +17,7 @@ To get the image of DRAW, make sure you have Internet access and execute the fol
 $ ./build.sh
 ```
 
-Before running the container place input data in the input directory. To run the container execute the run_docker.sh script as below. Directories input, config_files and output persist data generated and used by Docker. Ports 2000 i 5000 are published to the host machine. Container is running in interactive mode to see running processes.
+Before running the container place input data in the input directory. To run the container execute the run_docker.sh script as below. Directories input, config_files and output persist data generated and used by Docker. Ports 2000 i 5000 are published to the host machine. Container is running in interactive mode for user to see running processes. It will open a GUI application to fill in configurations and visualizations server, which will rise after the end of the analysis.
 ```console
 $ ./run_docker.sh
 ```
