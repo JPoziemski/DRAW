@@ -227,7 +227,7 @@ class Hisat2(Tool):
 
     def build(self):
 
-        command = "{} {} {}".format(Hisat.BUILD_PATH, self.sequence, self.index_prefix)
+        command = "{} {} {}".format(Hisat2.BUILD_PATH, self.sequence, self.index_prefix)
 
         process = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
@@ -240,7 +240,7 @@ class Hisat2(Tool):
     def prepare_to_run(self):
         self.add_input(self.input)
         self.add_output(self.output_dir)
-        self.command = ["{} {} {} -x {} {}".format(Hisat.EXEC_PATH, self.input_arg,
+        self.command = ["{} {} {} -x {} {}".format(Hisat2.EXEC_PATH, self.input_arg,
                                                    self.output_arg, self.index_prefix, self.params)]
 
     def run(self):
@@ -255,7 +255,7 @@ class Hisat2(Tool):
         pass
 
 
-class Bowtie(Hisat):
+class Bowtie(Hisat2):
     BUILD_PATH = "bowtie2-build"
     EXEC_PATH = "bowtie2"
 
