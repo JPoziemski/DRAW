@@ -187,7 +187,7 @@ class Trimmomatic(Tool):
         print(self.command)
 
 
-class Hisat(Tool):
+class Hisat2(Tool):
     BUILD_PATH = "hisat2-build"
     EXEC_PATH = "hisat2"
 
