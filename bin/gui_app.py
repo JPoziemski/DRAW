@@ -71,7 +71,7 @@ def tools():
 
 @app.route("/progress")
 def progress():
-    bashCommand = 'python DRAW.py '+request_args['run_id']+'.json'
+    bashCommand = 'python3 DRAW.py '+request_args['run_id']+'.json'
     subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 
 def open_browser():
