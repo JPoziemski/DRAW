@@ -7,6 +7,11 @@ ADP project: tool for RNA-seq analysis
 
 **Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and a popular web browser (recommended Google Chrome version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
 
+To install Docker on Linux folow instructions from website linked below:
+```
+https://runnable.com/docker/install-docker-on-linux
+```
+
 To get the image of DRAW, make sure you have Internet access and execute the following script:
 ```console
 $ ./build.sh
@@ -25,8 +30,12 @@ http://0.0.0.0:2000/index
 http://0.0.0.0:5000/bkapp
 ```
 
-To stop the docker from running use Ctrl + c
+To stop the docker from running use Ctrl+C
 
+If encounter an error "Adress is already in use" type following command and port, which you want to release:
+```console
+$ sudo fuser -k Port_Number/tcp
+```
 
 Docker uses following options: \
 --tag, -t Tag docker container. \
