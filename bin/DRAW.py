@@ -84,7 +84,7 @@ if __name__ == "__main__":
             if process.returncode != 0:
                 raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
 
-            vis_command = "python ./vis.py -id {} -dt vst".format(run_id)
+            vis_command = "python3 ./vis.py -id {} -dt vst".format(run_id)
             process = subprocess.Popen([vis_command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
             process.wait()
             if process.returncode != 0:
