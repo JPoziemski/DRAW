@@ -25,7 +25,7 @@ http://0.0.0.0:2000/index
 http://0.0.0.0:5000/bkapp
 ```
 
-To stop the docker from running use Ctrl + d
+To stop the docker from running use Ctrl + c
 
 
 Docker uses following options: \
