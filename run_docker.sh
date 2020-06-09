@@ -11,10 +11,11 @@ input_path="$SCRIPTPATH/input"
 #    :
 # fi
 
-x-www-browser http://0.0.0.0:2000/index 
 sleep 10
-x-www-browser http://0.0.0.0:5000/bkapp 
+x-www-browser http://0.0.0.0:2000/index 
 sleep 12
+x-www-browser http://0.0.0.0:5000/bkapp 
+
 
 docker run -v $SCRIPTPATH/input:/app/input \
 -v $SCRIPTPATH/config_files:/app/config_files \
