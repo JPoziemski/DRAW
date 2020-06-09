@@ -5,7 +5,7 @@ ADP project: tool for RNA-seq analysis
 
 ## Isolated environment in Docker containers
 
-**Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and a popular web browser (recommended Google Chrome:81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
+**Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and a popular web browser (recommended Google Chrome version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
 
 To get the image of DRAW, make sure you have Internet access and execute the following script:
 ```console
@@ -15,6 +15,14 @@ $ ./build.sh
 Before running the container place input data in the input directory. To run the container execute the run_docker.sh script as below. Directories input, config_files and output persist data generated and used by Docker. Ports 2000 i 5000 are published to the host machine. Container is running in interactive mode to see running processes.
 ```console
 $ ./run_docker.sh
+```
+
+GUI and visualizations are available while Docker container is running, you can simply acces them typing URLs in your favourite browser as below. GUI is accessed by port 2000, visualizations by port 5000. Mind visualizations are available after generating config file and running analysis, which takes some time.
+
+```
+http://0.0.0.0:2000/index
+
+http://0.0.0.0:5000/bkapp
 ```
 
 To stop the docker from running use Ctrl + d
