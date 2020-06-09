@@ -1,5 +1,6 @@
 import logging
 import os
+import subprocess
 
 import global_variables
 
@@ -9,6 +10,8 @@ import tools
 class ConfigExec:
     def __init__(self, Config):
         self.logger = logging.getLogger(__name__)
+        self.master_output_directory = os.path.join(global_variables.OUTPUT_DIRECTORY, Config.run_id)
+        os.mkdir(self.master_output_directory)
         self.Config = Config
         self.run_order = []
         self.input_files_paths = []
@@ -26,7 +29,7 @@ class ConfigExec:
     def create_stage_tool_dict(self):
         input_dir = global_variables.INPUT_DIRECTORY
         input_files_prefix = self.Config.get_config_variable("input_file_prefix")
-        output_dir = global_variables.OUTPUT_DIRECTORY
+        output_dir = self.master_output_directory
         input_file_paths = self.get_inital_files(input_dir)
 
         for stage in self.stages_order:
@@ -155,3 +158,41 @@ class ConfigExec:
         for processed_tool in self.run_order:
             # print(processed_tool.command)
             processed_tool.run()
+
+    def prepare_data_for_visualalisation(self):
+
+        bam_files_path = os.path.join(self.master_output_directory, "COUNTING", "bam_files")
+        gft_list_file_path = self.create_gft_list(bam_files_path)
+        gene_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING", "gene_count_matrix.csv")
+        transcript_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING",
+                                                    "transcript_count_matrix.csv")
+        command = "python prepareDE.py -i {} -g {} -t {}".format(gft_list_file_path, gene_count_matrix_path,
+                                                                 transcript_count_matrix_path)
+        process = subprocess.Popen([command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        process.wait()
+
+        # print(process.communicate()[1])
+        if process.returncode != 0:
+            raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
+        pass
+
+    def create_gft_list(self, bam_files_path):
+        bam_files_list = os.listdir(bam_files_path)
+        control_file_prefix = self.Config.get_config_variable("control_file_prefix")
+        gft_list_data = []
+        treated_num = 1
+
+        for file in bam_files_list:
+            file_path = os.path.join(bam_files_path, file)
+            if file.startswith(control_file_prefix):
+                gft_list_data.append(" ".join(["control", file_path]))
+            else:
+                gft_list_data.append(" ".join(["treated{}".format(treated_num), file_path]))
+                treated_num += 1
+
+        gft_file_path = os.path.join(self.master_output_directory, "COUNTING", "gft_list")
+        gft_list_file = open(gft_file_path, "w")
+        gft_list_file.write("\n".join(gft_list_data))
+        gft_list_file.close()
+
+        return gft_file_path

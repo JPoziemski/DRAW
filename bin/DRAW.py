@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import subprocess
@@ -32,19 +33,16 @@ if __name__ == "__main__":
     # logger.setLevel(logging.INFO)
 
     logger.info("Running DRAW.py")
-    # process = subprocess.Popen(["python ./vis.py"], stderr=subprocess.PIPE,
-    #                           stdout=subprocess.PIPE, shell=True)
-    # process.wait()
-    # if process.returncode != 0:
-    #    raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
-    # pass
-    # parser = argparse.ArgumentParser(description='')
-    # parser.add_argument("config_file_path", help="Path to configuration file")
-    # args = parser.parse_args()
 
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument("config_file_name", help="name of configuration file")
+    args = parser.parse_args()
     logger.info("Arguments parsed correctly")
 
-    config_file = open(get_last_modified_created_config_file(), "r")
+    config_file_path = os.path.join(global_variables.CONFIG_DIRECTORY, args.config_file_name)
+    run_id = os.path.splitext(args.config_file_name)[0]
+
+    config_file = open(config_file_path, "r")
     config_file_json = json.load(config_file)
 
     logger.info("Successfully  load file: {}".format(get_last_modified_created_config_file()))
@@ -57,13 +55,13 @@ if __name__ == "__main__":
 
     if config_file_type == "complete_analysis":
         logger.info("Creating 'complete_analysis' config object")
-        Config = config_parser.Complete_Analysis_Config(config_file_json)
+        Config = config_parser.Complete_Analysis_Config(config_file_json, run_id)
     elif config_file_type == "sequence_prefiltering":
         logger.info("Creating 'sequence_prefiltering' config object")
-        Config = config_parser.Sequence_Prefiltering_Config(config_file_json)
+        Config = config_parser.Sequence_Prefiltering_Config(config_file_json, run_id)
     elif config_file_type == "analysis":
         logger.info("Creating 'analysis' config object")
-        Config = config_parser.Anlysis_Config(config_file_json)
+        Config = config_parser.Anlysis_Config(config_file_json, run_id)
     else:
         message = "Invalid 'run_type' value in config file "
         logger.error(message)
@@ -73,17 +71,21 @@ if __name__ == "__main__":
     config_exec.run()
 
     run_type = Config.get_config_variable("run_type")
+
     if run_type == "complete_analysis" or run_type == "analysis":
         run_analysis = Config.get_config_variable("run_downstream_analysis")
+        config_exec.prepare_data_for_visualalisation()
         if run_analysis:
-            process = subprocess.Popen(["RScript ./deseq2.R ../output/count_matrix.csv run1"], stderr=subprocess.PIPE,
-                                       stdout=subprocess.PIPE, shell=True)
+            gene_count_matrix_path = os.path.join(config_exec.master_output_directory, "COUNTING",
+                                                  "gene_count_matrix.csv")
+            deseq2_command = "RScript ./deseq2.R  {} {}".format(gene_count_matrix_path, run_id)
+            process = subprocess.Popen([deseq2_command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
             process.wait()
             if process.returncode != 0:
                 raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
 
-            process = subprocess.Popen(["python ./vis.py"], stderr=subprocess.PIPE,
-                                       stdout=subprocess.PIPE, shell=True)
+            vis_command = "python ./vis.py -id {} -dt vst".format(run_id)
+            process = subprocess.Popen([vis_command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
             process.wait()
             if process.returncode != 0:
                 raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
