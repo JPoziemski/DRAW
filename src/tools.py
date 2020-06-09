@@ -285,9 +285,9 @@ class Bowtie(Hisat2):
 
 
 class Stringtie(Tool):
-    # EXEC_path = "stringtie"
+    EXEC_path = "stringtie"
 
-    EXEC_path = os.path.join(global_variables.stringtie_path, "stringtie")
+    #EXEC_path = os.path.join(global_variables.stringtie_path, "stringtie")
 
     def __init__(self, input, output, user_params, annotation):
         super().__init__(input, output, user_params)

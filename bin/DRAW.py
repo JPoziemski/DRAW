@@ -40,7 +40,7 @@ if __name__ == "__main__":
     logger.info("Arguments parsed correctly")
 
     config_file_path = os.path.join(global_variables.CONFIG_DIRECTORY, args.config_file_name)
-    run_id = os.path.splitext(args.config_file_name)[0]
+    run_id = os.path.splitext(os.path.basename(args.config_file_name))[0]
 
     config_file = open(config_file_path, "r")
     config_file_json = json.load(config_file)
@@ -79,6 +79,8 @@ if __name__ == "__main__":
             run_analysis = False
         config_exec.prepare_data_for_visualalisation()
         if run_analysis:
+            vis_path = os.path.join(config_exec.master_output_directory, "VISUALISATION")
+            os.mkdir(vis_path)
             gene_count_matrix_path = os.path.join(config_exec.master_output_directory, "COUNTING",
                                                   "gene_count_matrix.csv")
             deseq2_command = "RScript ./deseq2.R  {} {}".format(gene_count_matrix_path, run_id)
