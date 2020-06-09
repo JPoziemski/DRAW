@@ -39,10 +39,17 @@ The output of the differential expression analysis are 4 files:
 
 ##  Visualisation 
 
-The visualisation dashboard offers four type of plots, which can be accesed by selection appriopriate tab. Most often the visualisation dashboard will be opened as soon as the analysis is finished. When needed, the visualisation for a given run can be accessed like that: 
+The visualisation dashboard offers four type of plots, which can be accesed by selection appriopriate tab. Most often the visualisation dashboard will be opened as soon as the analysis is finished. 
+
+When needed, the visualisation for a given run can be accessed in a seperate manner. All of the requirements for running the analysis apart from the Docker and the rest od the DRAW module, can be installed:
 
 ```console
-$  python vis.py -id [run_id] -dt [data]
+ ./vis_requirements.sh
+```
+
+Then, to run the visualisation:
+```console
+$  bin/python vis.py -id [run_id] -dt [data]
 ```
 
 where ```run_id``` is the id of the run we want to visualise, and ```data``` is one of the followind data types:
