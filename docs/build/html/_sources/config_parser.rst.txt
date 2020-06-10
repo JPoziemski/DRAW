@@ -14,9 +14,4 @@ Module responsible for collecting and checking data form config files
 
 
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
