@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
+    <style>
 body {
     background-image: url('/static/images/bg.png');
     background-attachment: fixed;
@@ -17,15 +17,25 @@ left: 50%;
 transform: translate(-50%,-50%);
 background: HoneyDew;
 }
-a.run {
+input[type=submit]{
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 16px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+}
+input[type=reset] {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
 }
 a.home {
   background-color: #4CAF50; /* Green */
@@ -37,14 +47,21 @@ a.home {
   display: inline-block;
   font-size: 10px;
 }
-</style>
+
+    </style>
 </head>
 <body>
 <a href="/index" class="home">Home</a><br>
 <div class="content">
-<center>
-<p>You're config file is called - <b>{{ run_id }}</b></p>
-    <a href="/progress" class="run">Run it!</a><br><br>
+    <center>
+        <h1>Load config file</h1>
+        <form action="/overview">
+            <label for="run_id">Run ID</label><br>
+            <input type="text" id="run_id" name="run_id" value=""><br><br>
+            <input type="submit" value="Continue"><br><br>
+            <input type="reset" value="Clear"><br>
+        </form>
+    </center>
 </div>
 </body>
 </html>
