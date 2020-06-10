@@ -83,7 +83,7 @@ if __name__ == "__main__":
             os.mkdir(vis_path)
             gene_count_matrix_path = os.path.join(config_exec.master_output_directory, "COUNTING",
                                                   "gene_count_matrix.csv")
-            deseq2_command = "RScript ./deseq2.R  {} {}".format(gene_count_matrix_path, run_id)
+            deseq2_command = "Rscript ./deseq2.R  {} {}".format(gene_count_matrix_path, run_id)
             process = subprocess.Popen([deseq2_command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
             process.wait()
             if process.returncode != 0:
