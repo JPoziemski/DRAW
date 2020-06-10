@@ -117,7 +117,11 @@ class Trimmomatic(Tool):
     def __init__(self, input, output, params, seq_type):
         super().__init__(input, output, params)
         self.output_file_names = []
-        self.seq_type_arg = seq_type
+        self.seq_type = seq_type
+        if seq_type == "single_end":
+            self.seq_type_arg = "SE"
+        else:
+            self.seq_type_arg = "PE"
         self.set_seq_type_from_params()
         self.DISABLED_ARGS = []
         self.prepare_to_run()
