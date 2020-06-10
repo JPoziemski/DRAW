@@ -11,16 +11,24 @@ MAINTAINER Iwona Gozdziewska
 ENV TZ=Europe/Warsaw
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Install platforms
+# Install OpenJDK and Python
 RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-8-jre=8u252-b09-1ubuntu1 \
     python3=3.8.2-0ubuntu2 \
-    python3-pip=20.0.2-5ubuntu1 \
-    r-base=3.6.3-2
+    python3-pip=20.0.2-5ubuntu1
 
-# Install dependencies
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
+
+# Install R
+ENV R_VERSION 3.6.1
+RUN apt-get install -y curl && curl -O https://cdn.rstudio.com/r/ubuntu-2004/pkgs/r-${R_VERSION}_1_amd64.deb
+RUN apt-get install -y ./r-${R_VERSION}_1_amd64.deb
+RUN ln -s /opt/R/${R_VERSION}/bin/R /usr/bin/R && ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/bin/Rscript
+
+# Install R dependencies
+RUN apt-get install -y libcurl4-openssl-dev libxml2-dev libpng-dev libjpeg-dev
 COPY install_packages.R .
 RUN Rscript install_packages.R
 
