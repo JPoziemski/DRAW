@@ -10,7 +10,12 @@ ERROR_EXCEPTIONS_STARTS = ["<exception str() failed>", ]
 
 
 class Tool(metaclass=abc.ABCMeta):
-    """ssssssssssssssssssssss"""
+    """Class responsible for executing tools with proper parameters
+
+    :param input: input params
+    :type input: list
+    :param output_dir: directory where files will be saved
+    :type output_dir: str"""
 
     def __init__(self, input, output_dir, user_params):
         """class constructor
@@ -31,6 +36,7 @@ class Tool(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def prepare_to_run(self):
+        """Performs set of operations necessary to execute tool"""
         pass
 
     def get_output_arg(self):
@@ -48,11 +54,17 @@ class Tool(metaclass=abc.ABCMeta):
         pass
 
     def get_created_files(self):
-        "adsdasddasadssa"
+        """Get file paths which tool creates
+
+        :return: self.created_files - file paths
+        :rtype: list
+        """
         return self.created_files
 
     def check_params(self):
+        """Checks if there are any parameters that are not allowed
 
+        :raises ToolError: some parameters that are disallowed"""
         invalid_args = []
         for arg in self.DISABLED_ARGS:
             if arg in self.params:
@@ -64,14 +76,17 @@ class Tool(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def add_input(self, input):
+        """Add input argument to tool command"""
         pass
 
     @abc.abstractmethod
     def add_output(self, output):
+        """Add input argument to tool command"""
         pass
 
 
 class FastQC(Tool):
+    """FastQC master class"""
     EXEC_PATH = "fastqc"
     # TOOL_PATH = global_variables.fastqc_path
     # EXEC_PATH = os.path.join(TOOL_PATH, "fastqc")
@@ -111,6 +126,7 @@ class FastQC(Tool):
 
 
 class Trimmomatic(Tool):
+    """Trimmomatic master class"""
     TOOL_PATH = global_variables.trimmomatic_path
     EXEC_PATH = os.path.join(TOOL_PATH, "trimmomatic-0.39.jar")
 
@@ -122,20 +138,9 @@ class Trimmomatic(Tool):
             self.seq_type_arg = "SE"
         else:
             self.seq_type_arg = "PE"
-        self.set_seq_type_from_params()
         self.DISABLED_ARGS = []
         self.prepare_to_run()
 
-    def set_seq_type_from_params(self):
-
-        if "PE" in self.params:
-            self.seq_type = "paired_end"
-            self.params = self.params.replace("PE ", "")
-            self.seq_type_arg = "PE"
-        elif "SE" in self.params:
-            self.seq_type = "single_end"
-            self.params = self.params.replace("SE ", "")
-            self.seq_type_arg = "SE"
 
     def add_input(self, input):
         input_files_num = input.split()
@@ -194,6 +199,7 @@ class Trimmomatic(Tool):
 
 
 class Hisat2(Tool):
+    """Hisat2 master class"""
     BUILD_PATH = "hisat2-build"
     EXEC_PATH = "hisat2"
 
@@ -232,7 +238,7 @@ class Hisat2(Tool):
         self.output_arg = "-S {}".format(created_file_path)
 
     def build(self):
-
+        """Exectue build command that create index files for Hisat2"""
         command = "{} {} {}".format(Hisat2.BUILD_PATH, self.sequence, self.index_prefix)
 
         process = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
@@ -250,6 +256,7 @@ class Hisat2(Tool):
                                                    self.output_arg, self.index_prefix, self.params)]
 
     def run(self):
+        """Execute tool command"""
         print(self.command)
         self.build()
         process = subprocess.Popen(self.command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)

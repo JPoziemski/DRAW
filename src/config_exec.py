@@ -8,6 +8,8 @@ import tools
 
 
 class ConfigExec:
+    """Object resposible for execute properly run tools provided in Config files"""
+
     def __init__(self, Config):
         self.logger = logging.getLogger(__name__)
         self.master_output_directory = os.path.join(global_variables.OUTPUT_DIRECTORY, Config.run_id)
@@ -92,16 +94,25 @@ class ConfigExec:
                     tool_input = [input_arg, curr_output_dir, tool_params, annotation_file_path]
                     curr_tool = self.prepare_stage_tool(tool_for_stage, tool_input)
 
-    def prepare_stage_tool(self, tool_for_stage, tool_input):
-        if tool_for_stage == "FastQC":
+    def prepare_stage_tool(self, tool_name, tool_input):
+        """Save command tor tool and get files path that will be created as resuts for this command
+
+        :param tool_input  - input parameters for tool
+        :type tool_input: list
+        :param tool_name - name of tool
+        :type tool_name: str
+        :return: created files - list of path for created files
+        ":rtype: list
+        """
+        if tool_name == "FastQC":
             curr_tool = tools.FastQC(*tool_input)
-        elif tool_for_stage == "TRIMMOMATIC":
+        elif tool_name == "TRIMMOMATIC":
             curr_tool = tools.Trimmomatic(*tool_input)
-        elif tool_for_stage == "Hisat2":
+        elif tool_name == "Hisat2":
             curr_tool = tools.Hisat2(*tool_input)
-        elif tool_for_stage == "Bowtie2":
+        elif tool_name == "Bowtie2":
             curr_tool = tools.Bowtie(*tool_input)
-        elif tool_for_stage == "Stringtie":
+        elif tool_name == "Stringtie":
             curr_tool = tools.Stringtie(*tool_input)
         else:
             raise ValueError
@@ -110,7 +121,7 @@ class ConfigExec:
         return created_files
 
     def get_inital_files(self, input_dir):
-
+        """"""
         input_files_prefix = self.Config.get_config_variable("input_file_prefix")
         input_files_paths = []
         if self.Config.get_config_variable("seq_type") == "single_end":
@@ -125,7 +136,12 @@ class ConfigExec:
         return input_files_paths
 
     def group_paired_end_files(self, files_paths_list_to_group):
+        """Get list of tulpes with corresponding paired-end files
 
+        :param files_paths_list_to_group: list of all files to group
+        :type files_paths_list_to_group: list
+        :return: grouped_files - tulpes list with grouped files
+        :rtype: list"""
         valid_files = sorted(files_paths_list_to_group)
         grouped_files = []
         for ind in range(len(valid_files) // 2):
@@ -135,7 +151,15 @@ class ConfigExec:
         return grouped_files
 
     def prepare_files_to_counting(self, input_files_list, output_dir):
+        """Converts sam files to bam and sort bam files
 
+         :param input_files_list - path to directory containing sam files
+         :type input_files_list: str
+         :param output_dir - directory where output files will be saved
+         :type output_dir: str
+         :return: creted files - list of commands used to get and sort bam files
+         :rtype: list
+         """
         created_files = []
         for file_path in input_files_list:
             file_name = os.path.basename(file_path)
@@ -155,12 +179,14 @@ class ConfigExec:
         return created_files
 
     def run(self):
+        """Execute all commands necessary to complete config file instructions"""
         for processed_tool in self.run_order:
             # print(processed_tool.command)
             processed_tool.run()
 
     def prepare_data_for_visualalisation(self):
-
+        """Create files necessary for visualisations
+        """
         gft_files_path = os.path.join(self.master_output_directory, "COUNTING")
         gft_list_file_path = self.create_gft_list(gft_files_path)
         gene_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING", "gene_count_matrix.csv")
@@ -178,6 +204,13 @@ class ConfigExec:
         pass
 
     def create_gft_list(self, gft_files_path):
+        """"Create file 'gft_list' object which is input for prepDE.py script
+
+        :param gft_files_path - path to directory with
+        :type gft_files_path: str
+        :return: gft_file_path  - path for created 'gft_list' file
+        :rtype: str
+        """
         bam_files_list = [file for file in os.listdir(gft_files_path) if file.endswith("gft")]
         control_file_prefix = self.Config.get_config_variable("control_file_prefix")
         gft_list_data = []
