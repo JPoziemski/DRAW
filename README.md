@@ -75,7 +75,8 @@ $ ./vis_requirements.sh
 
 Then, to run the visualisation:
 ```console
-$  python bin/vis.py -id [run_id] -dt [data]
+$  cd bin # Make sure that you are in bin folder!
+$  python3 vis.py -id [run_id] -dt [data]
 ```
 
 where ```run_id``` is the id of the run we want to visualise, and ```data``` is one of the followind data types:
