@@ -30,37 +30,33 @@ def load_config():
 
 @app.route("/overview")
 def overview():
-    try:
-        tools = copy.deepcopy(dict(flask.request.args))
-        parsed_tools = {}
-        for i in tools:
-            if tools[i] != '':
-                if i.startswith('tool_'):
-                    parsed_tools['_'.join(i.split('_')[1:])] = {''.join(tools[i].split('_')[0]): {}}
-                    for j in tools:
-                        if j.startswith(tools[i] + '_param') and tools[j] == "on":
-                            parsed_tools['_'.join(i.split('_')[1:])][''.join(tools[i].split('_')[0])].update(
-                                {''.join(j.split('!')[-1]): ''})
-                        elif j.startswith(tools[i] + '_param') and tools[j] != '':
-                            parsed_tools['_'.join(i.split('_')[1:])][''.join(tools[i].split('_')[0])].update(
-                                {''.join(j.split('!')[-1]): tools[j]})
-        appendage = {i: {} for i in parsed_tools}
-        for i in parsed_tools:
-            for j in parsed_tools[i]:
-                params = []
-                for key, value in parsed_tools[i][j].items():
-                    if j == "TRIMMOMATIC":
-                        params.append(str(key) + ':' + str(value))
-                    else:
-                        params.append(str(key) + ' ' + str(value))
-                appendage[i].update({j: ' '.join(params)})
-        request_args.update({'tools': appendage})
-        with open('../config_files/' + request_args['run_id'] + '.json', 'w') as f:
-            f.write(flask.json.dumps(request_args, separators=(',\n', ':')))
-        return flask.render_template('overview.html', run_id=request_args['run_id'] + '.json')
-    except:
-        load_args = copy.deepcopy(dict(flask.request.args))
-        return flask.render_template('overview.html', run_id=load_args['run_id'] + '.json')
+    tools = copy.deepcopy(dict(flask.request.args))
+    parsed_tools = {}
+    for i in tools:
+        if tools[i] != '':
+            if i.startswith('tool_'):
+                parsed_tools['_'.join(i.split('_')[1:])] = {''.join(tools[i].split('_')[0]): {}}
+                for j in tools:
+                    if j.startswith(tools[i] + '_param') and tools[j] == "on":
+                        parsed_tools['_'.join(i.split('_')[1:])][''.join(tools[i].split('_')[0])].update(
+                            {''.join(j.split('!')[-1]): ''})
+                    elif j.startswith(tools[i] + '_param') and tools[j] != '':
+                        parsed_tools['_'.join(i.split('_')[1:])][''.join(tools[i].split('_')[0])].update(
+                            {''.join(j.split('!')[-1]): tools[j]})
+    appendage = {i: {} for i in parsed_tools}
+    for i in parsed_tools:
+        for j in parsed_tools[i]:
+            params = []
+            for key, value in parsed_tools[i][j].items():
+                if j == "TRIMMOMATIC":
+                    params.append(str(key) + ':' + str(value))
+                else:
+                    params.append(str(key) + ' ' + str(value))
+            appendage[i].update({j: ' '.join(params)})
+    request_args.update({'tools': appendage})
+    with open('../config_files/' + request_args['run_id'] + '.json', 'w') as f:
+        f.write(flask.json.dumps(request_args, separators=(',\n', ':')))
+    return flask.render_template('overview.html', run_id=request_args['run_id'] + '.json')
 
 
 @app.route("/tools")
@@ -82,6 +78,11 @@ def progress():
     bashCommand = 'python3 DRAW.py ' + request_args['run_id'] + '.json'
     subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 
+@app.route("/run_from_load")
+def run_from_load():
+    load_args = copy.deepcopy(dict(flask.request.args))
+    bashCommand = 'python3 DRAW.py ' + load_args['run_id'] + '.json'
+    subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 
 def open_browser():
     webbrowser.open_new('http://127.0.0.1:2000/index')
