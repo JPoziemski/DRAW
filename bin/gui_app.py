@@ -8,22 +8,23 @@ import subprocess
 
 app = flask.Flask(__name__, static_url_path='/static')
 
-
+# Home
 @app.route("/index")
 def main_page():
     return app.send_static_file('index.html')
 
-
+# First step of config file generation, input data as well as run type are specified
 @app.route("/generate")
 @app.route("/generate/<run_id>")
 def generate(run_id=str(time.time())[-5:], date=datetime.now().strftime("%m_%d_%y_")):
     return flask.render_template('generate.html', run_id=date + run_id)
 
+# Future function
+# @app.route("/edit")
+# def edit():
+#     return app.send_static_file('')
 
-@app.route("/edit")
-def edit():
-    return app.send_static_file('')
-
+# Allows for loading
 @app.route("/load_config")
 def load_config():
     return flask.render_template('load_config.html')
