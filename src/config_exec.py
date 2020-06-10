@@ -54,7 +54,7 @@ class ConfigExec:
                     else:
                         input_arg = obj
 
-                    tool_input = [input_arg, curr_output_dir, tool_params]
+                    tool_input = [input_arg, curr_output_dir, tool_params, self.Config.get_config_variable("seq_type")]
                     created_files = self.prepare_stage_tool(tool_for_stage, tool_input)
                     new_input_paths.extend(created_files)
 

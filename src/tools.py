@@ -114,19 +114,21 @@ class Trimmomatic(Tool):
     TOOL_PATH = global_variables.trimmomatic_path
     EXEC_PATH = os.path.join(TOOL_PATH, "trimmomatic-0.39.jar")
 
-    def __init__(self, input, output, params):
+    def __init__(self, input, output, params, seq_type):
         super().__init__(input, output, params)
         self.output_file_names = []
+        self.seq_type = seq_type
         self.set_seq_type_from_params()
         self.DISABLED_ARGS = []
         self.prepare_to_run()
 
     def set_seq_type_from_params(self):
+
         if "PE" in self.params:
             self.seq_type = "paired_end"
             self.params = self.params.replace("PE ", "")
             self.seq_type_arg = "PE"
-        else:
+        elif "SE" in self.params:
             self.seq_type = "single_end"
             self.params = self.params.replace("SE ", "")
             self.seq_type_arg = "SE"
