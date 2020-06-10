@@ -2,16 +2,6 @@
 
 ADP project: tool for RNA-seq analysis
 
-## Graphic User Interface (GUI)
-This simple flask app offers limited functionality that allows basic config file management for potential user. GUI opens in default browser installed on user's web browser. User is greeted with short software description and two options: "Generate", "Load config". 
-
-**Generate** - two-step config file generation procedure. During first step user is obliged to specify paths to input files, run type and other details regarding inputs. Default run_id consists partly of current computer time to maintain config files' 
-uniqueness. Second step varies depending on which run type was specified in previous step. By filing second form user is able to define all necessary parameters for tools used in analysis. Hovering cursor over specific parameters prompts tooltips that give some insight into their effect on given tool. Subsequently config file, which name is unique run_id, is created in form of json file in config_files directory located in main folder. At this point user is presented with an option to perform run using config paramteres that were just specified.
-
-**Load config** - this option prompts user for run_id of previously created json config file. That way user can repeat analysis with previously specified conditions and tools. 
-
-**It is crucial for user to specify parameters for all chosen tools. This allows for further, successful analysis**
-
 ## Isolated environment in Docker containers
 
 **Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and a popular web browser (recommended Google Chrome version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
@@ -52,6 +42,16 @@ Docker uses following options: \
 --volume , -v	Bind a volume \
 --interactive, -it Run container in interactive mode
 
+## Graphic User Interface (GUI)
+This simple flask app offers limited functionality that allows basic config file management for potential user. GUI opens in default browser installed on user's web browser. User is greeted with short software description and two options: "Generate", "Load config". 
+
+**Generate** - two-step config file generation procedure. During first step user is obliged to specify paths to input files, run type and other details regarding inputs. Default run_id consists partly of current computer time to maintain config files' 
+uniqueness. Second step varies depending on which run type was specified in previous step. By filing second form user is able to define all necessary parameters for tools used in analysis. Hovering cursor over specific parameters prompts tooltips that give some insight into their effect on given tool. Subsequently config file, which name is unique run_id, is created in form of json file in config_files directory located in main folder. At this point user is presented with an option to perform run using config paramteres that were just specified.
+
+**Load config** - this option prompts user for run_id of previously created json config file. That way user can repeat analysis with previously specified conditions and tools. 
+
+**It is crucial for user to specify parameters for all chosen tools. This allows for further, successful analysis**
+
 
 ##  Differential expression analysis
 
@@ -75,7 +75,8 @@ $ ./vis_requirements.sh
 
 Then, to run the visualisation:
 ```console
-$  python bin/vis.py -id [run_id] -dt [data]
+$  cd bin # Make sure that you are in bin folder!
+$  python3 vis.py -id [run_id] -dt [data]
 ```
 
 where ```run_id``` is the id of the run we want to visualise, and ```data``` is one of the followind data types:
