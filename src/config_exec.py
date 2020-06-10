@@ -161,11 +161,12 @@ class ConfigExec:
 
     def prepare_data_for_visualalisation(self):
 
-        bam_files_path = os.path.join(self.master_output_directory, "COUNTING", "bam_files")
-        gft_list_file_path = self.create_gft_list(bam_files_path)
+        gft_files_path = os.path.join(self.master_output_directory, "COUNTING")
+        gft_list_file_path = self.create_gft_list(gft_files_path)
         gene_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING", "gene_count_matrix.csv")
         transcript_count_matrix_path = os.path.join(self.master_output_directory, "COUNTING",
                                                     "transcript_count_matrix.csv")
+
         command = "python3 prepDE_python3.py -i {} -g {} -t {}".format(gft_list_file_path, gene_count_matrix_path,
                                                                        transcript_count_matrix_path)
         process = subprocess.Popen([command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
@@ -176,14 +177,14 @@ class ConfigExec:
             raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
         pass
 
-    def create_gft_list(self, bam_files_path):
-        bam_files_list = os.listdir(bam_files_path)
+    def create_gft_list(self, gft_files_path):
+        bam_files_list = [file for file in os.listdir(gft_files_path) if file.endswith("gft")]
         control_file_prefix = self.Config.get_config_variable("control_file_prefix")
         gft_list_data = []
         treated_num = 1
 
         for file in bam_files_list:
-            file_path = os.path.join(bam_files_path, file)
+            file_path = os.path.join(gft_files_path, file)
             if file.startswith(control_file_prefix):
                 gft_list_data.append(" ".join(["control", file_path]))
             else:
