@@ -14,17 +14,6 @@ from config_exec import ConfigExec
 import logging
 
 
-def get_last_modified_created_config_file():
-    if not os.listdir(global_variables.CONFIG_DIRECTORY):
-        raise ValueError
-
-    file_paths = [os.path.join(global_variables.CONFIG_DIRECTORY, file) for file in
-                  os.listdir(global_variables.CONFIG_DIRECTORY)]
-
-    if len(file_paths) == 1:
-        return file_paths[0]
-    else:
-        return file_paths[0]
 
 if __name__ == "__main__":
     logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s -%(levelname)s-%(message)s',
@@ -45,7 +34,7 @@ if __name__ == "__main__":
     config_file = open(config_file_path, "r")
     config_file_json = json.load(config_file)
 
-    logger.info("Successfully  load file: {}".format(get_last_modified_created_config_file()))
+    logger.info("Successfully  load file: {}".format(config_file_path))
 
     if "run_type" in config_file_json:
         config_file_type = config_file_json["run_type"]
