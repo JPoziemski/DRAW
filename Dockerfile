@@ -29,7 +29,6 @@ RUN apt-get update && apt-get install -y \
     bowtie2=2.3.5.1-6build1 \
     fastqc=0.11.9+dfsg-2 \ 
     hisat2=2.1.0-4 \    
-    igv=2.4.17+dfsg-1 \
     samtools=1.10-3 \    
     stringtie=2.1.1+ds-2 \
     wget=1.20.3-1ubuntu1
