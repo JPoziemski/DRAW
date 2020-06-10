@@ -2,6 +2,13 @@
 
 ADP project: tool for RNA-seq analysis
 
+## Graphic User Interface (GUI)
+This simple flask app offers limited functionality that allows basic config file management for potential user. GUI opens in default browser installed on user's web browser. User is greeted with short software description and two options: "Generate", "Load config". 
+
+**Generate** - two-step config file generation procedure. During first step user is obliged to specify paths to input files, run type and other details regarding inputs. Default run_id consists partly of current computer time to maintain config files' 
+uniqueness. Second step varies depending on which run type was specified in previous step. By filing second form user is able to define all necessary parameters for tools used in analysis. Hovering cursor over specific parameters prompts tooltips that give some insight into their effect on given tool. Subsequently config file, which name is unique run_id, is created in form of json file in config_files directory located in main folder. At this point user is presented with an option to perform run using config paramteres that were just specified.
+
+**Load config** - this option prompts user for run_id of previously created json config file. That way user can repeat analysis with previously specified conditions and tools. 
 
 ## Isolated environment in Docker containers
 
