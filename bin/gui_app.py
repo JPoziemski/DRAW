@@ -77,12 +77,14 @@ def tools():
 def progress():
     bashCommand = 'python3 DRAW.py ' + request_args['run_id'] + '.json'
     subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    return app.send_static_file('fin.html')
 
 @app.route("/run_from_load")
 def run_from_load():
     load_args = copy.deepcopy(dict(flask.request.args))
     bashCommand = 'python3 DRAW.py ' + load_args['run_id'] + '.json'
     subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    return app.send_static_file('fin.html')
 
 def open_browser():
     webbrowser.open_new('http://0.0.0.0:2000/index')
