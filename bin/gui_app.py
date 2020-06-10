@@ -134,7 +134,7 @@ def open_browser():
     """
     This function opens tab in local web browser with homepage.
     """
-    webbrowser.open_new('http://127.0.0.1:2000/index')
+    webbrowser.open_new('http://0.0.0.0:2000/index')
 
 
 if __name__ == "__main__":
