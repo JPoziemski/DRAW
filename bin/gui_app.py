@@ -8,29 +8,72 @@ import subprocess
 
 app = flask.Flask(__name__, static_url_path='/static')
 
-# Home
+
 @app.route("/index")
 def main_page():
+    """
+    Homepage introducing user to concept of this software and presents two options: generate/load config file.
+    :return: homepage
+    :rtype: html
+    """
     return app.send_static_file('index.html')
 
-# First step of config file generation, input data as well as run type are specified
+
 @app.route("/generate")
 @app.route("/generate/<run_id>")
 def generate(run_id=str(time.time())[-5:], date=datetime.now().strftime("%m_%d_%y_")):
+    """
+    Page that allows specifying input files details as well as run type. Run id consists part of current computer time.
+    :return: first part of config file
+    :rtype: html (page), dictionary (run_params)
+    """
     return flask.render_template('generate.html', run_id=date + run_id)
+
 
 # Future function
 # @app.route("/edit")
 # def edit():
 #     return app.send_static_file('')
 
-# Allows for loading
 @app.route("/load_config")
 def load_config():
+    """
+    Allows loading config file by specifying its name and running analysis on predefined parameters.
+    :return: run id in dictionary
+    :rtype: html (page), dictionary (run_id)
+    """
     return flask.render_template('load_config.html')
+
+
+@app.route("/tools")
+def tools():
+    """
+    This page returns second part of defining run details. In this step user defines various parameters for specific
+    tools.
+    :return: tool parameters
+    :rtype: html (page), dictionary (tools_params)
+    """
+    global request_args
+    request_args = copy.deepcopy(dict(flask.request.args))
+    if request_args['run_type'] == "complete_analysis":
+        return flask.render_template('complete_analysis.html')
+
+    elif request_args['run_type'] == "sequence_prefiltering":
+        return flask.render_template('sequence_prefiltering.html')
+
+    elif request_args['run_type'] == "analysis":
+        return flask.render_template('analysis.html')
+
 
 @app.route("/overview")
 def overview():
+    """
+    At this point both dictionaries (run_params, tools_params) are merged and transformed to proper convention that
+    is then saved in json file. Then it redirects to page where user is asked whether to run analysis using config
+    file that was just created.
+    :return: overview page and json config file
+    :rtype: html (page), json (config_file)
+    """
     tools = copy.deepcopy(dict(flask.request.args))
     parsed_tools = {}
     for i in tools:
@@ -60,34 +103,37 @@ def overview():
     return flask.render_template('overview.html', run_id=request_args['run_id'] + '.json')
 
 
-@app.route("/tools")
-def tools():
-    global request_args
-    request_args = copy.deepcopy(dict(flask.request.args))
-    if request_args['run_type'] == "complete_analysis":
-        return flask.render_template('complete_analysis.html')
-
-    elif request_args['run_type'] == "sequence_prefiltering":
-        return flask.render_template('sequence_prefiltering.html')
-
-    elif request_args['run_type'] == "analysis":
-        return flask.render_template('analysis.html')
-
-
-@app.route("/progress")
-def progress():
+@app.route("/run_from_config")
+def run_from_config():
+    """
+    Function that initiates core python script that oversights analysis using config file that was just created. It
+    also redirects to final tab.
+    :return: final page
+    :rtype: html
+    """
     bashCommand = 'python3 DRAW.py ' + request_args['run_id'] + '.json'
     subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     return app.send_static_file('fin.html')
 
+
 @app.route("/run_from_load")
 def run_from_load():
+    """
+    Function that initiates core python script that oversights analysis using previously generated config file. It
+    also redirects to final tab.
+    :return: final page
+    :rtype: html
+    """
     load_args = copy.deepcopy(dict(flask.request.args))
     bashCommand = 'python3 DRAW.py ' + load_args['run_id'] + '.json'
     subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     return app.send_static_file('fin.html')
 
+
 def open_browser():
+    """
+    This function opens tab in local web browser with homepage.
+    """
     webbrowser.open_new('http://127.0.0.1:2000/index')
 
 
