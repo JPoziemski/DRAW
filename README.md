@@ -10,6 +10,8 @@ uniqueness. Second step varies depending on which run type was specified in prev
 
 **Load config** - this option prompts user for run_id of previously created json config file. That way user can repeat analysis with previously specified conditions and tools. 
 
+**It is crucial for user to specify parameters for all chosen tools. This allows for further, successful analysis**
+
 ## Isolated environment in Docker containers
 
 **Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and a popular web browser (recommended Google Chrome version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
