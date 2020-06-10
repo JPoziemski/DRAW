@@ -10,7 +10,12 @@ ERROR_EXCEPTIONS_STARTS = ["<exception str() failed>", ]
 
 
 class Tool(metaclass=abc.ABCMeta):
-    """Class responsible for executing tools with proper parameters"""
+    """Class responsible for executing tools with proper parameters
+
+    :param input: input params
+    :type input: list
+    :param output_dir: directory where files will be saved
+    :type output_dir: str"""
 
     def __init__(self, input, output_dir, user_params):
         """class constructor
@@ -51,7 +56,7 @@ class Tool(metaclass=abc.ABCMeta):
     def get_created_files(self):
         """Get file paths which tool creates
 
-        :return self.created_files - file paths
+        :return: self.created_files - file paths
         :rtype: list
         """
         return self.created_files

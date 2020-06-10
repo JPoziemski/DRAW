@@ -29,7 +29,6 @@ class ConfigExec:
         self.create_stage_tool_dict()
 
     def create_stage_tool_dict(self):
-        """s"""
         input_dir = global_variables.INPUT_DIRECTORY
         input_files_prefix = self.Config.get_config_variable("input_file_prefix")
         output_dir = self.master_output_directory
