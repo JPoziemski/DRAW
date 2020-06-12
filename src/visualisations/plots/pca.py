@@ -44,8 +44,8 @@ class PCAPlot(Visualisation):
         if self.pca_data is None:
             self.pca_data = self.calculate_pca()
         selected_pc = self.pca_data.iloc[:, [self.pc1 - 1, self.pc2 - 1]]
-        target = ['untreated' if 'untreated' in entry else 'treated' for entry in list(self.data.transpose().index)]
-        color = ['black' if 'untreated' in entry else 'red' for entry in target]
+        target = ['control' if 'control' in entry else 'treated' for entry in list(self.data.transpose().index)]
+        color = ['black' if 'control' in entry else 'red' for entry in target]
 
         selected_pc['target'] = target
         selected_pc['color'] = color
