@@ -11,9 +11,9 @@ else
    :
 fi
 
-x-www-browser http://0.0.0.0:2000/index 
+google-chrome --disable-gpu --disable-software-rasterizer http://0.0.0.0:2000/index 
 sleep 1
-x-www-browser http://0.0.0.0:5000/bkapp 
+google-chrome --disable-gpu --disable-software-rasterizer http://0.0.0.0:5000/bkapp 
 sleep 1
 
 docker run -v $SCRIPTPATH/input:/app/input \
