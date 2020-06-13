@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Config Exec &#8212; DRAW 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css"/>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css"/>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html"/>
+    <link rel="search" title="Search" href="search.html"/>
+    <link rel="next" title="DRAW Gui" href="gui.html"/>
+    <link rel="prev" title="Config Parser" href="config_parser.html"/>
+
+    <link rel="stylesheet" href="_static/custom.css" type="text/css"/>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9"/>
+
+</head>
+<body>
+
+
+<div class="document">
+    <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+            <div class="body" role="main">
+
+                <div class="section" id="config-exec">
+                    <h1>Config Exec<a class="headerlink" href="#config-exec" title="Permalink to this headline">¶</a>
+                    </h1>
+                    <p>Module responsible for running all analysis steps</p>
+                    <span class="target" id="module-config_exec"></span>
+                    <dl class="class">
+                        <dt id="config_exec.ConfigExec">
+                            <em class="property">class </em><code
+                                class="sig-prename descclassname">config_exec.</code><code class="sig-name descname">ConfigExec</code><span
+                                class="sig-paren">(</span><em class="sig-param">Config</em><span
+                                class="sig-paren">)</span><a class="headerlink" href="#config_exec.ConfigExec"
+                                                             title="Permalink to this definition">¶</a></dt>
+                        <dd><p>Object resposible for execute properly run tools provided in Config files</p>
+                            <dl class="method">
+                                <dt id="config_exec.ConfigExec.create_gft_list">
+                                    <code class="sig-name descname">create_gft_list</code><span
+                                        class="sig-paren">(</span><em class="sig-param">gft_files_path</em><span
+                                        class="sig-paren">)</span><a class="headerlink"
+                                                                     href="#config_exec.ConfigExec.create_gft_list"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>“Create file ‘gft_list’ object which is input for prepDE.py script</p>
+                                    <p>:param gft_files_path - path to directory with
+                                        :type gft_files_path: str
+                                        :return: gft_file_path - path for created ‘gft_list’ file
+                                        :rtype: str</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_exec.ConfigExec.group_paired_end_files">
+                                    <code class="sig-name descname">group_paired_end_files</code><span
+                                        class="sig-paren">(</span><em
+                                        class="sig-param">files_paths_list_to_group</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#config_exec.ConfigExec.group_paired_end_files"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Get list of tulpes with corresponding paired-end files</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Parameters</dt>
+                                        <dd class="field-odd"><p><strong>files_paths_list_to_group</strong>
+                                            (<em>list</em>) – list of all files to group</p>
+                                        </dd>
+                                        <dt class="field-even">Returns</dt>
+                                        <dd class="field-even"><p>grouped_files - tulpes list with grouped files</p>
+                                        </dd>
+                                        <dt class="field-odd">Return type</dt>
+                                        <dd class="field-odd"><p>list</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_exec.ConfigExec.prepare_data_for_visualalisation">
+                                    <code class="sig-name descname">prepare_data_for_visualalisation</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#config_exec.ConfigExec.prepare_data_for_visualalisation"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Create files necessary for visualisations</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_exec.ConfigExec.prepare_files_to_counting">
+                                    <code class="sig-name descname">prepare_files_to_counting</code><span
+                                        class="sig-paren">(</span><em class="sig-param">input_files_list</em>, <em
+                                        class="sig-param">output_dir</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#config_exec.ConfigExec.prepare_files_to_counting"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Converts sam files to bam and sort bam files</p>
+                                    <p>:param input_files_list - path to directory containing sam files
+                                        :type input_files_list: str
+                                        :param output_dir - directory where output files will be saved
+                                        :type output_dir: str
+                                        :return: creted files - list of commands used to get and sort bam files
+                                        :rtype: list</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_exec.ConfigExec.prepare_stage_tool">
+                                    <code class="sig-name descname">prepare_stage_tool</code><span
+                                        class="sig-paren">(</span><em class="sig-param">tool_name</em>, <em
+                                        class="sig-param">tool_input</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#config_exec.ConfigExec.prepare_stage_tool"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Save command tor tool and get files path that will be created as resuts for this
+                                    command</p>
+                                    <p>:param tool_input - input parameters for tool
+                                        :type tool_input: list
+                                        :param tool_name - name of tool
+                                        :type tool_name: str
+                                        :return: created files - list of path for created files
+                                        “:rtype: list</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_exec.ConfigExec.run">
+                                    <code class="sig-name descname">run</code><span class="sig-paren">(</span><span
+                                        class="sig-paren">)</span><a class="headerlink"
+                                                                     href="#config_exec.ConfigExec.run"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Execute all commands necessary to complete config file instructions</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <h1 class="logo"><a href="index.html">DRAW</a></h1>
+
+
+            <h3>Navigation</h3>
+            <p class="caption"><span class="caption-text">Contents:</span></p>
+            <ul class="current">
+                <li class="toctree-l1"><a class="reference internal" href="tools.html">DRAW Tools module</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="tools.html#module-tools">Tools</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="envirovement.html">Enviroment</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="envirovement.html#indices-and-tables">Indices
+                    and tables</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="config_parser.html">Config Parser</a></li>
+                <li class="toctree-l1 current"><a class="current reference internal" href="#">Config Exec</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="gui.html">DRAW Gui</a></li>
+            </ul>
+
+            <div class="relations">
+                <h3>Related Topics</h3>
+                <ul>
+                    <li><a href="index.html">Documentation overview</a>
+                        <ul>
+                            <li>Previous: <a href="config_parser.html" title="previous chapter">Config Parser</a></li>
+                            <li>Next: <a href="gui.html" title="next chapter">DRAW Gui</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="searchbox" style="display: none" role="search">
+                <h3 id="searchlabel">Quick search</h3>
+                <div class="searchformwrapper">
+                    <form class="search" action="search.html" method="get">
+                        <input type="text" name="q" aria-labelledby="searchlabel"/>
+                        <input type="submit" value="Go"/>
+                    </form>
+                </div>
+            </div>
+            <script>$('#searchbox').show(0);</script>
+
+
+        </div>
+    </div>
+    <div class="clearer"></div>
+</div>
+<div class="footer">
+    &copy;2020, Goździewska, Kiljan, Szymczak, Poziemski.
+
+    |
+    Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+    &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+
+    |
+    <a href="_sources/config_exec.rst.txt"
+       rel="nofollow">Page source</a>
+</div>
+
+
+</body>
+</html>

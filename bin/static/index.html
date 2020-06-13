@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+body {
+    background-image: url('/static/images/bg.png');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.content {
+border-radius: 25px;
+padding: 10px;
+position: absolute;
+top:  50%;
+left: 50%;
+transform: translate(-50%,-50%);
+background: HoneyDew;
+}
+a.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+
+
+    </style>
+</head>
+<body>
+<div class="content">
+    <center>
+        <h1>DRAW - Designer for RNA-seq Analysis Workflow</h1>
+        <p>DRAW aims to provide simple way to create workflows for RNA-seq data analysis.<br>
+            By generating files predefining whole analysis process user is able to perform<br>
+            repeatable research and obtain homogeneous results. User is able to generate, edit or preview configuration
+            files.<br>
+            Such tool should provide useful platform for all scientists that are in need of comprehensive RNA-seq
+            analysis tools.<br></p><br>
+
+        <a href="/generate" class="button">Generate</a><br><br>
+        <a href="/load_config" class="button">Load config</a><br><br>
+        <!--
+            <a href="/edit" class="button">Edit</a><br><br>
+            <a href="/overview" class="button">Overview</a><br><br>
+        -->
+    </center>
+</div>
+</body>
+</html>

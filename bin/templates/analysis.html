@@ -1,0 +1,344 @@
+<html>
+<head>
+    <style>
+              body {
+                  background-image: url('/static/images/bg.png');
+                  background-repeat: no-repeat;
+                  background-attachment: fixed;
+                  background-position: center;
+              }
+              .content {
+              border-radius: 25px;
+              padding: 10px;
+              position: absolute;
+              top:  50%;
+              left: 50%;
+              transform: translate(-50%,-50%);
+              background: AliceBlue;
+              }
+
+input[type=submit]{
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+input[type=reset] {
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+a.home {
+  background-color: #008CBA; /* Blue */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+              input, label, select {
+                  float:left;
+                  margin:5px;
+              }
+              td {
+                text-align: center;
+                vertical-align: middle;
+                align: center;
+              }
+              .tooltip {
+              position: relative;
+              display: inline-block;
+              border-bottom: 1px dotted black;
+              }
+
+              .tooltip .tooltiptext {
+              visibility: hidden;
+              background-color: black;
+              color: #fff;
+              text-align: center;
+              border-radius: 6px;
+              padding: 5px 0;
+              /* Position the tooltip */
+              position: absolute;
+              display: block;
+              z-index: 1;
+              }
+
+              .tooltip:hover .tooltiptext {
+              visibility: visible;
+              }
+
+
+
+
+    </style>
+</head>
+
+<body>
+<a href="/index" class="home">Home</a><br>
+<div class="content">
+    <center>
+        <h1>Sequence prefiltering</h1>
+        <form action="/overview">
+            <table>
+                <tr>
+                    <th>
+                        <label>Mapping</label>
+                    <th>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="tool_MAPPING" class="dropdown">
+                            <option value="">Choose</option>
+                            <option value="Hisat2">Hisat2</option>
+                            <option value="Bowtie2">Bowtie2</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label class="optional Hisat2" style="display:none;">
+                            <div class="tooltip">mp <span class="tooltiptext">MX,MN <br><br> Where:<br><br>  Sets the maximum (MX) and minimum (MN) mismatch penalties, both integers. A number less than or equal to MX and greater than or equal to MN is subtracted from the alignment score for each position where a read character aligns to a reference character, the characters do not match, and neither is an N. </span>
+                            </div>
+                        </label>
+                        <input class="optional Hisat2" name="hisat_param!--mp" style="display:none;" class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Hisat2" style="display:none;">
+                            <div class="tooltip">sp <span class="tooltiptext"> MX,MN <br><br> Where:<br><br> Sets the maximum (MX) and minimum (MN) penalties for soft-clipping per base, both integers. A number less than or equal to MX and greater than or equal to MN is subtracted from the alignment score for each position. </span>
+                            </div>
+                        </label>
+                        <input class="optional Hisat2" name="Hisat2_param!--sp" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Hisat2" style="display:none;">
+                            <div class="tooltip">no-softclip <span class="tooltiptext"> Disallow soft-clipping. </span>
+                            </div>
+                        </label>
+                        <input type="checkbox" class="optional Hisat2" name="Hisat2_param!--no-softclip"
+                               style="display:none;" class="hidden-checkbox">
+                    </td>
+                    <td>
+                        <label class="optional Hisat2" style="display:none;">
+                            <div class="tooltip">np <span class="tooltiptext"> Sets penalty for positions where the read, reference, or both, contain an ambiguous character such as N. Default: 1. </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Hisat2" name="Hisat2_param!--np" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="optional Hisat2" style="display:none;">
+                            <div class="tooltip">rdg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br>Sets the read gap open (int1) and extend (int2) penalties. A read gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span>
+                            </div>
+                        </label>
+                        <input class="optional Hisat2" name="Hisat2_param!--rdg" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Hisat2" style="display:none;">
+                            <div class="tooltip">rfg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br> Sets the reference gap open (int1) and extend (int2) penalties. A reference gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span>
+                            </div>
+                        </label>
+                        <input class="optional Hisat2" name="Hisat2_param!--rfg" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Hisat2" style="display:none;">
+                            <div class="tooltip">seed <span class="tooltiptext"> Use int as the seed for pseudo-random number generator. Default: 0. </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Hisat2" name="Hisat2_param!--seed" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                <tr>
+                    <td>
+                        <label class="optional Bowtie2" style="display:none;">
+                            <div class="tooltip">N <span class="tooltiptext"> Sets the number of mismatches to allowed in a seed alignment during multiseed alignment. Can be set to 0 or 1. Setting this higher makes alignment slower (often much slower) but increases sensitivity. Default: 0. </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Bowtie2" name="Bowtie2_param!--N" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Bowtie2" style="display:none;">
+                            <div class="tooltip">L <span class="tooltiptext"> Sets the length of the seed substrings to align during multiseed alignment. Smaller values make alignment slower but more sensitive. </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Bowtie2" name="Bowtie2_param!--L" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Bowtie2" style="display:none;">
+                            <div class="tooltip">dpad <span class="tooltiptext"> “Pads” dynamic programming problems by int columns on either side to allow gaps. Default: 15. </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Bowtie2" name="Bowtie2_param!--dpad" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Bowtie2" style="display:none;">
+                            <div class="tooltip">gbar <span class="tooltiptext"> Disallow gaps within int positions of the beginning or end of the read. Default: 4. </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Bowtie2" name="Bowtie2_param!--gbar" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="optional Bowtie2" style="display:none;">
+                            <div class="tooltip">mp <span class="tooltiptext">MX,MN <br><br> Where:<br><br> Sets the maximum (MX) and minimum (MN) mismatch penalties, both integers. A number less than or equal to MX and greater than or equal to MN is subtracted from the alignment score for each position where a read character aligns to a reference character, the characters do not match, and neither is an N. </span>
+                            </div>
+                        </label>
+                        <input class="optional Bowtie2" name="Bowtie2_param!--mp" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Bowtie2" style="display:none;">
+                            <div class="tooltip">np <span class="tooltiptext"> Sets penalty for positions where the read, reference, or both, contain an ambiguous character such as N. Default: 1. </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Bowtie2" name="Bowtie2_param!--np" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Bowtie2" style="display:none;">
+                            <div class="tooltip">rdg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br> Sets the read gap open (int1) and extend (int2) penalties. A read gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span>
+                            </div>
+                        </label>
+                        <input class="optional Bowtie2" name="Bowtie2_param!--rdg" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Bowtie2" style="display:none;">
+                            <div class="tooltip">rfg <span class="tooltiptext"> int1,int2 <br><br> Where: <br><br> Sets the reference gap open (int1) and extend (int2) penalties. A reference gap of length N gets a penalty of int1 + N * int2. Default: 5, 3. </span>
+                            </div>
+                        </label>
+                        <input class="optional Bowtie2" name="Bowtie2_param!--rfg" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label>Counting</label>
+                    <th>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="tool_COUNTING" class="dropdown">
+                            <option value="">Choose</option>
+                            <option value="Stringtie">Stringtie</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label class="optional Stringtie" style="display:none;">
+                            <div class="tooltip">l <span class="tooltiptext"> Sets label as the prefix for the name of the output transcripts. Default: STRG </span>
+                            </div>
+                        </label>
+                        <input class="optional Stringtie" name="Stringtie_param!--l" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Stringtie" style="display:none;">
+                            <div class="tooltip">f <span class="tooltiptext"> Sets the minimum isoform abundance of the predicted transcripts as a fraction of the most abundant transcript assembled at a given locus. Lower abundance transcripts are often artifacts of incompletely spliced precursors of processed transcripts. Default: 0.01 </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Stringtie" name="Stringtie_param!--f" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Stringtie" style="display:none;">
+                            <div class="tooltip">m <span class="tooltiptext"> Sets the minimum length allowed for the predicted transcripts. Default: 200 </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Stringtie" name="Stringtie_param!--m" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Stringtie" style="display:none;">
+                            <div class="tooltip">a <span class="tooltiptext"> Junctions that don't have spliced reads that align across them with at least this amount of bases on both sides are filtered out. Default: 10 </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Stringtie" name="Stringtie_param!--a" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Stringtie" style="display:none;">
+                            <div class="tooltip">c <span class="tooltiptext"> Sets the minimum read coverage allowed for the predicted transcripts. A transcript with a lower coverage than this value is not shown in the output. Default: 1 </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Stringtie" name="Stringtie_param!--c" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Stringtie" style="display:none;">
+                            <div class="tooltip">s <span class="tooltiptext"> Sets the minimum read coverage allowed for single-exon transcripts. Default: 4.75 </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Stringtie" name="Stringtie_param!--s" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Stringtie" style="display:none;">
+                            <div class="tooltip">g <span class="tooltiptext"> Sets the minimum read coverage allowed for single-exon transcripts. Default: 4.75 </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Stringtie" name="Stringtie_param!--g" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                    <td>
+                        <label class="optional Stringtie" style="display:none;">
+                            <div class="tooltip">M <span class="tooltiptext"> Sets the maximum fraction of muliple-location-mapped reads that are allowed to be present at a given locus. Default: 0.95. </span>
+                            </div>
+                        </label>
+                        <input type="number" class="optional Stringtie" name="Stringtie_param!--M" style="display:none;"
+                               class="hidden-txt">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Continue"><br><br>
+                        <input type="reset" value="Clear">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </center>
+</div>
+<script type=text/javascript src="{{
+                url_for('static', filename='jquery-1.8.3.min.js') }}"></script>
+<script>
+                      $("select").change(function () {
+                          $('.optional').css('display','none');
+                          $("select option:selected").each(function () {
+                              if($(this).val() == "Hisat2") {
+                                  $('.Hisat2').css('display','block');
+                              } else if($(this).val() == "Bowtie2") {
+                              $('.Bowtie2').css('display','block');
+                              }
+                          });
+                          $("select option:selected").each(function () {
+                              if($(this).val() == "Stringtie") {
+                                  $('.Stringtie').css('display','block');
+                              }
+                          });
+                      });
+
+
+
+
+</script>
+</body>
+</html>

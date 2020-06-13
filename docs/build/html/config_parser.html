@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Config Parser &#8212; DRAW 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css"/>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css"/>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html"/>
+    <link rel="search" title="Search" href="search.html"/>
+    <link rel="next" title="Config Parser" href="config_exec.html"/>
+    <link rel="prev" title="Enviroment" href="envirovement.html"/>
+
+    <link rel="stylesheet" href="_static/custom.css" type="text/css"/>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9"/>
+
+</head>
+<body>
+
+
+<div class="document">
+    <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+            <div class="body" role="main">
+
+                <div class="section" id="config-parser">
+                    <h1>Config Parser<a class="headerlink" href="#config-parser"
+                                        title="Permalink to this headline">¶</a></h1>
+                    <p>Module responsible for collecting and checking data form config files</p>
+                    <span class="target" id="module-config_parser"></span>
+                    <dl class="class">
+                        <dt id="config_parser.Analysis_Config">
+                            <em class="property">class </em><code
+                                class="sig-prename descclassname">config_parser.</code><code class="sig-name descname">Analysis_Config</code><span
+                                class="sig-paren">(</span><em class="sig-param">json_file</em>, <em class="sig-param">run_id</em><span
+                                class="sig-paren">)</span><a class="headerlink" href="#config_parser.Analysis_Config"
+                                                             title="Permalink to this definition">¶</a></dt>
+                        <dd><p>Type of run that performed ‘MAPPING’ and ‘COUNTING’ stages without QC and trimming</p>
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="config_parser.Complete_Analysis_Config">
+                            <em class="property">class </em><code
+                                class="sig-prename descclassname">config_parser.</code><code class="sig-name descname">Complete_Analysis_Config</code><span
+                                class="sig-paren">(</span><em class="sig-param">json_file</em>, <em class="sig-param">run_id</em><span
+                                class="sig-paren">)</span><a class="headerlink"
+                                                             href="#config_parser.Complete_Analysis_Config"
+                                                             title="Permalink to this definition">¶</a></dt>
+                        <dd>
+                            <dl class="method">
+                                <dt id="config_parser.Complete_Analysis_Config.check_config_specific_variables">
+                                    <code class="sig-name descname">check_config_specific_variables</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#config_parser.Complete_Analysis_Config.check_config_specific_variables"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Checks variables specific for particular config file type eg. correct type</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="config_parser.Config_Parser">
+                            <em class="property">class </em><code
+                                class="sig-prename descclassname">config_parser.</code><code class="sig-name descname">Config_Parser</code><span
+                                class="sig-paren">(</span><em class="sig-param">json_file</em>, <em class="sig-param">run_id</em><span
+                                class="sig-paren">)</span><a class="headerlink" href="#config_parser.Config_Parser"
+                                                             title="Permalink to this definition">¶</a></dt>
+                        <dd><p>Object resposnible for checking and collecting data form config file</p>
+                            <dl class="method">
+                                <dt id="config_parser.Config_Parser.check_all_stages_presence">
+                                    <code class="sig-name descname">check_all_stages_presence</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#config_parser.Config_Parser.check_all_stages_presence"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Checks if there are any missing stages</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Raises</dt>
+                                        <dd class="field-odd"><p><strong>KeyError</strong> – there are missing steps in
+                                            contig files</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_parser.Config_Parser.check_config_specific_variables">
+                                    <em class="property">abstract </em><code class="sig-name descname">check_config_specific_variables</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#config_parser.Config_Parser.check_config_specific_variables"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Checks variables specific for particular config file type eg. correct type</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_parser.Config_Parser.check_global_config_variables">
+                                    <code class="sig-name descname">check_global_config_variables</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#config_parser.Config_Parser.check_global_config_variables"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Checks if provided global config parameters (that are avaliable for all config
+                                    file) exist are are correct</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Raises</dt>
+                                        <dd class="field-odd">
+                                            <ul class="simple">
+                                                <li><p><strong>ValueError</strong> – No input files</p></li>
+                                                <li><p><strong>KeyError</strong> – There are missing config parameters
+                                                    in config file</p></li>
+                                            </ul>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_parser.Config_Parser.check_if_proper_tool_for_stage">
+                                    <code class="sig-name descname">check_if_proper_tool_for_stage</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#config_parser.Config_Parser.check_if_proper_tool_for_stage"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Checks if there are any if tools are asigned to stage properly</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Raises</dt>
+                                        <dd class="field-odd"><p><strong>KeyError</strong> – provided assigned to stage
+                                            is tool is not available</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_parser.Config_Parser.get_config_variable">
+                                    <code class="sig-name descname">get_config_variable</code><span
+                                        class="sig-paren">(</span><em class="sig-param">variable</em><span
+                                        class="sig-paren">)</span><a class="headerlink"
+                                                                     href="#config_parser.Config_Parser.get_config_variable"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>return value of variable in config data</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Parameters</dt>
+                                        <dd class="field-odd"><p><strong>variable</strong> (<em>str</em>) – variable
+                                            name eg seq_type</p>
+                                        </dd>
+                                        <dt class="field-even">Returns</dt>
+                                        <dd class="field-even"><p>var_value - value assigned to ‘variable’</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="config_parser.Config_Parser.get_tool_for_stage">
+                                    <code class="sig-name descname">get_tool_for_stage</code><span
+                                        class="sig-paren">(</span><em class="sig-param">stage</em><span
+                                        class="sig-paren">)</span><a class="headerlink"
+                                                                     href="#config_parser.Config_Parser.get_tool_for_stage"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Returns tool with parameters for stage</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Parameters</dt>
+                                        <dd class="field-odd"><p><strong>stage</strong> (<em>str</em>) – stage name eg
+                                            ‘MAPPING’</p>
+                                        </dd>
+                                        <dt class="field-even">Returns</dt>
+                                        <dd class="field-even"><p>tool, tool_param - that is name of tool used for
+                                            provided stage and parameters</p>
+                                        </dd>
+                                        <dt class="field-odd">Return type</dt>
+                                        <dd class="field-odd"><p>tuple</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="config_parser.Sequence_Prefiltering_Config">
+                            <em class="property">class </em><code
+                                class="sig-prename descclassname">config_parser.</code><code class="sig-name descname">Sequence_Prefiltering_Config</code><span
+                                class="sig-paren">(</span><em class="sig-param">json_file</em>, <em class="sig-param">run_id</em><span
+                                class="sig-paren">)</span><a class="headerlink"
+                                                             href="#config_parser.Sequence_Prefiltering_Config"
+                                                             title="Permalink to this definition">¶</a></dt>
+                        <dd><p>Type of run that performed only QC and trimming</p>
+                            <dl class="method">
+                                <dt id="config_parser.Sequence_Prefiltering_Config.check_config_specific_variables">
+                                    <code class="sig-name descname">check_config_specific_variables</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#config_parser.Sequence_Prefiltering_Config.check_config_specific_variables"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Checks variables specific for particular config file type eg. correct type</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <h1 class="logo"><a href="index.html">DRAW</a></h1>
+
+
+            <h3>Navigation</h3>
+            <p class="caption"><span class="caption-text">Contents:</span></p>
+            <ul class="current">
+                <li class="toctree-l1"><a class="reference internal" href="tools.html">DRAW Tools module</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="tools.html#module-tools">Tools</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="tools.html#indices-and-tables">Indices and
+                    tables</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="envirovement.html">Enviroment</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="envirovement.html#indices-and-tables">Indices
+                    and tables</a></li>
+                <li class="toctree-l1 current"><a class="current reference internal" href="#">Config Parser</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="config_exec.html">Config Parser</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="config_exec.html#indices-and-tables">Indices
+                    and tables</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="gui.html">DRAW Gui</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="gui.html#indices-and-tables">Indices and
+                    tables</a></li>
+            </ul>
+
+            <div class="relations">
+                <h3>Related Topics</h3>
+                <ul>
+                    <li><a href="index.html">Documentation overview</a>
+                        <ul>
+                            <li>Previous: <a href="envirovement.html" title="previous chapter">Enviroment</a></li>
+                            <li>Next: <a href="config_exec.html" title="next chapter">Config Parser</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="searchbox" style="display: none" role="search">
+                <h3 id="searchlabel">Quick search</h3>
+                <div class="searchformwrapper">
+                    <form class="search" action="search.html" method="get">
+                        <input type="text" name="q" aria-labelledby="searchlabel"/>
+                        <input type="submit" value="Go"/>
+                    </form>
+                </div>
+            </div>
+            <script>$('#searchbox').show(0);</script>
+
+
+        </div>
+    </div>
+    <div class="clearer"></div>
+</div>
+<div class="footer">
+    &copy;2020, Goździewska, Kiljan, Szymczak, Poziemski.
+
+    |
+    Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+    &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+
+    |
+    <a href="_sources/config_parser.rst.txt"
+       rel="nofollow">Page source</a>
+</div>
+
+
+</body>
+</html>

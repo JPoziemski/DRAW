@@ -2,17 +2,21 @@
 
 ADP project: tool for RNA-seq analysis
 
-
 ## Isolated environment in Docker containers
 
 **Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and a popular web browser (recommended Google Chrome version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
+
+To install Docker on Linux folow instructions from website linked below:
+```
+https://runnable.com/docker/install-docker-on-linux
+```
 
 To get the image of DRAW, make sure you have Internet access and execute the following script:
 ```console
 $ ./build.sh
 ```
 
-Before running the container place input data in the input directory. To run the container execute the run_docker.sh script as below. Directories input, config_files and output persist data generated and used by Docker. Ports 2000 i 5000 are published to the host machine. Container is running in interactive mode to see running processes.
+**Before running the container place input data in the input directory.** To run the container execute the run_docker.sh script as below. Directories input, config_files and output persist data generated and used by Docker. Ports 2000 i 5000 are published to the host machine. Container is running in interactive mode for user to see running processes. It will open a GUI application to fill in configurations and visualizations server, which will rise after the end of the analysis.
 ```console
 $ ./run_docker.sh
 ```
@@ -25,8 +29,12 @@ http://0.0.0.0:2000/index
 http://0.0.0.0:5000/bkapp
 ```
 
-To stop the docker from running use Ctrl + d
+To stop the docker from running use Ctrl+C
 
+If encounter an error "Adress is already in use" type following command and port, which you want to release:
+```console
+$ sudo fuser -k Port_Number/tcp
+```
 
 Docker uses following options: \
 --tag, -t Tag docker container. \
@@ -34,12 +42,49 @@ Docker uses following options: \
 --volume , -v	Bind a volume \
 --interactive, -it Run container in interactive mode
 
+## Graphic User Interface (GUI)
+This simple flask app offers limited functionality that allows basic config file management for potential user. GUI opens in default browser installed on user's web browser. User is greeted with short software description and two options: "Generate", "Load config". 
+
+**Generate** - two-step config file generation procedure. During first step user is obliged to specify paths to input files, run type and other details regarding inputs. Default run_id consists partly of current computer time to maintain config files' 
+uniqueness. Second step varies depending on which run type was specified in previous step. By filing second form user is able to define all necessary parameters for tools used in analysis. Hovering cursor over specific parameters prompts tooltips that give some insight into their effect on given tool. Subsequently config file, which name is unique run_id, is created in form of json file in config_files directory located in main folder. At this point user is presented with an option to perform run using config paramteres that were just specified.
+
+**Load config** - this option prompts user for run_id of previously created json config file. That way user can repeat analysis with previously specified conditions and tools. 
+
+**It is crucial for user to specify parameters for all chosen tools. This allows for further, successful analysis**
+
 
 ##  Differential expression analysis
-   
+
+The differential expression analysis is performed in DESeq2. 
+The output of the differential expression analysis are 4 files:
+- Normalized counts
+- rLog - regularized logarithm
+- VST - variance stabilizing transformations
+- DESeq2 result file
+
+
 ##  Visualisation 
 
-The visualisation dashboard offers four type of plots, which can be accesed by selection appriopriate tab: 
+The visualisation dashboard offers four type of plots, which can be accesed by selection appriopriate tab. Most often the visualisation dashboard will be opened as soon as the analysis is finished. 
+
+When needed, the visualisation for a given run can be accessed in a seperate manner. All of the requirements for running the analysis apart from the Docker and the rest od the DRAW module, can be installed:
+
+```console
+$ ./vis_requirements.sh
+```
+
+Then, to run the visualisation:
+```console
+$  cd bin # Make sure that you are in bin folder!
+$  python3 vis.py -id [run_id] -dt [data]
+```
+
+where ```run_id``` is the id of the run we want to visualise, and ```data``` is one of the followind data types:
+- ```norm``` - normalized counts
+- ```rlog``` - regularized logarithm
+- ```vst``` - variance stabilizing transformation
+
+The plots offered:
 
 **Smear plot**
   

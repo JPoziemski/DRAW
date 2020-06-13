@@ -6,9 +6,12 @@ from bokeh.plotting import figure
 
 from visualisation import Visualisation
 
+
 class VolcanoPlot(Visualisation):
     """
-    Plot volcano plot, showing statistical significance (P value) versus magnitude of change (fold change).
+    Plot volcano plot, showing statistical significance (p-value) versus magnitude of change (fold change).
+    :param data: data used for plotting
+    :type data: pd.DataFrame
     """
 
     def __init__(
@@ -20,7 +23,6 @@ class VolcanoPlot(Visualisation):
         self.layout = None
         self.pvalue_cutoff = 0.05
         self.fc_cutoff = 0
-
 
     def prepare_data(self):
         """ Select relevant columns from the original DESeq2 results. """
@@ -37,13 +39,27 @@ class VolcanoPlot(Visualisation):
         """ Create p-value cut-off slider. """
 
         def pvalue_callback(attr, old, new):
-            """ Callback for p-value cut-off slider. Refresh plot each time p-value cut-off changes. """
+            """ Callback for p-value cut-off slider. Refresh plot each time p-value cut-off changes.
+            :param attr: value to change
+            :type attr: str
+            :param old: old value
+            :type old: float
+            :param new: new value
+            :type new: float
+             """
 
             self.pvalue_cutoff = float(new)
             self.callback()
 
         def fc_callback(attr, old, new):
-            """ Callback for FC cut-off slider. Refresh plot each time FC cut-off changes. """
+            """ Callback for FC cut-off slider. Refresh plot each time FC cut-off changes.
+            :param attr: value to change
+            :type attr: str
+            :param old: old value
+            :type old: float
+            :param new: new value
+            :type new: float
+             """
 
             self.fc_cutoff = float(new)
             self.callback()
@@ -53,8 +69,6 @@ class VolcanoPlot(Visualisation):
 
         fc_input = TextInput(value="0", title="LogFC threshold to colour")
         fc_input.on_change("value", fc_callback)
-
-
 
         return [pvalue_input, fc_input]
 
@@ -92,7 +106,7 @@ class VolcanoPlot(Visualisation):
             plot_width=600,
             x_axis_label='log2FC',
             y_axis_label='-log10pvalue',
-            tools = [hover],
+            tools=[hover],
         )
 
         volcano_plot.circle(
@@ -110,9 +124,11 @@ class VolcanoPlot(Visualisation):
         return volcano_plot
 
     def callback(self):
+        """ Main callback for updating the plot. """
         self.layout.children[0].children[0] = self.get_plot()
 
     def get_tabs(self):
+        """ Get components of the plot and add them to the layout. """
         self.layout = layout([[self.get_plot(), [widget for widget in self.get_widgets()]]])
         return Panel(
             child=self.layout,

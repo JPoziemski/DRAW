@@ -1,0 +1,18 @@
+.. DRAW documentation master file, created by
+   sphinx-quickstart on Wed Jun  3 15:45:25 2020.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+DRAW Tools module
+================================
+
+This module collects set of classes responsible for configuring and executing tool commands
+
+
+
+Tools
+=======================
+.. automodule:: tools
+   :members:
+
+

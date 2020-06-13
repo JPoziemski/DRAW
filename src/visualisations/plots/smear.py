@@ -11,6 +11,8 @@ class SmearPlot(Visualisation):
     Plot "smear plot" showing the log2fold-change (FC, y-axis) versus the average log2 count per million
      (CPM, x-axis) of the change in gene expression.
     Slider enables selecting FDR cut-off for selecting differentially expressed genes.
+    :param data: data used for plotting
+    :type data: pd.DataFrame
     """
 
     def __init__(
@@ -72,11 +74,19 @@ class SmearPlot(Visualisation):
         return smear_plot
 
     def callback(self, attr, old, new):
-        """ Callback for FDR cut-off slider. Refresh plot each time FDR cut-off changes. """
+        """ Callback for FDR cut-off slider. Refresh plot each time FDR cut-off changes.
+            :param attr: value to change
+            :type attr: str
+            :param old: old value
+            :type old: float
+            :param new: new value
+            :type new: float
+            """
         self.cutoff = float(new)
         self.layout.children[0].children[0] = self.get_plot()
 
     def get_tabs(self):
+        """ Get components of the plot and add them to the layout. """
         self.layout = layout([[self.get_plot(), [widget for widget in self.get_widgets()]]])
         return Panel(
             child=self.layout,
