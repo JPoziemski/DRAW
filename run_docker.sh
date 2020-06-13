@@ -3,9 +3,9 @@
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 input_path="$SCRIPTPATH/input"
 
-google-chrome --disable-gpu --disable-software-rasterizer http://0.0.0.0:2000/index 
+google-chrome --disable-gpu http://0.0.0.0:2000/index 
 sleep 1
-google-chrome --disable-gpu --disable-software-rasterizer http://0.0.0.0:5000/bkapp 
+google-chrome --disable-gpu http://0.0.0.0:5000/bkapp 
 
 
 docker run -v $SCRIPTPATH/input:/app/input \
