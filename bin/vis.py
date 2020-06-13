@@ -27,7 +27,7 @@ def parse_arguments():
     """Get id and data type for visualisation. """
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('-id', help='ID of the run')
-    parser.add_argument('-dt', choices=['vsd', 'rld', 'norm'], default='vsd',
+    parser.add_argument('-dt', choices=['vst', 'rld', 'norm'], default='vst',
                         help='Main type of data to use in the visualisation')
     args = parser.parse_args()
     return args.id, args.dt
