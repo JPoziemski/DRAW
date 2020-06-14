@@ -13,7 +13,7 @@ class ConfigExec:
     def __init__(self, Config):
         self.logger = logging.getLogger(__name__)
         self.master_output_directory = os.path.join(global_variables.OUTPUT_DIRECTORY, Config.run_id)
-        os.mkdir(self.master_output_directory)
+        # os.mkdir(self.master_output_directory)
         self.Config = Config
         self.run_order = []
         self.input_files_paths = []
