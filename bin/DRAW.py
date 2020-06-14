@@ -16,20 +16,23 @@ import logging
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s -%(levelname)s-%(message)s',
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument("config_file_name", help="name of configuration file")
+    args = parser.parse_args()
+
+    config_file_path = os.path.join(global_variables.CONFIG_DIRECTORY, args.config_file_name)
+    run_id = os.path.splitext(os.path.basename(args.config_file_name))[0]
+    os.mkdir(os.path.join(global_variables.OUTPUT_DIRECTORY, run_id))
+    log_path = os.path.join(global_variables.OUTPUT_DIRECTORY, run_id, "log")
+    logging.basicConfig(filename=log_path, filemode='w', format='%(asctime)s -%(levelname)s-%(message)s',
                         level=logging.DEBUG)
     logger = logging.getLogger()
     # logger.setLevel(logging.INFO)
 
     logger.info("Running DRAW.py")
 
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument("config_file_name", help="name of configuration file")
-    args = parser.parse_args()
-    logger.info("Arguments parsed correctly")
 
-    config_file_path = os.path.join(global_variables.CONFIG_DIRECTORY, args.config_file_name)
-    run_id = os.path.splitext(os.path.basename(args.config_file_name))[0]
+
 
     config_file = open(config_file_path, "r")
     config_file_json = json.load(config_file)
@@ -66,7 +69,7 @@ if __name__ == "__main__":
             run_analysis = Config.get_config_variable("run_downstream_analysis")
         except:
             run_analysis = False
-        config_exec.prepare_data_for_visualalisation()
+        # config_exec.prepare_data_for_visualalisation()
         if run_analysis:
             vis_path = os.path.join(config_exec.master_output_directory, "VISUALISATION")
             os.mkdir(vis_path)
@@ -79,6 +82,7 @@ if __name__ == "__main__":
                 raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
 
             vis_command = "python3 ./vis.py -id {} -dt vst".format(run_id)
+            logger.info(vis_command)
             process = subprocess.Popen([vis_command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
             process.wait()
             if process.returncode != 0:
