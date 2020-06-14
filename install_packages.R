@@ -1,5 +1,5 @@
 if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install()
+    install.packages("BiocManager", repos = "http://cran.us.r-project.org")
 
-BiocManager::install("DESeq")
+BiocManager::install("RCurl")
+BiocManager::install("DESeq2")

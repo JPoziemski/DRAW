@@ -1,0 +1,497 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>DRAW Tools module &#8212; DRAW 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css"/>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css"/>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html"/>
+    <link rel="search" title="Search" href="search.html"/>
+    <link rel="next" title="Enviroment" href="envirovement.html"/>
+    <link rel="prev" title="Welcome to DRAW’s documentation!" href="index.html"/>
+
+    <link rel="stylesheet" href="_static/custom.css" type="text/css"/>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9"/>
+
+</head>
+<body>
+
+
+<div class="document">
+    <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+            <div class="body" role="main">
+
+                <div class="section" id="draw-tools-module">
+                    <h1>DRAW Tools module<a class="headerlink" href="#draw-tools-module"
+                                            title="Permalink to this headline">¶</a></h1>
+                    <p>This module collects set of classes responsible for configuring and executing tool commands</p>
+                </div>
+                <div class="section" id="module-tools">
+                    <span id="tools"></span>
+                    <h1>Tools<a class="headerlink" href="#module-tools" title="Permalink to this headline">¶</a></h1>
+                    <dl class="class">
+                        <dt id="tools.Bowtie">
+                            <em class="property">class </em><code class="sig-prename descclassname">tools.</code><code
+                                class="sig-name descname">Bowtie</code><span class="sig-paren">(</span><em
+                                class="sig-param">input</em>, <em class="sig-param">output</em>, <em class="sig-param">params</em>,
+                            <em class="sig-param">sequence</em><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                  href="#tools.Bowtie"
+                                                                                                  title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd>
+                            <dl class="method">
+                                <dt id="tools.Bowtie.build">
+                                    <code class="sig-name descname">build</code><span class="sig-paren">(</span><span
+                                        class="sig-paren">)</span><a class="headerlink" href="#tools.Bowtie.build"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Exectue build command that create index files for Hisat2</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Bowtie.prepare_to_run">
+                                    <code class="sig-name descname">prepare_to_run</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Bowtie.prepare_to_run"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Performs set of operations necessary to execute tool</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="tools.FastQC">
+                            <em class="property">class </em><code class="sig-prename descclassname">tools.</code><code
+                                class="sig-name descname">FastQC</code><span class="sig-paren">(</span><em
+                                class="sig-param">input</em>, <em class="sig-param">output_dir</em>, <em
+                                class="sig-param">user_params</em><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.FastQC"
+                                                                                                     title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>FastQC master class</p>
+                            <dl class="method">
+                                <dt id="tools.FastQC.add_input">
+                                    <code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em
+                                        class="sig-param">input</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.FastQC.add_input"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.FastQC.add_output">
+                                    <code class="sig-name descname">add_output</code><span class="sig-paren">(</span><em
+                                        class="sig-param">output</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.FastQC.add_output"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.FastQC.check_params">
+                                    <code class="sig-name descname">check_params</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.FastQC.check_params"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Checks if there are any parameters that are not allowed</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Raises</dt>
+                                        <dd class="field-odd"><p><strong>ToolError</strong> – some parameters that are
+                                            disallowed</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.FastQC.prepare_to_run">
+                                    <code class="sig-name descname">prepare_to_run</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.FastQC.prepare_to_run"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Performs set of operations necessary to execute tool</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="tools.Hisat2">
+                            <em class="property">class </em><code class="sig-prename descclassname">tools.</code><code
+                                class="sig-name descname">Hisat2</code><span class="sig-paren">(</span><em
+                                class="sig-param">input</em>, <em class="sig-param">output</em>, <em class="sig-param">params</em>,
+                            <em class="sig-param">sequence</em><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                  href="#tools.Hisat2"
+                                                                                                  title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>Hisat2 master class</p>
+                            <dl class="method">
+                                <dt id="tools.Hisat2.add_input">
+                                    <code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em
+                                        class="sig-param">input</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.Hisat2.add_input"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Hisat2.add_output">
+                                    <code class="sig-name descname">add_output</code><span class="sig-paren">(</span><em
+                                        class="sig-param">output_dir</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.Hisat2.add_output"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Hisat2.build">
+                                    <code class="sig-name descname">build</code><span class="sig-paren">(</span><span
+                                        class="sig-paren">)</span><a class="headerlink" href="#tools.Hisat2.build"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Exectue build command that create index files for Hisat2</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Hisat2.prepare_to_run">
+                                    <code class="sig-name descname">prepare_to_run</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Hisat2.prepare_to_run"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Performs set of operations necessary to execute tool</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Hisat2.run">
+                                    <code class="sig-name descname">run</code><span class="sig-paren">(</span><span
+                                        class="sig-paren">)</span><a class="headerlink" href="#tools.Hisat2.run"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Execute tool command</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="tools.Stringtie">
+                            <em class="property">class </em><code class="sig-prename descclassname">tools.</code><code
+                                class="sig-name descname">Stringtie</code><span class="sig-paren">(</span><em
+                                class="sig-param">input</em>, <em class="sig-param">output</em>, <em class="sig-param">user_params</em>,
+                            <em class="sig-param">annotation</em><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                    href="#tools.Stringtie"
+                                                                                                    title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd>
+                            <dl class="method">
+                                <dt id="tools.Stringtie.add_input">
+                                    <code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em
+                                        class="sig-param">input_path</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.Stringtie.add_input"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Stringtie.add_output">
+                                    <code class="sig-name descname">add_output</code><span class="sig-paren">(</span><em
+                                        class="sig-param">output</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.Stringtie.add_output"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Stringtie.prepare_to_run">
+                                    <code class="sig-name descname">prepare_to_run</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Stringtie.prepare_to_run"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Performs set of operations necessary to execute tool</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="tools.Tool">
+                            <em class="property">class </em><code class="sig-prename descclassname">tools.</code><code
+                                class="sig-name descname">Tool</code><span class="sig-paren">(</span><em
+                                class="sig-param">input</em>, <em class="sig-param">output_dir</em>, <em
+                                class="sig-param">user_params</em><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Tool"
+                                                                                                     title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>Class responsible for executing tools with proper parameters</p>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Parameters</dt>
+                                <dd class="field-odd">
+                                    <ul class="simple">
+                                        <li><p><strong>input</strong> (<em>list</em>) – input params</p></li>
+                                        <li><p><strong>output_dir</strong> (<em>str</em>) – directory where files will
+                                            be saved</p></li>
+                                    </ul>
+                                </dd>
+                            </dl>
+                            <dl class="method">
+                                <dt id="tools.Tool.add_input">
+                                    <em class="property">abstract </em><code
+                                        class="sig-name descname">add_input</code><span class="sig-paren">(</span><em
+                                        class="sig-param">input</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.Tool.add_input"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Tool.add_output">
+                                    <em class="property">abstract </em><code class="sig-name descname">add_output</code><span
+                                        class="sig-paren">(</span><em class="sig-param">output</em><span
+                                        class="sig-paren">)</span><a class="headerlink" href="#tools.Tool.add_output"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Tool.check_params">
+                                    <code class="sig-name descname">check_params</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Tool.check_params"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Checks if there are any parameters that are not allowed</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Raises</dt>
+                                        <dd class="field-odd"><p><strong>ToolError</strong> – some parameters that are
+                                            disallowed</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Tool.get_created_files">
+                                    <code class="sig-name descname">get_created_files</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Tool.get_created_files"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Get file paths which tool creates</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Returns</dt>
+                                        <dd class="field-odd"><p>self.created_files - file paths</p>
+                                        </dd>
+                                        <dt class="field-even">Return type</dt>
+                                        <dd class="field-even"><p>list</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Tool.prepare_to_run">
+                                    <em class="property">abstract </em><code
+                                        class="sig-name descname">prepare_to_run</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Tool.prepare_to_run"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Performs set of operations necessary to execute tool</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="tools.Trimmomatic">
+                            <em class="property">class </em><code class="sig-prename descclassname">tools.</code><code
+                                class="sig-name descname">Trimmomatic</code><span class="sig-paren">(</span><em
+                                class="sig-param">input</em>, <em class="sig-param">output</em>, <em class="sig-param">params</em>,
+                            <em class="sig-param">seq_type</em><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                  href="#tools.Trimmomatic"
+                                                                                                  title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>Trimmomatic master class</p>
+                            <dl class="method">
+                                <dt id="tools.Trimmomatic.add_input">
+                                    <code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em
+                                        class="sig-param">input</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.Trimmomatic.add_input"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Trimmomatic.add_output">
+                                    <code class="sig-name descname">add_output</code><span class="sig-paren">(</span><em
+                                        class="sig-param">output_dir</em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#tools.Trimmomatic.add_output"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Add input argument to tool command</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Trimmomatic.get_created_files">
+                                    <code class="sig-name descname">get_created_files</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Trimmomatic.get_created_files"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Get file paths which tool creates</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Returns</dt>
+                                        <dd class="field-odd"><p>self.created_files - file paths</p>
+                                        </dd>
+                                        <dt class="field-even">Return type</dt>
+                                        <dd class="field-even"><p>list</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="method">
+                                <dt id="tools.Trimmomatic.prepare_to_run">
+                                    <code class="sig-name descname">prepare_to_run</code><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#tools.Trimmomatic.prepare_to_run"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Performs set of operations necessary to execute tool</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="class">
+                        <dt id="tools.samtools">
+                            <em class="property">class </em><code class="sig-prename descclassname">tools.</code><code
+                                class="sig-name descname">samtools</code><a class="headerlink" href="#tools.samtools"
+                                                                            title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>adassadas</p>
+                            <dl class="method">
+                                <dt id="tools.samtools.sam_to_bam">
+                                    <code class="sig-name descname">sam_to_bam</code><span class="sig-paren">(</span><em
+                                        class="sig-param">input_file</em>, <em class="sig-param">output_file</em><span
+                                        class="sig-paren">)</span><a class="headerlink"
+                                                                     href="#tools.samtools.sam_to_bam"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>converts sam to bam</p>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Parameters</dt>
+                                        <dd class="field-odd">
+                                            <ul class="simple">
+                                                <li><p><strong>input_file</strong> (<em>str</em>) – intput file</p></li>
+                                                <li><p><strong>output_file</strong> (<em>str</em>) – output file</p>
+                                                </li>
+                                            </ul>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                        </dd>
+                    </dl>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <h1 class="logo"><a href="index.html">DRAW</a></h1>
+
+
+            <h3>Navigation</h3>
+            <p class="caption"><span class="caption-text">Contents:</span></p>
+            <ul class="current">
+                <li class="toctree-l1 current"><a class="current reference internal" href="#">DRAW Tools module</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="#module-tools">Tools</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="envirovement.html">Enviroment</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="envirovement.html#indices-and-tables">Indices
+                    and tables</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="config_parser.html">Config Parser</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="config_exec.html">Config Exec</a></li>
+                <li class="toctree-l1"><a class="reference internal" href="gui.html">DRAW Gui</a></li>
+            </ul>
+
+            <div class="relations">
+                <h3>Related Topics</h3>
+                <ul>
+                    <li><a href="index.html">Documentation overview</a>
+                        <ul>
+                            <li>Previous: <a href="index.html" title="previous chapter">Welcome to DRAW’s
+                                documentation!</a></li>
+                            <li>Next: <a href="envirovement.html" title="next chapter">Enviroment</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="searchbox" style="display: none" role="search">
+                <h3 id="searchlabel">Quick search</h3>
+                <div class="searchformwrapper">
+                    <form class="search" action="search.html" method="get">
+                        <input type="text" name="q" aria-labelledby="searchlabel"/>
+                        <input type="submit" value="Go"/>
+                    </form>
+                </div>
+            </div>
+            <script>$('#searchbox').show(0);</script>
+
+
+        </div>
+    </div>
+    <div class="clearer"></div>
+</div>
+<div class="footer">
+    &copy;2020, Goździewska, Kiljan, Szymczak, Poziemski.
+
+    |
+    Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+    &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+
+    |
+    <a href="_sources/tools.rst.txt"
+       rel="nofollow">Page source</a>
+</div>
+
+
+</body>
+</html>

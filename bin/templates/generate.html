@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+body {
+    background-image: url('/static/images/bg.png');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.content {
+border-radius: 25px;
+padding: 10px;
+position: absolute;
+top:  50%;
+left: 50%;
+transform: translate(-50%,-50%);
+background: HoneyDew;
+}
+input[type=submit]{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+input[type=reset] {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+a.home {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+
+    </style>
+</head>
+<body>
+<a href="/index" class="home">Home</a><br>
+<div class="content">
+    <center>
+        <h1>Conifg file generator for DRAW</h1>
+        <form action="/tools">
+            <label for="run_id">Run ID</label><br>
+            <input type="text" id="run_id" name="run_id" value="{{ run_id }}"><br><br>
+            <label for="run_type">Run type</label><br>
+            <select id="run_type" name="run_type">
+                <option value="complete_analysis">Complete</option>
+                <option value="sequence_prefiltering">Sequence prefiltering</option>
+                <option value="analysis">Analysis</option>
+            </select><br><br>
+            <label for="seq_type">Input sequences type</label><br>
+            <select id="seq_type" name="seq_type">
+                <option value="single_end">Single end</option>
+                <option value="paired_end">Paired end</option>
+            </select><br><br>
+            <label for="annotation_file_name">Name of annotation file</label><br>
+            <input type="text" id="annotation_file_name" name="annotation_file_name" value=""><br><br>
+            <label for="reference_file_name">Name of reference file</label><br>
+            <input type="text" id="reference_file_name" name="reference_file_name" value=""><br><br>
+            <label for="input_file_prefix">Prefix of sample file names</label><br>
+            <input type="text" id="input_file_prefix" name="input_file_prefix" value=""><br><br>
+            <label for="control_file_prefix">Prefix of control file names</label><br>
+            <input type="text" id="control_file_prefix" name="control_file_prefix" value=""><br><br>
+            <label for="threads_number">Number of threads used for the analysis</label><br>
+            <input type="number" id="threads_number" name="threads_number" value=""><br><br>
+
+            <label for="run_downstream_analysis">Run downstream analysis</label><br>
+            <input type="checkbox" id="run_downstream_analysis" name="run_downstream_analysis"><br><br>
+
+            <input type="submit" value="Continue"><br><br>
+            <input type="reset" value="Clear">
+        </form>
+    </center>
+</div>
+</body>
+</html>
