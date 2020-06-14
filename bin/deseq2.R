@@ -63,12 +63,12 @@ res <- calculate_de(dds)
 # Normalize
 normal  <- counts(dds, normalized = TRUE)
 # Variance stabilizing transformation
-vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
+vst <- varianceStabilizingTransformation(dds, blind = FALSE)
 # Regularized-logarithm transformation
 rld <- rlog(dds, blind = FALSE)
 
 # Save outputs
 write.csv(res, paste('../output/', run_id, '/VISUALISATION/res.csv', sep=""))
-write.csv(assay(vsd), paste('../output/', run_id, '/VISUALISATION/vsd.csv', sep=""))
+write.csv(assay(vst), paste('../output/', run_id, '/VISUALISATION/vst.csv', sep=""))
 write.csv(assay(rld),paste('../output/', run_id, '/VISUALISATION/rld.csv', sep=""))
 write.csv(normal, paste('../output/', run_id, '/VISUALISATION/norm.csv', sep=""))
