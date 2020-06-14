@@ -80,7 +80,7 @@ bokeh_app = Application(FunctionHandler(get_plot))
 @app.route('/', methods = ['GET'])
 def index():
     """ Generate a script to load the session and use the script in the rendered page. """
-    script = server_document('http://0.0.0.0:5001/bkapp')
+    script = server_document('http://0.0.0.0:5000/bkapp')
     return render_template("index.html", script = script)
 
 def bk_worker():
@@ -99,4 +99,4 @@ Thread(target = bk_worker).start()
 if __name__ == '__main__':
     print('Opening single process Flask app with embedded Bokeh application on http://0.0.0.0:{}/'.format(port))
     webbrowser.open_new("http://0.0.0.0:{}/".format(port))
-    app.run(port = port, debug = False)
+    app.run(port = port, debug = False, host='0.0.0.0')
