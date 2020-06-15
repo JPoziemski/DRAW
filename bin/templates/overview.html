@@ -17,7 +17,7 @@ left: 50%;
 transform: translate(-50%,-50%);
 background: HoneyDew;
 }
-a.button {
+a.run {
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
@@ -27,15 +27,24 @@ a.button {
   display: inline-block;
   font-size: 16px;
 }
+a.home {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
 </style>
 </head>
 <body>
+<a href="/index" class="home">Home</a><br>
 <div class="content">
 <center>
-<h1>Congrats, you've successfully generated config file!</h1>
-<p>You're new config file is called - <b>{{ run_id }}</b></p>
-    <a href="/progress" class="button">Run it!</a><br><br>
-</center>
+<p>You're config file is called - <b>{{ run_id }}</b></p>
+    <a href="/run_from_config" class="run">Run it!</a><br><br>
 </div>
 </body>
 </html>

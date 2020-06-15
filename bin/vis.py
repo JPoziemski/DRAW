@@ -27,7 +27,7 @@ def parse_arguments():
     """Get id and data type for visualisation. """
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('-id', help='ID of the run')
-    parser.add_argument('-dt', choices=['vsd', 'rld', 'norm'], default='vsd',
+    parser.add_argument('-dt', choices=['vst', 'rld', 'norm'], default='vst',
                         help='Main type of data to use in the visualisation')
     args = parser.parse_args()
     return args.id, args.dt
@@ -80,7 +80,7 @@ bokeh_app = Application(FunctionHandler(get_plot))
 @app.route('/', methods = ['GET'])
 def index():
     """ Generate a script to load the session and use the script in the rendered page. """
-    script = server_document('http://localhost:5001/bkapp')
+    script = server_document('http://0.0.0.0:5000/bkapp')
     return render_template("index.html", script = script)
 
 def bk_worker():
@@ -88,7 +88,7 @@ def bk_worker():
     server = Server(
         {'/bkapp': bokeh_app},
         io_loop = IOLoop(),
-        allow_websocket_origin = ["localhost:{}".format(port)], port = port
+        allow_websocket_origin = ["0.0.0.0:{}".format(port)], port = port
     )
     server.start()
     server.io_loop.start()
@@ -97,6 +97,11 @@ from threading import Thread
 Thread(target = bk_worker).start()
 
 if __name__ == '__main__':
+    print('Opening single process Flask app with embedded Bokeh application on http://0.0.0.0:{}/'.format(port))
+    webbrowser.open_new("http://0.0.0.0:{}/".format(port))
+    app.run(port = port, debug = False, host='0.0.0.0')
+
     print('Opening single process Flask app with embedded Bokeh application on http://localhost:{}/'.format(port))
     webbrowser.open_new("http://localhost:{}/".format(port))
     app.run(port = port, debug = False)
+

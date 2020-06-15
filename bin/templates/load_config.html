@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+body {
+    background-image: url('/static/images/bg.png');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.content {
+border-radius: 25px;
+padding: 10px;
+position: absolute;
+top:  50%;
+left: 50%;
+transform: translate(-50%,-50%);
+background: HoneyDew;
+}
+input[type=submit]{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+input[type=reset] {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+a.home {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+}
+a.run {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+    </style>
+</head>
+<body>
+<a href="/index" class="home">Home</a><br>
+<div class="content">
+    <center>
+        <h1>Load config file</h1>
+        <form action="/run_from_load">
+            <label for="run_id">Run ID</label><br>
+            <input type="text" id="run_id" name="run_id" value=""><br><br>
+            <input type="submit" value="Run it!"><br><br>
+            <input type="reset" value="Clear"><br>
+        </form>
+    </center>
+</div>
+</body>
+</html>
