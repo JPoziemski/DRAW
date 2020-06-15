@@ -1,16 +1,19 @@
-# ADP_project
+# DRAW: tool for RNA-seq analysis
 
-ADP project: tool for RNA-seq analysis
+Designer for RNA-seq Analysis Workflow. DRAW is a tool that builds workflows from predefined components on the basis of parameters provided by the user from the drop-down lis. It then creates a configuration file, thus enabling repeatability of the analysis and the documentation its course. 
+The tool enables different solutions depending on whether the data needs preprocessing. To make it easier for the user to use many different, we placed our tool in Docker. Then, very time-consuming software installations and hardware requirements are easily avoided.
+The final stage of the analysis is the dashboard visualisation. 
 
 
 ## Input data requirements
 
-Input data should be placed in ```input``` directory, it contains:
-- single end or paired end fastq files
-- annotation file in gft format
-- reference sequence in fasta format
+Input data should be placed in ```input``` directory. It should contain:
+- single end or paired end .fastq files,
+- annotation file in .gft format,
+- reference sequence in .fasta format.
 
-**WARNING DRAW is able to process only fastq files, also you should remember that when you use paired end files corresponding paired end files should ends with ```_1.fastq``` and ```_2.fastq```**
+**WARNING**
+DRAW is able to process only .fastq files. When using paired end files it is is necessary to label corresponding paired end files should with ```_1.fastq``` and ```_2.fastq```.
 
 
 ## Isolated environment in Docker containers
