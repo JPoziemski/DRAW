@@ -1,7 +1,9 @@
 # DRAW: tool for RNA-seq analysis
 
 Designer for RNA-seq Analysis Workflow. DRAW is a tool that builds workflows from predefined components on the basis of parameters provided by the user from the drop-down lis. It then creates a configuration file, thus enabling repeatability of the analysis and the documentation its course. 
+
 The tool enables different solutions depending on whether the data needs preprocessing. To make it easier for the user to use many different, we placed our tool in Docker. Then, very time-consuming software installations and hardware requirements are easily avoided.
+
 The final stage of the analysis is the dashboard visualisation. 
 
 
@@ -18,7 +20,7 @@ DRAW is able to process only .fastq files. When using paired end files it is is 
 
 ## Isolated environment in Docker containers
 
-**Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and have installed Google Chrome browser (recommended version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
+**Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and a popular web browser (recommended Google Chrome version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
 
 To install Docker on Linux folow instructions from website linked below:
 ```
@@ -121,4 +123,4 @@ FDR cut-off enables narrowing the clustered genes to a selection of choice. Addi
 
 **PCA**
 
-Principal component analysis is performed and two principal compontents can be selected by user for plotting by  
+Principal component analysis is performed and two principal compontents can be selected by user for plotting from drop-down menu.
