@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+from pathlib import Path
 
 import global_variables
 
@@ -36,7 +37,8 @@ class ConfigExec:
 
         for stage in self.stages_order:
             curr_output_dir = os.path.join(output_dir, stage)
-            os.mkdir(curr_output_dir)
+            Path(curr_output_dir).mkdir(parents=True, exist_ok=True)
+            # os.mkdir(curr_output_dir)
             tool_for_stage, tool_params = self.Config.get_tool_for_stage(stage)
             new_input_paths = []
 
@@ -82,7 +84,8 @@ class ConfigExec:
 
             elif stage == "COUNTING":
                 bam_files_path = os.path.join(curr_output_dir, "bam_files")
-                os.mkdir(bam_files_path)
+                Path(bam_files_path).mkdir(parents=True, exist_ok=True)
+                #os.mkdir(bam_files_path)
                 new_input_paths = self.prepare_files_to_counting(input_file_paths, bam_files_path)
                 tool_for_stage, tool_params = self.Config.get_tool_for_stage(stage)
                 annotation_file_name = self.Config.get_config_variable("annotation_file_name")
@@ -184,7 +187,7 @@ class ConfigExec:
             # print(processed_tool.command)
             processed_tool.run()
 
-    def prepare_data_for_visualalisation(self):
+    def prepare_data_for_deseq(self):
         """Create files necessary for visualisations
         """
         gft_files_path = os.path.join(self.master_output_directory, "COUNTING")
@@ -195,12 +198,14 @@ class ConfigExec:
 
         command = "python3 prepDE_python3.py -i {} -g {} -t {}".format(gft_list_file_path, gene_count_matrix_path,
                                                                        transcript_count_matrix_path)
+        self.logger.info("Preparing data to analysis with DEseq2: {}".format(command))
         process = subprocess.Popen([command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
-        # print(process.communicate()[1])
         if process.returncode != 0:
-            raise global_variables.ToolError(process.communicate()[1].decode("utf-8"))
+            error_string = process.communicate()[1].decode("utf-8")
+            self.logger.info(error_string)
+            raise global_variables.ToolError(error_string)
         pass
 
     def create_gft_list(self, gft_files_path):

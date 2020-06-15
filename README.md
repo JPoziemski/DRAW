@@ -2,6 +2,15 @@
 
 ADP project: tool for RNA-seq analysis
 
+## Input data requirements
+
+Input data should be placed in ```input``` directory, it contains:
+- single end or paired end fastq files
+- annotation file in gft format
+- reference sequence in fasta format
+
+**WARNING DRAW is able to process only fastq files, also you should remember that when you use paired end files corresponding paired end files should ends with ```_1.fastq``` and ```_2.fastq``` **
+
 
 ## Isolated environment in Docker containers
 

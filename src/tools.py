@@ -6,8 +6,6 @@ import subprocess
 import global_variables
 from global_variables import ToolError
 
-ERROR_EXCEPTIONS_STARTS = ["<exception str() failed>", ]
-
 
 class Tool(metaclass=abc.ABCMeta):
     """Class responsible for executing tools with proper parameters
@@ -45,13 +43,12 @@ class Tool(metaclass=abc.ABCMeta):
     def run(self):
 
         # print(self.command)
+        self.logger.info("Running {}".format(self.command))
         process = subprocess.Popen(self.command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
         # print(process.communicate()[1])
-        if process.returncode != 0:
-            raise ToolError(process.communicate()[1].decode("utf-8"))
-        pass
+        Tool.check_process(process)
 
     def get_created_files(self):
         """Get file paths which tool creates
@@ -73,6 +70,14 @@ class Tool(metaclass=abc.ABCMeta):
         if invalid_args:
             raise ToolError("For tool {} used disallowed arguments {}".format(type(self).__name__,
                                                                               ", ".join(invalid_args)))
+
+    @staticmethod
+    def check_process(process):
+        if process.returncode != 0:
+            error_string = process.communicate()[1].decode("utf-8")
+            logger = logging.getLogger(__name__)
+            logger.error(error_string)
+            raise ToolError(error_string)
 
     @abc.abstractmethod
     def add_input(self, input):
@@ -195,7 +200,7 @@ class Trimmomatic(Tool):
         self.command = [
             "java -jar {} {} {} {} {}".format(Trimmomatic.EXEC_PATH, self.seq_type_arg, self.input, self.output_arg,
                                               self.params)]
-        print(self.command)
+        #print(self.command)
 
 
 class Hisat2(Tool):
@@ -233,20 +238,18 @@ class Hisat2(Tool):
             output_file_name = input_file_name.replace("_1.fastq", ".sam")
 
         created_file_path = os.path.join(output_dir, output_file_name)
-        print(created_file_path)
+
         self.created_files.append(created_file_path)
         self.output_arg = "-S {}".format(created_file_path)
 
     def build(self):
         """Exectue build command that create index files for Hisat2"""
         command = "{} {} {}".format(Hisat2.BUILD_PATH, self.sequence, self.index_prefix)
-
+        self.logger.info("Build Hisat2 index files: {}".format(command))
         process = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
-        # print(process.communicate()[1])
-        if process.returncode != 0:
-            raise ToolError(process.communicate()[1].decode("utf-8"))
+        Tool.check_process(process)
         # print(process.communicate(),process.returncode)
 
     def prepare_to_run(self):
@@ -255,24 +258,24 @@ class Hisat2(Tool):
         self.command = ["{} {} {} -x {} {}".format(Hisat2.EXEC_PATH, self.input_arg,
                                                    self.output_arg, self.index_prefix, self.params)]
 
+
     def run(self):
         """Execute tool command"""
-        print(self.command)
         self.build()
+        print(self.command)
+        self.logger.info("Running {}".format(self.command))
         process = subprocess.Popen(self.command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
         # print(process.communicate()[1])
-        if process.returncode != 0:
-            raise ToolError(process.communicate()[1].decode("utf-8"))
-        pass
+        Tool.check_process(process)
 
 
 class Bowtie(Hisat2):
     BUILD_PATH = "bowtie2-build"
     EXEC_PATH = "bowtie2"
 
-    # BUILD_PATH = os.path.join(global_variables.bowtie_path, "bowtie2-build")
+    #BUILD_PATH = os.path.join(global_variables.bowtie_path, "bowtie2-build")
     #EXEC_PATH = os.path.join(global_variables.bowtie_path, "bowtie2")
 
     def __init__(self, input, output, params, sequence):
@@ -286,9 +289,7 @@ class Bowtie(Hisat2):
         process = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
-        # print(process.communicate()[1])
-        if process.returncode != 0:
-            raise ToolError(process.communicate()[1].decode("utf-8"))
+        Tool.check_process(process)
 
     def prepare_to_run(self):
         self.add_input(self.input)
@@ -327,7 +328,7 @@ class Stringtie(Tool):
 
 
 class samtools:
-    "adassadas"
+    "Class resposible for performin operations using samtools"
     def __init__(self):
         self.command = ""
 
@@ -341,39 +342,19 @@ class samtools:
         self.command = "view -S -b {} > {}".format(input_file, output_file)
 
     def sort_bam(self, input_file, output):
+        """Sorts bam file
+
+        :param input_file: input file path
+        :type input_file: str
+        :param output: output file path
+        :type output: str
+        """
         self.command = "sort {} -o {}".format(input_file, output)
 
     def run(self):
+        """run samtools command"""
         self.command = "{} {}".format(global_variables.samtools_path, self.command)
-        print(self.command)
         process = subprocess.Popen([self.command], stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         process.wait()
 
-        # print(process.communicate()[1])
-        if process.returncode != 0:
-            raise ToolError(process.communicate()[1].decode("utf-8"))
-        pass
-
-
-'''s = Trimmomatic(
-    "/home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq /home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq",
-    "/home/kuba/ADP_project/",
-    "PE LEADING:1 TRAILING:1 SLIDINGWINDOW:4:15 MINLEN:20")'''
-# s= Bowtie("-p 4 --rg-id test_rep --rg SM:test --dta --rna-strandness RF ",
-'''s = Hisat({1:["/home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq"],
-             2:["/home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq"]},
-            "/home/kuba/ADP_project/UHR_Rep1_bowtie.sam",
-           "-p 4",
-         "/home/kuba/Pobrane/Homo_sapiens.GRCh38.dna.chromosome.22.fa",
-         "/home/kuba/Pobrane/fastqfiles/hs_index")
-s.prepare_to_run()'''
-# s.add_input({1:["/home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq"],
-#             2:["/home/kuba/ADP_project/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq"]})
-# s.add_output("/home/kuba/Pobrane/fastqfiles/SP")
-# s.add_output("/home/kuba/ADP_project/UHR_Rep1_bowtie.sam")
-# s = Stringtie("-p 4 -G /home/kuba/Homo_sapiens.GRCh38.100.chromosome.22.gff3")
-# s.add_input("/home/kuba/ADP_project/UHR_Rep1.sorted.bam")
-# s.add_output("/home/kuba/ADP_project/stringtie_result.gft")
-# s.run()
-# SE -phred33  /home/kuba/output.fq
-# print(FastQC.check_params("sadass"))
+        Tool.check_process(process)
