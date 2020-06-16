@@ -20,7 +20,7 @@ DRAW is able to process only .fastq files. When using paired end files it is is 
 
 ## Isolated environment in Docker containers
 
-**Before starting the analysis make sure you have installed ```Docker (recommended version 19.03.8)``` and ```Google Chrome (recommended version 81.0.4044.113)``` on your Linux machine. It is the only installation needed, the rest does Docker itself.**
+**Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and Google Chrome (recommended version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
 
 To install Docker on Linux follow all instructions from website linked below, **including setting up the Docker Group** to avoid "Permission denied" issue.
 ```
@@ -32,7 +32,7 @@ To get the image of DRAW, make sure you have Internet access and execute the fol
 $ ./build.sh
 ```
 
-**Before running the container place input data in the ```input``` directory.** To run the container execute the run_docker.sh script as below. Directories input, ```config_files``` and ```output``` persist data generated and used by Docker. Ports 2000 i 5000 are published to the host machine. Container is running in interactive mode for user to see running processes. It will open a GUI application to fill in configurations and visualizations server, which will rise after the end of the analysis.
+**Before running the container place input data in the input directory.** To run the container execute the run_docker.sh script as below. Directories ```input```, ```config_files``` and ```output``` persist data generated and used by Docker. Ports 2000 i 5000 are published to the host machine. Container is running in the interactive mode for user to see running processes. Execution of the script will open a GUI application to fill in configurations and visualizations server, which will rise after the end of the analysis.
 ```console
 $ ./run_docker.sh
 ```
