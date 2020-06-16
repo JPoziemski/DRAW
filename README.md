@@ -22,7 +22,7 @@ DRAW is able to process only .fastq files. When using paired end files it is is 
 
 **Before starting the analysis make sure you have installed Docker (recommended version 19.03.8) and Google Chrome (recommended version 81.0.4044.113) on your Linux machine. It is the only installation needed, the rest does Docker itself.**
 
-To install Docker on Linux folow instructions from website linked below:
+To install Docker on Linux follow instructions from website linked below:
 ```
 https://runnable.com/docker/install-docker-on-linux
 ```
