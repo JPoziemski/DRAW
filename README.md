@@ -37,7 +37,7 @@ $ ./build.sh
 $ ./run_docker.sh
 ```
 
-GUI and visualizations are available while Docker container is running, you can simply acces them typing URLs in your favourite browser as below. GUI is accessed by port 2000, visualizations by port 5000. Mind visualizations are available after generating config file and running analysis, which takes some time.
+GUI and visualizations are available while Docker container is running, you can simply acces them typing URLs in browser as below. GUI is accessed by port 2000, visualizations by port 5000. Mind visualizations are available after generating config file and running analysis, which takes some time.
 
 ```
 http://0.0.0.0:2000/index
