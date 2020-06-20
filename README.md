@@ -27,7 +27,7 @@ To install Docker on Linux follow all instructions from website linked below, **
 https://runnable.com/docker/install-docker-on-linux
 ```
 
-To get the image of DRAW, make sure you have Internet access and execute the following script:
+To get the image of DRAW, make sure you have Internet access and execute the following script. Preparing the environment takes approximately 45 min, during image building process all needed platforms, tools and requirements are installed.
 ```console
 $ ./build.sh
 ```
