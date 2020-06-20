@@ -27,7 +27,7 @@ To install Docker on Linux follow all instructions from website linked below, **
 https://runnable.com/docker/install-docker-on-linux
 ```
 
-**Preparing the environment can be done only once, Docker image once build exist on Your machine and can be accessed at any time. Environment requires 2.1739 GB of Your disc space.** It takes approximately 45 min, during image building process all needed platforms, tools and requirements are installed. To get the image of DRAW, make sure You have Internet access and execute the following script.
+**Preparing the environment can be done only once, Docker image once build exist on Your machine and can be accessed at any time. Environment requires 2.1739 GB of Your disc space.** It takes approximately 40 min, during image building process all needed platforms, tools and requirements are installed. To get the image of DRAW, make sure You have Internet access and execute the following script.
 ```console
 $ ./build.sh
 ```
