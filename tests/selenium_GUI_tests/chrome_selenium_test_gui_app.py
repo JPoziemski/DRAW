@@ -2,10 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 import time
-
+import subprocess
 
 # Test to run needs a running instance of gui_app.py
 # Test GUI in Chrome:91 for linux 64
+
 chromedriver_path = './chromedriver'
 chromedriver = webdriver.Chrome(chromedriver_path)
 chromedriver.get('http://127.0.0.1:2000/index')
@@ -91,10 +92,11 @@ select = Select(chromedriver.find_element_by_name('tool_COUNTING'))
 select.select_by_value('Stringtie')
 time.sleep(2)
 
-chromedriver.find_element_by_class_name("submit").submit() # Save config
+chromedriver.find_element_by_xpath("//input[@type='submit']").submit()
+
 
 # Test overview.html
-chromedriver.find_element_by_class_name("button").click()
+chromedriver.find_element_by_xpath("//input[@type='submit']").click()
 
 print(chromedriver.title)
 chromedriver.close()
