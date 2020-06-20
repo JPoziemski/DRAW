@@ -3,8 +3,8 @@
 # Below functions test installation of correct platforms, programms and requirements and their versions
 # To test installations uncomment two lines in Dockerfile (setting the workdir to tests and running this script)
 # and comment two lines running analysis (setting workdir to bin and running gui_app.py)
-# Test performs during build and returns nothing if installation was right
-# Otherwise it returns messeges and informs what is wrong
+# Test performs during build process and returns nothing if installation was right
+# Otherwise it informs what was wrong
 
 # Test platforms and tools
 assertDependency() {
@@ -42,7 +42,7 @@ assertRPackage() {
 assertDependency "openjdk-8-jre:amd64" "8u252-b09-1ubuntu1"
 assertDependency "python3" "3.8.2-0ubuntu2"
 assertDependency "python3-pip" "20.0.2-5ubuntu1"
-assertDependency "r-base" "3.6.3-2"
+assertDependency "r-3.6.1" "1"
 
 assertDependency "bowtie2" "2.3.5.1-6build1"
 assertDependency "fastqc" "0.11.9+dfsg-2"
@@ -60,4 +60,3 @@ assertPythonModule "pandas" "1.0.3"
 assertPythonModule "sklearn" "0.0"
 
 assertRPackage "DESeq2"
-
